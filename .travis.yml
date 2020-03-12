@@ -8,22 +8,21 @@ services:
 
 script:
 
-  - cd front
-
   # Build angular app
+  - cd front
   - docker run --rm --name angular-cli -v ${PWD}:/angular -w /angular node /bin/bash -c "npm install; npm run build"
 
-  - cd ../back
-
   # Copy new generated resources on back static
+  - cd ../back
   - mkdir -p "src/main/resources/static/" && cp -r ../front/dist/front/* src/main/resources/static/
 
   # Create jar
   - docker run -it --rm -v ${PWD}:/usr/src/project -w /usr/src/project maven:alpine mvn -DskipTests package
 
   # Build docker image
-  - if [ "$TRAVIS_BRANCH" = "master" ]; then  mkdir -p "../docker/build/" && cp -r target/back-0.0.1-SNAPSHOT.jar ../docker/build/
-  - if [ "$TRAVIS_BRANCH" = "master" ]; then  docker build -t sigma98/santateclapruebas .; fi
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then mkdir -p "../docker/build/" && cp -r target/back-0.0.1-SNAPSHOT.jar ../docker/build/; fi
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then cd ../docker; fi
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then docker build -t sigma98/santateclapruebas .; fi
 
   # Push to Docker Hub
-  - if [ "$TRAVIS_BRANCH" = "master" ]; then  docker push -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" sigma98/santateclapruebas; fi
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then docker push -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" sigma98/santateclapruebas; fi
