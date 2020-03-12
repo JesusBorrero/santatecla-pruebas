@@ -261,13 +261,6 @@ public class CourseApiTests {
     }
 
     @Test
-    public void testNotFoundGetStudentProgress() throws Exception{
-        mvc.perform(MockMvcRequestBuilders.get("/api/course/2/students/progress")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(404));
-    }
-
-    @Test
     public void testGetStudentGradesGrouped() throws Exception{
         mvc.perform(MockMvcRequestBuilders.get("/api/course/1/students/gradesGroup")
                 .contentType(MediaType.APPLICATION_JSON))
