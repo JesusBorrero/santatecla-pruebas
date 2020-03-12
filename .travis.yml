@@ -9,6 +9,6 @@ services:
 
 script:
   - cd docker
-  - powerShell -File run.ps1
+  - powershell -File run.ps1
   - if [ "$BRANCH" = "master" ]; then  docker build -t sigma98/santatecla
   - if [ "$BRANCH" = "master" ]; then  docker push -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" sigma98/santatecla
