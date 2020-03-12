@@ -25,4 +25,5 @@ script:
   - if [ "$TRAVIS_BRANCH" = "master" ]; then docker build -t sigma98/santateclapruebas .; fi
 
   # Push to Docker Hub
-  - if [ "$TRAVIS_BRANCH" = "master" ]; then docker push -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" sigma98/santateclapruebas; fi
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"; fi
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then docker push sigma98/santateclapruebas; fi
