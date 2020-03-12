@@ -3,6 +3,7 @@ language: java
   travis env set DOCKER_USERNAME sigma98
   travis env set DOCKER_PASSWORD santatecla
 
+os: windows
 
 services:
   - docker
