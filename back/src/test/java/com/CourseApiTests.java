@@ -218,7 +218,7 @@ public class CourseApiTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name", is("Test Module")));
     }
-    
+
     @Test
     public void testGetStudentProgress() throws Exception{
         Question question = new Question();
