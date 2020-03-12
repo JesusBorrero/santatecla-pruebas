@@ -23,7 +23,7 @@ script:
 
   # Build docker image
   - if [ "$TRAVIS_BRANCH" = "master" ]; then  mkdir -p "../docker/build/" && cp -r target/back-0.0.1-SNAPSHOT.jar ../docker/build/
-  - if [ "$TRAVIS_BRANCH" = "master" ]; then  docker build -t sigma98/santatecla-pruebas; fi
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then  docker build -t sigma98/santateclapruebas; fi
 
   # Push to Docker Hub
-  - if [ "$TRAVIS_BRANCH" = "master" ]; then  docker push -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" sigma98/santatecla-pruebas; fi
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then  docker push -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" sigma98/santateclapruebas; fi
