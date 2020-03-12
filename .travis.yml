@@ -16,9 +16,9 @@ script:
   - mkdir -p "src/main/resources/static/" && cp -r ../front/dist/front/* src/main/resources/static/
 
     # Create jar
-  - docker run -it --rm -v ${PWD}:/usr/src/project -w /usr/src/project maven:alpine mvn package
+  - docker run -it --rm -v ${PWD}:/usr/src/project -w /usr/src/project maven:alpine mvn -DskipTests package
   - mkdir -p "../docker/build/" && cp -r target/back-0.0.1-SNAPSHOT.jar ../docker/build/
 
   - if [ "$BRANCH" = "master" ]; then  docker build -t sigma98/santatecla; fi
-  - if [ "$BRANCH" = "master" ]; then  docker push -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" sigma98/santatecla; fi
+  - if [ "$BRANCH" = "master" ]; then  docker push -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" sigma98/santatecla-pruebas; fi
   
