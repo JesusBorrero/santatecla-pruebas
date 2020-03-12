@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html>
+  <body>
+
+    <div class="waveWrapper waveAnimation">
+      <div class="waveWrapperInner bgTop">
+        <div class="wave waveTop" style="background-image: url('http://front-end-noobs.com/jecko/img/wave-top.png')"></div>
+      </div>
+      <div class="waveWrapperInner bgMiddle">
+        <div class="wave waveMiddle" style="background-image: url('http://front-end-noobs.com/jecko/img/wave-mid.png')"></div>
+      </div>
+      <div class="waveWrapperInner bgBottom">
+        <div class="wave waveBottom" style="background-image: url('http://front-end-noobs.com/jecko/img/wave-bot.png')"></div>
+      </div>
+    </div>
+
+    <div id="login-container">
+      <h1>Santatecla</h1>
+      <mat-dialog-content>
+        <form (keyup.enter)="login($event, userElement.value, passElement.value)">
+
+          <div layout="row" id="login-user">
+            <mat-form-field flex>
+              <input matInput #userElement #userControl="ngModel" placeholder="Usuario" type="text"
+                     maxlength="30" name="username" [(ngModel)]="username" required id="username">
+              <span matPrefix>
+                      <mat-icon>person</mat-icon>
+                    </span>
+              <mat-hint>{{userElement.value.length}} / 30</mat-hint>
+            </mat-form-field>
+          </div>
+
+          <div layout="row" id="login-password">
+            <mat-form-field flex>
+              <input matInput #passElement #passControl="ngModel" placeholder="Contraseña" type="password"
+                     name="password" [(ngModel)]="password" required id="password">
+              <span matPrefix>
+                      <mat-icon>lock</mat-icon>
+              </span>
+            </mat-form-field>
+          </div>
+
+        </form>
+
+        <div id="login-button">
+          <button type="button" mat-stroked-button color="primary" class="text-upper" (click)="login($event, userElement.value, passElement.value)" id="send-login-button">Login</button>
+        </div>
+
+      </mat-dialog-content>
+    </div>
+
+  </body>
+</html>

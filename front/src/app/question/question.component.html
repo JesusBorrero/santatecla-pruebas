@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <!-- ADMIN -->
+  <body *ngIf="loginService.isAdmin">
+
+    <button mat-button class="tool new-question-button" (click)="openAddQuestionDialog()">
+      <mat-icon>add</mat-icon>
+      Nuevo ejercicio
+    </button>
+
+    <div id="spinner-container" *ngIf="showSpinner">
+      <img id="spinner" src="../../assets/img/spinner.gif">
+      <span id="spinner-text">Cargando...</span>
+    </div>
+
+    <!-- QUESTION TABLE -->
+    <mat-card class="questions-card">
+      <mat-card-title class="card-title">Ejercicios</mat-card-title>
+      <mat-card-content>
+        <mat-form-field>
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
+        </mat-form-field>
+
+        <table mat-table *ngIf="questions.length > 0" [dataSource]="dataSource" matSort>
+
+          <ng-container matColumnDef="question">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Pregunta </th>
+            <td mat-cell *matCellDef="let question">
+              <a [routerLink]="['question', question.subtype, question.id]">{{question.questionText}} </a>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="subtype">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </th>
+            <td mat-cell *matCellDef="let question"> {{questionTypes.get(question.subtype)}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="edit">
+            <th mat-header-cell *matHeaderCellDef> Editar </th>
+            <td mat-cell *matCellDef="let question">
+              <button mat-button (click)="editQuestion(question.id, question.subtype)">
+                <mat-icon class="edit-icon">create</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="delete">
+            <th mat-header-cell *matHeaderCellDef> Borrar </th>
+            <td mat-cell *matCellDef="let question">
+              <button mat-button (click)="deleteQuestion(question.id)">
+                <mat-icon class="delete-icon">delete_outline</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <p *ngIf="questions.length == 0 && !showSpinner" matLine class="text-secondary card-content">No hay preguntas en esta unidad</p>
+
+        <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20, 100]" showFirstLastButtons></mat-paginator>
+
+      </mat-card-content>
+    </mat-card>
+
+
+    <!-- QUESTION LIST -->
+    <!--<mat-card class="questions-card">
+      <mat-card-title class="card-title">Preguntas</mat-card-title>
+      <mat-card-content class="card-content">
+        <mat-list>
+          <mat-list-item *ngFor="let question of questions">
+            <p matLine>
+              {{ question.questionText }}
+              <button mat-button (click)="deleteQuestion(question.id)">
+                <mat-icon class="delete-icon">delete_outline</mat-icon>
+              </button>
+            </p>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>-->
+  </body>
+
+  <!-- NOT ADMIN -->
+  <body *ngIf="!loginService.isAdmin">
+
+    <mat-card class="questions-card">
+      <mat-card-title class="card-title">Preguntas de definición</mat-card-title>
+      <mat-card-content class="card-content">
+        <div *ngFor="let question of definitionQuestions">
+          <mat-button-toggle (click)="openAnswerDialog(question)">
+            <h3>{{ question.questionText }}</h3>
+          </mat-button-toggle>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="questions-card">
+      <mat-card-title class="card-title">Preguntas de listado</mat-card-title>
+      <mat-card-content class="card-content">
+        <div *ngFor="let question of listQuestions">
+          {{ question.questionText }}
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="questions-card">
+      <mat-card-title class="card-title">Preguntas de test</mat-card-title>
+      <mat-card-content class="card-content">
+        <div *ngFor="let question of testQuestions">
+          {{ question.questionText }}
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </body>
+
+</html>

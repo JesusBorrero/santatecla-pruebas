@@ -1,0 +1,5 @@
+<div id="dialog">
+  <input matInput id="courseName" [(ngModel)]="data.name" placeholder="{{data.name}}"/>
+  <button id="save-button" mat-button (click)="saveChanges()">Guardar</button>
+  <button id="discard-button" mat-button (click)="onNoClick()">Cancelar</button>
+</div>

@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html>
+  <body>
+
+    <div *ngIf="loginService.isLogged" [ngClass]="loginService.isAdmin ? 'header admin-header' : 'header user-header'">
+
+      <div id="tab-wrapper">
+
+        <button mat-button *ngIf="loginService.isAdmin" class="nav-button admin-nav-button home-button" [routerLink]="['/']">
+          <mat-icon class="nav-button-icon">home</mat-icon>
+          <div class="nav-button-name">Inicio</div>
+        </button>
+
+        <button mat-button *ngIf="tabService.courses" [ngClass]="loginService.isAdmin ? 'nav-button admin-nav-button home-button' : 'nav-button user-nav-button home-button'" [routerLink]="['/courses']">
+          <mat-icon class="nav-button-icon">class</mat-icon>
+          <div class="nav-button-name">Cursos</div>
+        </button>
+
+        <button mat-button *ngIf="loginService.isAdmin && tabService.units" [ngClass]="loginService.isAdmin ? 'nav-button admin-nav-button' : 'nav-button user-nav-button'" [routerLink]="['/unit']">
+          <img class="nav-button-icon" src="../../assets/img/uml-icon.png" height="15">
+          <div class="nav-button-name">Unidades</div>
+        </button>
+
+        <button mat-button *ngIf="loginService.isAdmin && tabService.unit" [ngClass]="loginService.isAdmin ? 'nav-button admin-nav-button' : 'nav-button user-nav-button'" [routerLink]="['/unit/', tabService.unitId]">
+          <div class="nav-button-name">
+            <span [ngClass]="loginService.isAdmin ? 'nav-button-title admin-nav-button-title' : 'nav-button-title user-nav-button-title'">Unidad</span>
+            <span class="nav-button-content">{{tabService.unit}}</span>
+          </div>
+        </button>
+
+        <button mat-button *ngIf="tabService.course && loginService.isAdmin" [ngClass]="loginService.isAdmin ? 'nav-button admin-nav-button' : 'nav-button user-nav-button'" [routerLink]="['/course/' + tabService.courseId]">
+          <div class="nav-button-name">
+            <span [ngClass]="loginService.isAdmin ? 'nav-button-title admin-nav-button-title' : 'nav-button-title user-nav-button-title'">Curso</span>
+            <span class="nav-button-content">{{tabService.course}}</span>
+          </div>
+        </button>
+
+        <button mat-button *ngIf="tabService.course && !loginService.isAdmin" [ngClass]="loginService.isAdmin ? 'nav-button admin-nav-button' : 'nav-button user-nav-button'" [routerLink]="['/course/' + tabService.courseId + '/modules/' + tabService.moduleId]">
+          <div class="nav-button-name">
+            <span [ngClass]="loginService.isAdmin ? 'nav-button-title admin-nav-button-title' : 'nav-button-title user-nav-button-title'">Curso</span>
+            <span class="nav-button-content">{{tabService.course}}</span>
+          </div>
+        </button>
+
+        <button mat-button *ngIf="loginService.isAdmin && tabService.module" [ngClass]="loginService.isAdmin ? 'nav-button admin-nav-button' : 'nav-button user-nav-button'" [routerLink]="['/units/' + tabService.unitId + '/modules/' + tabService.moduleId]">
+          <div class="nav-button-name">
+            <span [ngClass]="loginService.isAdmin ? 'nav-button-title admin-nav-button-title' : 'nav-button-title user-nav-button-title'">Itinerario</span>
+            <span class="nav-button-content">{{tabService.module}}</span>
+          </div>
+        </button>
+
+        <button mat-button *ngIf="tabService.lesson" [ngClass]="loginService.isAdmin ? 'nav-button admin-nav-button' : 'nav-button user-nav-button'">
+          <div class="nav-button-name">
+            <span [ngClass]="loginService.isAdmin ? 'nav-button-title admin-nav-button-title' : 'nav-button-title user-nav-button-title'">Lección</span>
+            <span class="nav-button-content">{{tabService.lesson}}</span>
+          </div>
+        </button>
+
+        <button mat-button *ngIf="tabService.questions" [ngClass]="loginService.isAdmin ? 'nav-button admin-nav-button' : 'nav-button user-nav-button'">
+          <div class="nav-button-name">
+            <span [ngClass]="loginService.isAdmin ? 'nav-button-title admin-nav-button-title' : 'nav-button-title user-nav-button-title'">Pregunta</span>
+            <span class="nav-button-content">{{tabService.question}}</span>
+          </div>
+        </button>
+      </div>
+
+      <span id="user-name">{{loginService.user.name}}</span>
+      <button mat-icon-button id="logout-button" (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+      </button>
+
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+<span *ngIf="this.loginService.isAdmin">
+  <div id="lateral-panel" [ngClass]="showMenu ? 'left-zero' : 'hidden-menu'">
+
+    <button [ngClass]="activeTab == 0 ? 'tab activeTab mat-button' : 'tab mat-button'" (click)="activateTab(0)">
+      <mat-icon [ngClass]="showMenu ? 'tab-icon' : 'tab-icon-without-menu'">description</mat-icon>
+      <span class="tab-text" *ngIf="showMenu">Contenido</span>
+    </button>
+
+    <button [ngClass]="activeTab == 1 ? 'tab activeTab mat-button' : 'tab mat-button'" (click)="activateTab(1)">
+      <mat-icon [ngClass]="showMenu ? 'tab-icon' : 'tab-icon-without-menu'">bar_chart</mat-icon>
+      <span class="tab-text" *ngIf="showMenu">Seguimiento del módulo</span>
+    </button>
+
+    <button [ngClass]="activeTab == 2 ? 'tab activeTab mat-button' : 'tab mat-button'" (click)="activateTab(2)">
+      <mat-icon [ngClass]="showMenu ? 'tab-icon' : 'tab-icon-without-menu'">bar_chart</mat-icon>
+      <span class="tab-text" *ngIf="showMenu">Seguimiento de la clase</span>
+    </button>
+
+  </div>
+  <mat-icon id="hide-menu-button" [ngClass]="showMenu ? 'show-hide-menu-button' : 'hidden-hide-menu-button'" (click)="setShowMenu(!showMenu)">reorder</mat-icon>
+
+  <div id="top-panel" [ngClass]="showMenu ? 'with-menu' : 'without-menu'">
+      <button mat-button class="add-students-button" (click)="addStudents()">
+        <mat-icon>add</mat-icon>
+        Añadir alumnos
+      </button>
+  </div>
+
+  <div id="course-content" [ngClass]="showMenu ? 'with-menu' : 'without-menu'">
+    <div *ngIf="this.activeTab == 0">
+      <h1 class="tab-group">
+        {{course?.name}}
+        <div class="mat-button" (click)="openEditCourseDialog()">
+          <mat-icon>edit</mat-icon>
+        </div>
+      </h1>
+
+      <mat-tab-group class="tab-group">
+        <mat-tab label="Itinerario Formativo">
+
+          <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree menu-margin">
+            <mat-tree-node *matTreeNodeDef="let node1" matTreeNodeToggle>
+                  <span class="mat-tree-node" id="{{node1.name}}">
+                    <button mat-icon-button disabled></button>
+                    <mat-card class="lesson-button">
+                      {{node1?.name}}
+                    </mat-card>
+                  </span>
+            </mat-tree-node>
+            <mat-nested-tree-node *matTreeNodeDef="let node2; when: hasChild">
+                  <span id="{{node2.name}}">
+                    <div class="mat-tree-node">
+                      <button mat-icon-button matTreeNodeToggle
+                              [attr.aria-label]="'toggle ' + node2?.name">
+                        <mat-icon class="mat-icon-rtl-mirror">
+                          {{treeControl.isExpanded(node2) ? 'expand_more' : 'chevron_right'}}
+                        </mat-icon>
+                      </button>
+                      <h3>{{node2?.name}}</h3>
+                    </div>
+                    <ul [class.example-tree-invisible]="!treeControl.isExpanded(node2)">
+                      <ng-container matTreeNodeOutlet></ng-container>
+                    </ul>
+                  </span>
+            </mat-nested-tree-node>
+          </mat-tree>
+        </mat-tab>
+        <mat-tab label="Alumnos">
+          <h2>Alumnos del curso</h2>
+          <span *ngFor="let student of this.course?.students">
+              <div class="tab student-tab mat-button">
+                <mat-icon class="tab-icon">account_circle</mat-icon>
+                {{student.name}}
+              </div>
+            </span>
+        </mat-tab>
+      </mat-tab-group>
+
+    </div>
+
+    <app-module-progress *ngIf="activeTab==1"></app-module-progress>
+    <app-class-progress *ngIf="activeTab==2"></app-class-progress>
+
+  </div>
+</span>
+
+<span *ngIf="!this.loginService.isAdmin">
+
+</span>
+
+</body>
+</html>

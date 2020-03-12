@@ -1,0 +1,89 @@
+#image-container {
+  width: 10rem;
+  display: flex;
+  float: right;
+}
+
+#courseName{
+  border: 0;
+}
+
+#progressType{
+  border: solid #571a69 1px;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.columnWidth{
+  border-collapse: collapse;
+  padding: 5px;
+}
+
+.row {
+  margin-top: 5%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.green-color {
+  color: green;
+}
+
+.red-color {
+  color: red;
+}
+
+.top-margin {
+  margin-top: 5rem;
+  align-content: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.letf-margin {
+  margin-left:42%
+}
+
+.progress-table {
+  height: 25rem;
+  padding: 0.5rem;
+}
+
+.center-align {
+  text-align: center;
+  align-content: center;
+  justify-content: center;
+}
+
+.center-table{
+  margin:auto;
+}
+
+.title {
+  margin-top: 8rem;
+}
+
+.extended-info{
+  cursor: pointer;
+}
+
+#spinner{
+  position: relative;
+  width: 8rem;
+  height: 8rem;
+  left: 40%;
+  top: 40%;
+}
+
+.histogram{
+}

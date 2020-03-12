@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+  <body>
+
+    <div class="image-selector-header">
+      <h2>Seleccione una imagen para copiar su ruta</h2>
+
+      <mat-form-field id="unitSearcher">
+        <input matInput (keyup)="applyFilterImages($event.target.value)" placeholder="Nombre de la imagen">
+      </mat-form-field>
+
+      <button mat-mini-fab class="image-input-btn" (click)="fileInput.click()" matTooltip="Añadir imagen" [matTooltipPosition]="'after'">
+        <mat-icon>insert_photo</mat-icon>
+        <input hidden #fileInput type="file" (change)="saveImage(fileInput)">
+      </button>
+    </div>
+
+    <div *ngFor="let image of imagesResult">
+      <mat-card class="image-card" (click)="getUrl(image.id)">
+        <img mat-card-image class="image" src="{{image.image}}" alt="{{image.name}}">
+        <mat-card-content>
+          <div class="image-name">{{image.name}}</div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html>
+  <body>
+
+    <button mat-button *ngIf="this.loginService.isAdmin" class="tool new-lesson-button" (click)="addLesson()">
+      <mat-icon>add</mat-icon>
+      Nueva Lección
+    </button>
+
+    <div id="lesson-search">
+      <mat-form-field appearance="outline" id="search">
+        <mat-label>Buscar lección</mat-label>
+        <input id="search-input" matInput (keyup)="searchLesson($event.target.value)"/>
+      </mat-form-field>
+    </div>
+
+    <div class="lessons-list center-align">
+        <span *ngFor="let lesson of lessonsResult">
+          <button mat-button [ngClass]="loginService.isAdmin ? 'lesson-button admin-lesson-button' : 'lesson-button user-lesson-button'" (click)="editLesson(lesson.id)">
+            {{lesson.name}}
+          </button>
+          <button id="options-lesson-button" mat-button matTooltip="Opciones" [matTooltipPosition]="optionInfoPosition" [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>Renombrar</button>
+            <button mat-menu-item>Copiar</button>
+            <button mat-menu-item id="delete-option" (click)="deleteLesson(lesson.id)">Eliminar</button>
+          </mat-menu>
+        </span>
+    </div>
+
+  </body>
+</html>

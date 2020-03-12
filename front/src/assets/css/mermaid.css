@@ -1,0 +1,497 @@
+.label {
+  color: #333;
+}
+
+.label text {
+  fill: #333;
+}
+
+.node rect,
+.node circle,
+.node ellipse,
+.node polygon {
+  fill: #fdf7ff;
+  stroke: #27273c;
+  stroke-width: 1px;
+}
+
+.node.clickable {
+  cursor: pointer;
+}
+
+.arrowheadPath {
+  fill: #333333;
+}
+
+.edgePath .path {
+  stroke: #333333;
+  stroke-width: 1px;
+}
+
+.edgeLabel {
+  background-color: #e8e8e8;
+}
+
+.cluster rect {
+  fill: #ffffde;
+  stroke: #aaaa33;
+  stroke-width: 1px;
+}
+
+.cluster text {
+  fill: #333;
+}
+
+div.mermaidTooltip {
+  position: absolute;
+  text-align: center;
+  max-width: 200px;
+  padding: 2px;
+  font-size: 12px;
+  background: #ffffde;
+  border: 1px solid #aaaa33;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.actor {
+  stroke: #CCCCFF;
+  fill: #fdf7ff;
+}
+
+text.actor {
+  fill: black;
+  stroke: none;
+}
+
+.actor-line {
+  stroke: grey;
+}
+
+.messageLine0 {
+  stroke-width: 1.5;
+  stroke: #333;
+}
+
+.messageLine1 {
+  stroke-width: 1.5;
+  stroke: #333;
+}
+
+#arrowhead {
+  fill: #333;
+}
+
+.sequenceNumber {
+  fill: white;
+}
+
+#sequencenumber {
+  fill: #333;
+}
+
+#crosshead path {
+  fill: #333 !important;
+  stroke: #333 !important;
+}
+
+.messageText {
+  fill: #333;
+  stroke: none;
+}
+
+.labelBox {
+  stroke: #CCCCFF;
+  fill: #fdf7ff;
+}
+
+.labelText {
+  fill: black;
+  stroke: none;
+}
+
+.loopText {
+  fill: black;
+  stroke: none;
+}
+
+.loopLine {
+  stroke-width: 2;
+  stroke: #CCCCFF;
+}
+
+.note {
+  stroke: #aaaa33;
+  fill: #fff5ad;
+}
+
+.noteText {
+  fill: black;
+  stroke: none;
+  font-size: 14px;
+}
+
+.activation0 {
+  fill: #f4f4f4;
+  stroke: #666;
+}
+
+.activation1 {
+  fill: #f4f4f4;
+  stroke: #666;
+}
+
+.activation2 {
+  fill: #f4f4f4;
+  stroke: #666;
+}
+
+/** Section styling */
+.section {
+  stroke: none;
+  opacity: 0.2;
+}
+
+.section0 {
+  fill: rgba(102, 102, 255, 0.49);
+}
+
+.section2 {
+  fill: #fff400;
+}
+
+.section1,
+.section3 {
+  fill: white;
+  opacity: 0.2;
+}
+
+.sectionTitle0 {
+  fill: #333;
+}
+
+.sectionTitle1 {
+  fill: #333;
+}
+
+.sectionTitle2 {
+  fill: #333;
+}
+
+.sectionTitle3 {
+  fill: #333;
+}
+
+.sectionTitle {
+  text-anchor: start;
+  font-size: 11px;
+}
+
+/* Grid and axis */
+.grid .tick {
+  stroke: lightgrey;
+  opacity: 0.3;
+  shape-rendering: crispEdges;
+}
+
+.grid path {
+  stroke-width: 0;
+}
+
+/* Today line */
+.today {
+  fill: none;
+  stroke: red;
+  stroke-width: 2px;
+}
+
+/* Task styling */
+/* Default task */
+.task {
+  stroke-width: 2;
+}
+
+.taskText {
+  text-anchor: middle;
+  font-size: 11px;
+}
+
+.taskTextOutsideRight {
+  fill: black;
+  text-anchor: start;
+  font-size: 11px;
+}
+
+.taskTextOutsideLeft {
+  fill: black;
+  text-anchor: end;
+  font-size: 11px;
+}
+
+/* Special case clickable */
+.task.clickable {
+  cursor: pointer;
+}
+
+.taskText.clickable {
+  cursor: pointer;
+  fill: #003163 !important;
+  font-weight: bold;
+}
+
+.taskTextOutsideLeft.clickable {
+  cursor: pointer;
+  fill: #003163 !important;
+  font-weight: bold;
+}
+
+.taskTextOutsideRight.clickable {
+  cursor: pointer;
+  fill: #003163 !important;
+  font-weight: bold;
+}
+
+/* Specific task settings for the sections*/
+.taskText0,
+.taskText1,
+.taskText2,
+.taskText3 {
+  fill: white;
+}
+
+.task0,
+.task1,
+.task2,
+.task3 {
+  fill: #8a90dd;
+  stroke: #534fbc;
+}
+
+.taskTextOutside0,
+.taskTextOutside2 {
+  fill: black;
+}
+
+.taskTextOutside1,
+.taskTextOutside3 {
+  fill: black;
+}
+
+/* Active task */
+.active0,
+.active1,
+.active2,
+.active3 {
+  fill: #bfc7ff;
+  stroke: #534fbc;
+}
+
+.activeText0,
+.activeText1,
+.activeText2,
+.activeText3 {
+  fill: black !important;
+}
+
+/* Completed task */
+.done0,
+.done1,
+.done2,
+.done3 {
+  stroke: grey;
+  fill: lightgrey;
+  stroke-width: 2;
+}
+
+.doneText0,
+.doneText1,
+.doneText2,
+.doneText3 {
+  fill: black !important;
+}
+
+/* Tasks on the critical line */
+.crit0,
+.crit1,
+.crit2,
+.crit3 {
+  stroke: #ff8888;
+  fill: red;
+  stroke-width: 2;
+}
+
+.activeCrit0,
+.activeCrit1,
+.activeCrit2,
+.activeCrit3 {
+  stroke: #ff8888;
+  fill: #bfc7ff;
+  stroke-width: 2;
+}
+
+.doneCrit0,
+.doneCrit1,
+.doneCrit2,
+.doneCrit3 {
+  stroke: #ff8888;
+  fill: lightgrey;
+  stroke-width: 2;
+  cursor: pointer;
+  shape-rendering: crispEdges;
+}
+
+.milestone {
+  transform: rotate(45deg) scale(0.8, 0.8);
+}
+
+.milestoneText {
+  font-style: italic;
+}
+
+.doneCritText0,
+.doneCritText1,
+.doneCritText2,
+.doneCritText3 {
+  fill: black !important;
+}
+
+.activeCritText0,
+.activeCritText1,
+.activeCritText2,
+.activeCritText3 {
+  fill: black !important;
+}
+
+.titleText {
+  text-anchor: middle;
+  font-size: 18px;
+  fill: black;
+}
+
+g.classGroup text {
+  fill: #000000;
+  stroke: none;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+g.classGroup rect {
+  fill: #fdf7ff;
+  stroke: #9e2abb;
+  cursor: pointer;
+}
+
+g.classGroup rect[id^="N0"] {
+  fill: #fafffb;
+  stroke: #03ca24;
+}
+
+g.classGroup rect[id^="F0"] {
+  fill: #fafffb !important;
+  stroke: #03ca24;
+}
+
+g.classGroup rect[id^="F"] {
+  fill: #f8eefa;
+  stroke-width: 0.15rem;
+}
+
+g.classGroup rect[id^="E"] {
+  fill: #faf0f0 !important;
+  stroke: #f22723 !important;
+  stroke-width: 0.15rem !important;
+}
+
+g.classGroup line {
+  stroke: #9e2abb;
+  stroke-width: 1;
+}
+
+.classLabel .box {
+  stroke: none;
+  stroke-width: 0;
+  fill: #fdf7ff;
+  opacity: 0.5;
+}
+
+.classLabel .label {
+  fill: #27273c;
+  font-size: 10px;
+}
+
+.relation {
+  cursor: pointer;
+  stroke: #27273c;
+  stroke-width: 1;
+  fill: rgba(0,0,0,0);
+}
+
+.relation:hover {
+  stroke: #997e9f;
+}
+
+.invisible-relation {
+  visibility: hidden;
+}
+
+#compositionStart {
+  fill: #27273c;
+  stroke: #27273c;
+  stroke-width: 1;
+}
+
+#compositionEnd {
+  fill: #27273c;
+  stroke: #27273c;
+  stroke-width: 1;
+}
+
+#aggregationStart {
+  fill: #ffffff;
+  stroke: #27273c;
+  stroke-width: 1;
+}
+
+#aggregationEnd {
+  fill: #ffffff;
+  stroke: #27273c;
+  stroke-width: 1;
+}
+
+#dependencyStart {
+  fill: #27273c;
+  stroke: #27273c;
+  stroke-width: 1;
+}
+
+#dependencyEnd {
+  fill: #27273c;
+  stroke: #27273c;
+  stroke-width: 1;
+}
+
+#extensionStart {
+  fill: #ffffff;
+  stroke: #27273c;
+  stroke-width: 1;
+}
+
+#extensionEnd {
+  fill: #ffffff;
+  stroke: #27273c;
+  stroke-width: 1;
+}
+
+.commit-id,
+.commit-msg,
+.branch-label {
+  fill: lightgrey;
+  color: lightgrey;
+}
+
+.pieTitleText {
+  text-anchor: middle;
+  font-size: 25px;
+  fill: black;
+}

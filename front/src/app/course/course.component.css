@@ -1,0 +1,310 @@
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  margin-left: 5%;
+  margin-right: 5%;
+  text-align: center;
+}
+
+.module-column {
+  width: 66%;
+  padding: 0 10px 0 0;
+  float: left;
+}
+
+.student-column {
+  width: 33%;
+  padding: 0 10px 0 0;
+  float: right;
+}
+
+.result {
+  padding: 1rem;
+  cursor: pointer;
+  margin: 0 -0.6em 0 -0.6em;
+  border-top: 1px solid #e5e9f0;
+  background-color: #ffffff;
+}
+
+.result-wrapper {
+  position: absolute;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+  height: 200px;
+  border: lightgrey;
+}
+
+#module-name:hover, #user-result:hover{
+  background: lightgrey;
+}
+
+.green-color{
+  color: green
+}
+
+.red-color{
+  color: red
+}
+
+.pointer-cursor{
+  cursor: pointer
+}
+
+.indianred-color{
+  color: indianred
+}
+
+.delete-course {
+  color: indianred;
+  cursor: pointer;
+  padding: 0 0 0 1rem;
+}
+
+.edit-course{
+  cursor: pointer;
+}
+
+.save-course{
+  background-color: #7d3c90;
+  color: #ffffff
+}
+
+.bottom-margin{
+  margin-bottom: 10%;
+  text-align: center;
+}
+
+.center-align {
+  text-align: center;
+  align-content: center;
+  justify-content: center;
+}
+
+.courses-title {
+  margin-top: 5rem;
+}
+
+.title {
+  margin-top: 4rem;
+}
+
+.course-button {
+  width: 90%;
+  padding: 1rem 0 1rem 2rem;
+  text-align: left;
+}
+
+.admin-course-button {
+  background-color: #f9f2fd;
+}
+
+.user-course-button {
+  background-color: #eaeefd;
+}
+
+.courses-list {
+  position: absolute;
+  width: 70%;
+  left: 15%;
+  top: 10rem;
+}
+
+#course-search {
+  position: absolute;
+  top: 4rem;
+  width: 40%;
+  left: 25%;
+}
+
+#new-course-button {
+  position: absolute;
+  background-color: #efe1fd;
+  top: 4rem;
+  left: 65%;
+  right: 25%;
+  margin: 1rem 2% 0 2%;
+}
+
+#search {
+  width: 100%;
+}
+
+.course-form {
+  width: 75%
+}
+
+.tab {
+  background-color: #7d3c90;
+  color: #ffffff;
+  padding: 0.3rem 0 0.3rem 3.5rem;
+  position: relative;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  height: 3rem;
+}
+
+.student-tab{
+  width: 60%;
+}
+
+.tab-group{
+  margin-left: 3rem
+}
+
+.tab:hover {
+  background-color: #a769b8;
+}
+
+.activeTab {
+  background-color: #a769b8;
+}
+
+.tab-text {
+  margin-left: 0.5rem;
+}
+
+.tab-icon {
+  position: absolute;
+  left: 1.37rem;
+  margin-top: 0.4rem;
+}
+
+.tab-icon-without-menu {
+  position: absolute;
+  left: 1.37rem;
+  top: 0.78rem;
+}
+
+#course-content {
+  margin-top: 6rem;
+  position: absolute;
+  right: 0;
+  padding-bottom: 2rem;
+}
+
+.with-menu {
+  width: calc(100% - 21.5rem);
+}
+
+.without-menu {
+  width: calc(100% - 6.2rem);
+}
+
+#lateral-panel {
+  position: fixed;
+  top: 3rem;
+  bottom: 0;
+  background-color: #5d306a;
+  padding: 1rem;
+}
+
+#hide-menu-button {
+  z-index: 501;
+  top: 3rem;
+  position: fixed;
+  color: #ffffff;
+  padding: 0.8rem;
+  border-bottom-right-radius: 1rem;
+  border-top-right-radius: 1rem;
+  background-image: linear-gradient(to right, #5d306a 0%, #3e2047 100%);
+  cursor: pointer;
+}
+
+.show-hide-menu-button {
+  left: calc(21rem);
+}
+
+.hidden-hide-menu-button {
+  left: calc(5.2rem);
+}
+
+.left-zero {
+  width: 20rem;
+}
+
+.hidden-menu {
+  width: 4.2rem;
+}
+
+#top-panel {
+  position: fixed;
+  top: 3rem;
+  right: 0;
+  height: 2.5rem;
+  z-index: 500;
+  background-color: #5d306a;
+  text-align: right;
+  padding: 0.3rem 0 0.3rem 0;
+}
+
+.example-tree-invisible {
+  display: none;
+}
+
+.toolsBar {
+  height: 6.2rem;
+  padding-left: 0.5rem;
+}
+
+.add-students-button{
+  margin-left: 0.5rem;
+  background-color: #7d3c90;
+  color: white;
+  margin-right: 3%;
+}
+
+.add-students-button:hover{
+  background-color: #a769b8;
+}
+
+.admin {
+  background-color: #5d306a;
+}
+
+.student {
+  background-color: #30376a;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #9e2abb !important;
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #9e2abb !important;
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick{
+  color: #9e2abb !important;
+}
+
+::ng-deep .mat-input-element {
+  caret-color: #9e2abb !important;
+}
+
+::ng-deep .mat-form-field-invalid .mat-input-element, .mat-warn .mat-input-element {
+  caret-color: #9e2abb !important;
+}
+
+::ng-deep .mat-form-field-label {
+  color: rgba(0,0,0,.6)!important;
+}
+
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  color: #9e2abb !important;
+}
+
+::ng-deep .mat-form-field.mat-form-field-invalid .mat-form-field-label {
+  color: #9e2abb !important;
+}

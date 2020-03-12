@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html>
+  <body>
+
+    <!-- TOOLS BAR -->
+    <div [ngClass]="loginService.isAdmin ? 'toolsBar admin' : 'toolsBar student'">
+      <mat-chip-list *ngIf="loginService.isAdmin" class="tools">
+        <button mat-button class="tool" (click)="openCardsBottomSheet()">
+          <mat-icon>description</mat-icon>
+          <span class="btn-span">Fichas</span>
+        </button>
+        <button mat-button class="tool" (click)="openSlidesBottomSheet()">
+          <mat-icon>book</mat-icon>
+          <span class="btn-span">Slides</span>
+        </button>
+        <button mat-button class="tool" (click)="openQuestionsBottomSheet()">
+          <mat-icon>assignment</mat-icon>
+          <span class="btn-span">Ejercicios</span>
+        </button>
+        <button mat-button class="tool" (click)="openImageBottomSheet()">
+          <mat-icon>collections</mat-icon>
+          <span class="btn-span">Imagenes</span>
+        </button>
+      </mat-chip-list>
+
+      <mat-chip-list *ngIf="!loginService.isAdmin" class="tools">
+        <button mat-button class="std-tool" [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <mat-icon>edit</mat-icon>
+          <span class="btn-span">Ejercicios</span>
+        </button>
+        <!-- TODO openQuestion -->
+        <mat-menu #menu="matMenu">
+          <div  *ngFor="let question of questions; let i = index">
+            <button mat-menu-item (click)="openQuestion(question.id, question.subtype)">
+              <span><b>Ejercicio {{i}}</b> {{question.questionText}}</span>
+            </button>
+          </div>
+        </mat-menu>
+      </mat-chip-list>
+    </div>
+
+    <!-- TOOLS BAR COURSE-->
+
+    <!-- EDITOR -->
+    <div *ngIf="loginService.isAdmin">
+      <mat-card id="editor-container">
+        <textarea id="text-area-editor" class="text-area" [(ngModel)]="lessonContent" (change)="updateHTMLView()" (scroll)="scrollText()"></textarea>
+      </mat-card>
+    </div>
+
+    <!-- HTML REPRESENTATION -->
+    <div [ngClass]="loginService.isAdmin ? 'html-lesson-representation-editor' : 'html-lesson-view'">
+      <img [ngClass]="loginService.isAdmin ? 'spinner' : 'center'" src="../../../../assets/img/spinner.gif" *ngIf="showSpinner">
+      <h1 [ngClass]="!loginService.isAdmin ? 'html-lesson-title' : ''">{{lesson?.name}}</h1>
+      <mat-card *ngIf="(loginService.isAdmin && !showSpinner)" id="slide-area-editor" class="slides-container">
+        <div *ngIf="loginService.isAdmin">
+          <div *ngFor="let slide of contentHTML">
+            <mat-card class="slide-content">
+              <div [innerHTML]="slide"></div>
+            </mat-card>
+          </div>
+        </div>
+      </mat-card>
+      <div *ngIf="(!loginService.isAdmin &&  !showSpinner)">
+        <mat-progress-bar class="progress" mode="determinate" value="{{progress}}"></mat-progress-bar>
+        <mat-card class="slide slide-content">
+          <button *ngIf="(contentSlide !== 0)" mat-icon-button id="prev" (click)="prevSlide()"><mat-icon>keyboard_arrow_left</mat-icon></button>
+          <div [innerHTML]="contentHTML[contentSlide]"></div>
+          <button *ngIf="(contentSlide !== contentHTML.length-1)" mat-icon-button id="next" (click)="nextSlide()"><mat-icon>keyboard_arrow_right</mat-icon></button>
+        </mat-card>
+        <mat-progress-bar class="progress" mode="determinate" value="{{progress}}"></mat-progress-bar>
+      </div>
+    </div>
+
+  </body>
+</html>

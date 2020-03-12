@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+
+<button mat-button *ngIf="this.loginService.isAdmin" class="tool new-module-button" (click)="addModule()">
+  <mat-icon>add</mat-icon>
+  Nuevo Itinerario
+</button>
+
+<div id="module-search">
+  <mat-form-field appearance="outline" id="search">
+    <mat-label>Buscar itinerario</mat-label>
+    <input id="search-input" matInput (keyup)="searchModule($event.target.value)"/>
+  </mat-form-field>
+</div>
+
+<div class="modules-list center-align">
+        <span *ngFor="let module of modulesResult">
+          <button mat-button [ngClass]="loginService.isAdmin ? 'module-button admin-module-button' : 'module-button user-module-button'" (click)="editModule(module.id)">
+            {{module.name}}
+          </button>
+          <button id="options-module-button" mat-button matTooltip="Opciones" [matTooltipPosition]="optionInfoPosition" [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="renameModule(module)">Renombrar</button>
+            <button mat-menu-item>Copiar</button>
+            <button mat-menu-item id="delete-option" (click)="deleteModule(module.id)">Eliminar</button>
+          </mat-menu>
+        </span>
+</div>
+
+</body>
+</html>

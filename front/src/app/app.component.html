@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <div *ngIf="!loginService.isLogged">
+      <app-login [url]="this.router.url"></app-login>
+    </div>
+
+    <div *ngIf="loginService.isLogged">
+      <app-menu></app-menu>
+      <router-outlet></router-outlet>
+    </div>
+
+  </body>
+</html>

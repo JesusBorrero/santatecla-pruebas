@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+<body class="center-align">
+  <div class="center-align">
+    <img src="../../../assets/img/spinner.gif" id="spinner" class="top-margin" *ngIf="showSpinner">
+
+    <span *ngIf="!this.showSpinner">
+      <h1 mat-dialog-title class="center-align title" *ngIf="this.courseId == undefined">Nuevo curso</h1>
+      <h1 mat-dialog-title class="center-align title" *ngIf="this.courseId != undefined">{{this.course?.name}}</h1>
+
+      <div mat-dialog-content>
+
+        <form class="center-align" name="newCourseName">
+          <mat-form-field class="course-form">
+            <input matInput placeholder="Nombre del curso" [(ngModel)]="courseName" name="name" required>
+          </mat-form-field>
+        </form>
+
+        <form name="newCourseDesc" class="center-align">
+          <mat-form-field class="course-form">
+            <textarea matInput placeholder="Descripción del curso" [(ngModel)]="courseDescription" name="description" required></textarea>
+          </mat-form-field>
+        </form>
+        <h3>Itinerario del curso</h3>
+        <div class="mat-button" style="background-color: #7d3c90; color: #ffffff;" (click)="addModule()">
+          Seleccionar Itinerario
+        </div>
+
+        <h5>Itinerario seleccionado</h5>
+        <span>{{this.chosenModule?.name}}</span>
+        <div *ngIf="this.chosenModule == undefined">
+          <p>Ningún itinerario seleccionado</p>
+        </div>
+
+      </div>
+
+      <div mat-dialog-actions>
+        <button mat-button (click)="cancel()">Cancelar</button>
+        <button (click)="save()" class="mat-button save-course">
+          Guardar
+        </button>
+      </div>
+    </span>
+
+  </div>
+</body>
+</html>

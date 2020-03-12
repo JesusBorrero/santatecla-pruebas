@@ -1,0 +1,143 @@
+.toolsBar {
+  height: 6.2rem;
+  padding-left: 0.5rem;
+}
+
+.admin {
+  background-color: #5d306a;
+}
+
+.student {
+  background-color: #30376a;
+}
+
+.tools {
+  color: white;
+  position: absolute;
+  top: 3.7rem;
+}
+
+.tool {
+  margin-left: 0.5rem;
+  background-color: #7d3c90;
+}
+
+.std-tool {
+  margin-left: 0.5rem;
+  background-color: #05132f;
+}
+
+.tool:hover {
+  background-color: #a769b8;
+}
+
+.deleteItinerary-button {
+  background-color: indianred;
+  color: white;
+}
+
+#editor-container {
+  position: absolute;
+  left: 0;
+  right: 55%;
+  top: 6.5rem;
+  bottom: 0.5rem;
+  margin: 0.5rem;
+}
+
+#html-lesson-editor {
+  top: 4.5rem;
+  height: 20rem;
+}
+
+.slides-container {
+  position: absolute;
+  width: calc(100% - 1.8rem);
+  height: calc(100vh - 15rem);
+  background-color: #f9f2fd;
+  overflow-y: scroll;
+}
+.slide-content {
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.text-area {
+  position: absolute;
+  resize: none;
+  border: none;
+  width: 93%;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  padding: 0.5rem;
+  font-size: 15px;
+  outline: none;
+  height: calc(100vh - 10rem);
+}
+
+.html-lesson-representation-editor {
+  position: absolute;
+  right: 0;
+  left: 45%;
+  top: 6.5rem;
+  bottom: 0.5rem;
+  border-radius: 0.5rem;
+  margin: 0.5rem;
+  height: 10rem;
+}
+
+.html-lesson-view {
+  margin: 1rem;
+}
+
+.html-lesson-title {
+  text-align: center;
+}
+
+.slide {
+  margin-top: 1rem;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+.spinner {
+  position: absolute;
+  width: 10%;
+  margin-right: 45%;
+  margin-left: 45%;
+  margin-top: 30%;
+}
+
+.center {
+  position: absolute;
+  width: 10%;
+  margin-top: 20%;
+  margin-right: 45%;
+  margin-left: 45%;
+  z-index: 1000;
+}
+
+#prev {
+  color: white;
+  position: absolute;
+  background-color: #30376a;
+  left: -8%;
+  top: 42%;
+}
+
+#next {
+  color: white;
+  position: absolute;
+  background-color: #30376a;
+  right: -8%;
+  top: 42%;
+}
+
+.progress {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.btn-span {
+  margin-left: 0.5rem;
+}

@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+
+  <div class="itinerary-form">
+    <h1 mat-dialog-title>NUEVA LECCIÓN</h1>
+    <div mat-dialog-content>
+      <mat-form-field>
+        <mat-label>Nombre del la lección</mat-label>
+        <input matInput [(ngModel)]="data.itinerary.name">
+      </mat-form-field>
+    </div>
+    <div mat-dialog-actions class="itinerary-form-buttons">
+      <button mat-button (click)="onNoClick()">Cancelar</button>
+      <button mat-button class="addItinerary-button" [mat-dialog-close]="data.itinerary" cdkFocusInitial>Añadir</button>
+    </div>
+  </div>
+
+</body>
+</html>

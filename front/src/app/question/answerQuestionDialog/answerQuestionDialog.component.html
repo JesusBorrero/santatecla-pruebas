@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h1 mat-dialog-title>{{ data.question.questionText }}</h1>
+
+    <div *ngIf="spinner" mat-dialog-content>
+      <img src="../../../assets/img/spinner.gif" id="spinner">
+    </div>
+
+    <div *ngIf="!spinner" mat-dialog-content>
+
+      <!-- DEFINITION ANSWER CHECK -->
+      <div *ngIf="data.question.subtype == 'DefinitionQuestion' && questionDone" mat-dialog-title>
+        <h4 *ngIf="definitionAnswers[0][3]">
+          Ejercicio resuelto:
+        </h4>
+        <div class="answer-info">" {{definitionAnswers[0][1]}} " </div><br>
+        <span *ngIf="definitionAnswers[0][2]" class="correct-icon">Correcto</span>
+        <span *ngIf="!definitionAnswers[0][2]" class="wrong-icon">Incorrecto</span>
+        <div *ngIf="!definitionAnswers[0][3]">
+          Ejercicio respondido a la espera de corrección: <br>
+          <div class="answer-info">" {{definitionAnswers[0][1]}} " </div><br>
+        </div>
+      </div>
+
+      <!-- LIST ANSWER CHECK -->
+      <div *ngIf="data.question.subtype == 'ListQuestion' && questionDone" mat-dialog-title>
+        <h4 *ngIf="listAnswers[0][1]" class="correct-icon">
+          <mat-icon>done</mat-icon> Respuesta correcta
+        </h4>
+        <h4 *ngIf="!listAnswers[0][1]" class="wrong-icon">
+          <mat-icon>clear</mat-icon> Respuesta incorrecta
+        </h4>
+        <br>
+        Respuestas posibles: <br>
+        <div class="answer-info" *ngFor="let answer of data.question.possibleAnswers">
+          {{answer}}
+        </div><br>
+        Respuestas correctas: <br>
+        <div class="answer-info" *ngFor="let answer of data.question.correctAnswers">
+          {{answer}}
+        </div><br>
+        <!-- TODO Tus respuestas seleccionadas: <br>
+        <span [ngClass]="listAnswer.correct ? 'correct-icon':'wrong-icon'"><i></i></span><br> -->
+      </div>
+
+      <!-- TEST ANSWER CHECK -->
+      <div *ngIf="data.question.subtype == 'TestQuestion' && questionDone" mat-dialog-title>
+        <h4 *ngIf="testAnswers[0][2]" class="correct-icon">
+          <mat-icon>done</mat-icon> Respuesta correcta
+        </h4>
+        <h4 *ngIf="!testAnswers[0][2]" class="wrong-icon">
+          <mat-icon>clear</mat-icon> Respuesta incorrecta
+        </h4>
+        <br>
+        Respuestas posibles: <br>
+        <div class="answer-info" *ngFor="let answer of data.question.possibleAnswers">
+          {{answer}}
+        </div><br>
+        Respuestas correctas: <br>
+        <div class="answer-info">{{data.question.correctAnswer}}</div><br>
+        Tu respuestas seleccionada: <br>
+        <span [ngClass]="testAnswers[0][2] ? 'correct-icon':'wrong-icon'"><div class="answer-info">{{testAnswers[0][1]}}</div></span><br>
+      </div>
+
+      <!-- DEFINITION ANSWER -->
+      <div *ngIf="subtype == 'DefinitionQuestion' && !questionDone">
+        <form class="add-question-form">
+          <mat-form-field>
+            <textarea matInput name="answer" (input)="changeTextArea($event)" placeholder="Pregunta" [(ngModel)]="definitionAnswer.answerText" type="text" required>
+            </textarea>
+          </mat-form-field>
+        </form>
+      </div>
+
+      <!-- LIST ANSWER -->
+      <div *ngIf="subtype == 'ListQuestion' && !questionDone" class="listanswer-container">
+        <h2>Posibles respuestas</h2>
+        <div
+          cdkDropList
+          id="availableList"
+          [cdkDropListData]="availableListAnswers"
+          [cdkDropListConnectedTo]="['chosenList']"
+          class="listanswer-list"
+          (cdkDropListDropped)="drop($event)">
+          <div class="listanswer-box" *ngFor="let item of availableListAnswers" cdkDrag>{{item}}</div>
+        </div>
+      </div>
+
+      <div *ngIf="subtype == 'ListQuestion' && !questionDone" class="listanswer-container">
+        <h2>Respuestas correctas</h2>
+        <div
+          cdkDropList
+          id="chosenList"
+          [cdkDropListData]="chosenListAnswers"
+          [cdkDropListConnectedTo]="['availableList']"
+          class="listanswer-list"
+          (cdkDropListDropped)="drop($event)">
+          <div class="listanswer-box" *ngFor="let item of chosenListAnswers" cdkDrag>{{item}}</div>
+        </div>
+      </div>
+
+      <!-- TEST ANSWER -->
+      <div *ngIf="subtype == 'TestQuestion' && !questionDone">
+        <form class="test-answer-form">
+            <mat-radio-group [(ngModel)]="answerSelected" [ngModelOptions]="{standalone: true}">
+              <mat-radio-button *ngFor="let answer of availableListAnswers" [value]="answer">
+                <p matLine>{{answer}}</p>
+              </mat-radio-button>
+            </mat-radio-group>
+        </form>
+      </div>
+
+    </div>
+
+    <div mat-dialog-actions>
+      <button mat-button (click)="onNoClick()">Cancelar</button>
+      <!--<button mat-button [mat-dialog-close]="true" cdkFocusInitial>
+        Responder
+      </button>-->
+      <button *ngIf="!answerSent && !questionDone" (click)="sendAnswer()" class="mat-button question-button tool">
+        Responder
+      </button>
+      <button *ngIf="answerSent" (click)="closeDialog()" [mat-dialog-close]="true" class="mat-button question-button tool">
+        Cerrar
+      </button>
+    </div>
+  </body>
+</html>

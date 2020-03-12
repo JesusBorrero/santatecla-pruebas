@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html>
+  <body>
+
+    <h2 *ngIf="this.data != undefined">Selecciona una unidad para ver sus itinerarios y lecciones</h2>
+    <h2 *ngIf="this.data == undefined">Selecciona una unidad para ver sus itinerarios</h2>
+    <h4>Después seleciona para añadir</h4>
+
+
+    <mat-form-field >
+      <input matInput (keyup)="applyFilterUnits($event.target.value)" placeholder="Nombre de la unidad">
+    </mat-form-field>
+
+    <mat-accordion *ngFor = "let unit of this.unitsResult">
+      <mat-expansion-panel class="card" *ngIf="unit.modules.length != 0 || this.data != undefined">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{unit.name}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-tab-group>
+          <mat-tab *ngIf="unit.lessons.length > 0 && this.data != undefined" label="Lecciones">
+            <div *ngFor = "let lesson of unit.lessons">
+              <mat-card class="cardin">
+                {{lesson.name}}
+                <button mat-icon-button matTooltip="Añadir" [matTooltipPosition]="copyInfoPosition"
+                      (click)="addBlockInToModule($event, lesson)" *ngIf="this.data != undefined">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </mat-card>
+            </div>
+          </mat-tab>
+          <mat-tab *ngIf="unit.modules.length > 0" label="Itinerarios">
+            <div *ngFor = "let module of unit.modules">
+              <mat-card class="cardin">
+                {{module.name}}
+                <button mat-icon-button matTooltip="Añadir" [matTooltipPosition]="copyInfoPosition"
+                        (click)="addBlockInToModule($event, module)" *ngIf="this.data != undefined">
+                  <mat-icon>add</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Añadir" [matTooltipPosition]="copyInfoPosition"
+                        (click)="addModuleIntoCourse($event, module)" *ngIf="this.data == undefined">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </mat-card>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+  </body>
+</html>

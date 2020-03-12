@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body class="question-tracking">
+  <h1 class="center-title">Resumen de resultados</h1>
+
+  <h3 class="center-title">Pregunta: {{this.question?.questionText}}</h3>
+
+  <div *ngIf="this.resultsReady" class="display-flex">
+    <mat-card [ngClass]="this.questionType == 'DefinitionQuestion'?'definition-chart-cards':'charts-cards'">
+      <mat-card-title class="center-title">Respuestas correctas e incorrectas</mat-card-title>
+      <mat-card-content class="center-pie-chart">
+        <ngx-charts-pie-chart
+          [view]="[400, 250]"
+          [results]="this.pieChartResults"
+          [animations]="true"
+          [customColors]="[{name:'Respuestas Correctas',value:'#26d469'}, {name:'Respuestas Incorrectas',value:'#de4d40'}]">
+        </ngx-charts-pie-chart>
+      </mat-card-content>
+    </mat-card>
+
+    <div *ngIf="this.questionType == 'DefinitionQuestion'">
+      <mat-card class="corrected-card" *ngIf="this.resultsReady">
+        <mat-card-title class="card-title">Respuestas corregidas</mat-card-title>
+        <mat-card-content class="center-corrected-table">
+
+          <mat-form-field>
+            <input matInput (keyup)="applyFilterCorrected($event.target.value)" placeholder="Filtrar">
+          </mat-form-field>
+
+          <table mat-table [dataSource]="dataSourceCorrected" class="mat-elevation-z8">
+            <ng-container matColumnDef="answer">
+              <th mat-header-cell *matHeaderCellDef> Respuesta </th>
+              <td mat-cell *matCellDef="let answer"> {{answer.answerText}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="result">
+              <th mat-header-cell *matHeaderCellDef> Resultado </th>
+              <td mat-cell *matCellDef="let answer">
+                <mat-icon *ngIf="answer.correct" class="correct-icon">done</mat-icon>
+                <mat-icon *ngIf="!answer.correct"class="wrong-icon">clear</mat-icon>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsCorrected"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsCorrected;"></tr>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <mat-card class="charts-cards" *ngIf="this.questionType != 'DefinitionQuestion'">
+      <mat-card-title class="center-title">Elementos seleccionados (dentro de las respuestas erróneas/incompletas)</mat-card-title>
+      <mat-card-content class="center-bar-chart">
+        <ngx-charts-bar-vertical
+        [view]="[600, 250]"
+        [results]="this.barChartResults"
+        [animations]="true"
+        [xAxis]="true"
+        [showXAxisLabel]="true"
+        [showYAxisLabel]="true"
+        [xAxisLabel]="'Respuesta'"
+        [yAxisLabel]="'Número de Respuestas'">
+        </ngx-charts-bar-vertical>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-card class="question-warning" *ngIf="this.wrongCount > (this.correctCount + this.wrongCount) * 0.75">
+    <mat-card-title class="center-title">
+      <mat-icon class="warning-icon">warning</mat-icon>
+      La pregunta necesita revisión
+    </mat-card-title>
+  </mat-card>
+
+  <mat-card class="questions-card" *ngIf="this.questionType == 'DefinitionQuestion'">
+    <mat-card-title class="center-title">Respuestas sin corregir</mat-card-title>
+    <mat-card-content class="center-uncorrected-table">
+
+      <mat-form-field>
+        <input matInput (keyup)="applyFilterNotCorrected($event.target.value)" placeholder="Filtrar">
+      </mat-form-field>
+
+      <table mat-table [dataSource]="dataSourceNotCorrected" class="mat-elevation-z8">
+        <ng-container matColumnDef="answer">
+          <th mat-header-cell *matHeaderCellDef> Respuesta </th>
+          <td mat-cell *matCellDef="let answer"> {{answer.answerText}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="correct">
+          <th mat-header-cell *matHeaderCellDef> Correcta </th>
+          <td mat-cell *matCellDef="let answer">
+            <button mat-button (click)="correctAnswer(answer)">
+              <mat-icon class="correct-icon">done</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="wrong">
+          <th mat-header-cell *matHeaderCellDef> Incorrecta </th>
+          <td mat-cell *matCellDef="let answer">
+            <button mat-button (click)="wrongAnswer(answer)">
+              <mat-icon class="wrong-icon">clear</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsNotCorrected"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsNotCorrected;"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</body>
+</html>

@@ -1,0 +1,18 @@
+.card {
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.sub-card {
+  margin: 0.5rem;
+  width: fit-content;
+  cursor: pointer;
+}
+
+.sub-card:hover {
+  background-color: #DFDFDF;
+}
+
+body {
+  width: 800px!important;
+}

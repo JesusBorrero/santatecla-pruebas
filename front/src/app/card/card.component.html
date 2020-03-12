@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+  <body>
+
+    <button id="add-button" mat-button (click)="addCard()">
+      <mat-icon>add</mat-icon>
+      Añadir ficha
+    </button>
+
+    <div id="spinner-container" *ngIf="showSpinner">
+      <img id="spinner" src="../../assets/img/spinner.gif">
+      <span id="spinner-text">Cargando...</span>
+    </div>
+
+    <div *ngIf="!showSpinner" cdkDropList #cardList class="cardList" (cdkDropListDropped)="drop($event)">
+      <mat-accordion multi="true" class="card-container" *ngFor="let card of cards; let i = index" cdkDrag>
+        <mat-icon id="delete-card-button" (click)="deleteCard(card.id, i)" matTooltip="Eliminar">delete</mat-icon>
+        <mat-icon *ngIf="cardsView[i]" class="edit-card-button" (click)="editCard(i)" matTooltip="Editar">edit</mat-icon>
+        <mat-icon *ngIf="!cardsView[i]" class="edit-card-button" (click)="viewCard(i)" matTooltip="Visualizar">remove_red_eye</mat-icon>
+        <mat-expansion-panel [ngClass]="card.id != 0 ? 'card saved-card' : 'card new-card'" expanded="true">
+          <mat-expansion-panel-header class="card-header">
+            <mat-panel-title>
+              <div *ngIf="!cardsView[i]">
+                <mat-form-field id="card-title" class="example-full-width card-input card-input-container">
+                  <input matInput class="card-input" placeholder="Título" [(ngModel)]="card.name" required (change)="save(card, i)">
+                </mat-form-field>
+              </div>
+              <div *ngIf="cardsView[i]">
+                <h4>{{card.name}}</h4>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div *ngIf="!cardsView[i]">
+            <mat-form-field class="example-full-width card-input card-input-area">
+              <textarea matInput class="card-input-content" placeholder="Contenido" required (change)="save(card, i)" (input)="changeTextArea($event)" [(ngModel)]="card.content"></textarea>
+            </mat-form-field>
+            <mat-chip-list class="tools">
+              <button mat-button matTooltip="Añadir foto" class="tool" (click)="openImageBottomSheet()">
+                <mat-icon>add_photo_alternate</mat-icon>
+              </button>
+            </mat-chip-list>
+          </div>
+
+          <div *ngIf="cardsView[i]">
+            <div [innerHTML]="prettyCards[i]"></div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+      <div *ngIf="cards.length == 0" id="empty-message">
+        Esta unidad no tiene ninguna ficha
+      </div>
+    </div>
+
+  </body>
+</html>

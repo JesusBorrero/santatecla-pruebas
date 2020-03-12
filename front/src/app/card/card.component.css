@@ -1,0 +1,139 @@
+.card {
+  left: 0;
+  right: 0;
+  top: 2rem;
+  width: 100%;
+  padding: 1rem;
+  margin: 1rem 2rem;
+}
+
+.saved-card {
+  background-color: #fdf7ff;
+}
+
+.new-card {
+  background-color: #f5fbff;
+}
+
+.card-input-container {
+  margin-bottom: 1rem;
+}
+
+.card-input {
+  width: 100%;
+  resize: none;
+}
+
+.card-input-content {
+  width: 100%;
+  height: 5rem;
+  resize: none;
+}
+
+#card-title {
+  width: 80%;
+}
+
+#delete-card-button {
+  color: indianred;
+  position: absolute;
+  right: 3rem;
+  cursor: pointer;
+  margin-top: 2.7rem;
+}
+
+.edit-card-button {
+  color: #7d3c90;
+  position: absolute;
+  right: 5rem;
+  cursor: pointer;
+  margin-top: 2.7rem;
+}
+
+#empty-message {
+  margin-top: 10rem;
+  text-align: center;
+}
+
+#add-button {
+  position: fixed;
+  color: white;
+  background-color: #7d3c90;
+  top: 3.45rem;
+  z-index: 501;
+  right: 1rem;
+}
+
+#add-button:hover {
+  background-color: #a769b8;
+}
+
+#spinner-container {
+  position: fixed;
+  width: calc(100% - 30rem);
+  right: 8rem;
+  top: 3.6rem;
+  z-index: 9999;
+  text-align: center;
+}
+
+#spinner {
+  display: inline;
+  z-index: 10000;
+  height: 1.8rem;
+  width: 1.8rem;
+}
+
+#spinner-text {
+  position: fixed;
+  display: inline;
+  z-index: 10000;
+  color: #ffffff;
+  margin: 0.35rem 0.5rem 0.35rem 0.5rem;
+}
+
+.tools {
+  outline: none;
+}
+
+.tool {
+  background-color: #7d3c90;
+  color: white;
+  margin-right: 1rem;
+}
+
+.tool:hover {
+  background-color: #a769b8;
+}
+
+.cardList {
+  margin-top: 2.7rem;
+  display: block;
+  overflow: hidden;
+}
+
+.card-container {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 0.1rem;
+}
+
+.card-header {
+  width: 90%;
+}
+
+#card-title {
+  margin-top: 2rem;
+}
+
+.cardList.cdk-drop-list-dragging .card-container:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

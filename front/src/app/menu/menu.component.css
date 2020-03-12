@@ -1,0 +1,107 @@
+.header {
+  position: fixed;
+  z-index: 1000;
+  height: 3rem;
+  top: 0;
+  right: 0;
+  left: 0;
+  color: white;
+  font-size: 0.8rem;
+}
+
+.home-button {
+  margin-left: -0.5rem !important;
+}
+
+.user-header {
+  background-color: #05132f;
+}
+
+.admin-header {
+  background-color: #1e042f;
+}
+
+#user-name {
+  position: absolute;
+  top: 0.8rem;
+  right: 3rem;
+  margin: 0.2rem;
+}
+
+#logout-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0.2rem;
+}
+
+.mat-icon {
+  padding: 0;
+  margin: -0.1rem 0 0 0;
+}
+
+.nav-button {
+  margin-left: 0;
+  padding: 0 2rem 0 2rem;
+  cursor: pointer;
+  display: inline;
+  height: 3rem;
+  top: 0;
+  -webkit-transform: skewX(-20deg);
+  -moz-transform: skewX(-20deg);
+  -ms-transform: skewX(-20deg);
+  -o-transform: skewX(-20deg);
+  transform: skewX(-20deg);
+}
+
+.user-nav-button {
+  background-image: linear-gradient(to right, #0d2865 0%, #05132f 100%);
+}
+
+.admin-nav-button {
+  background-image: linear-gradient(to right, #571a69 0%, #1e042f 100%);
+}
+
+.nav-button-icon {
+  -webkit-transform: skewX(20deg);
+  -moz-transform: skewX(20deg);
+  -ms-transform: skewX(20deg);
+  -o-transform: skewX(20deg);
+  transform: skewX(20deg);
+}
+
+.nav-button-name {
+  display: inline-block;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  min-width: 2rem;
+  -webkit-transform: skewX(20deg);
+  -moz-transform: skewX(20deg);
+  -ms-transform: skewX(20deg);
+  -o-transform: skewX(20deg);
+  transform: skewX(20deg);
+}
+
+.nav-button-title {
+  position: absolute;
+  top: -0.6rem;
+  font-size: 0.7rem;
+}
+
+.admin-nav-button-title {
+  color: #dcc3e3;
+}
+
+.user-nav-button-title {
+  color: #abb8d4;
+}
+
+.nav-button-content {
+  position: relative;
+  top: 0.3rem;
+}
+
+#tab-wrapper {
+  margin-right: 13rem;
+  top: 0.5rem;
+}

@@ -1,0 +1,15 @@
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### VS Code ###
+.vscode/
+
+.angulardoc.json
+
+front/package-lock.json
+
+### Docker build ###
+docker/build/

@@ -1,0 +1,180 @@
+.toolsBar {
+  height: 6.2rem;
+  padding-left: 0.5rem;
+}
+
+.admin {
+  background-color: #5d306a;
+}
+
+.student {
+  background-color: #30376a;
+}
+
+.example-tree-invisible {
+  display: none;
+}
+
+.example-tree ul,
+.example-tree li {
+  margin-top: 0;
+  margin-bottom: 0;
+  list-style-type: none;
+}
+
+.tab {
+  background-color: #7d3c90;
+  color: #ffffff;
+  padding: 0.3rem 0 0.3rem 3.5rem;
+  position: relative;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  height: 3rem;
+}
+
+.tab:hover {
+  background-color: #a769b8;
+}
+
+.activeTab {
+  background-color: #a769b8;
+}
+
+.tab-text {
+  margin-left: 0.5rem;
+}
+
+.tab-icon {
+  position: absolute;
+  left: 1.37rem;
+  margin-top: 0.4rem;
+}
+
+.tab-icon-without-menu {
+  position: absolute;
+  left: 1.37rem;
+  top: 0.78rem;
+}
+
+#module-content {
+  margin-top: 2rem;
+  position: absolute;
+  right: 0;
+  padding-bottom: 2rem;
+}
+
+.with-menu {
+  width: calc(100% - 21.5rem);
+}
+
+.without-menu {
+  width: calc(100% - 6.2rem);
+}
+
+#lateral-panel {
+  position: fixed;
+  top: 3rem;
+  bottom: 0;
+  background-color: #30376a;
+  padding: 1rem;
+}
+
+#hide-menu-button {
+  z-index: 501;
+  top: 3rem;
+  position: fixed;
+  color: #ffffff;
+  padding: 0.8rem;
+  border-bottom-right-radius: 1rem;
+  border-top-right-radius: 1rem;
+  background-image: linear-gradient(to right, #30376a 0%, #202047 100%);
+  cursor: pointer;
+}
+
+.show-hide-menu-button {
+  left: calc(21rem);
+}
+
+.hidden-hide-menu-button {
+  left: calc(5.2rem);
+}
+
+.left-zero {
+  width: 20rem;
+}
+
+.hidden-menu {
+  width: 4.2rem;
+}
+
+#top-panel {
+  position: fixed;
+  top: 3rem;
+  right: 0;
+  height: 2.5rem;
+  z-index: 500;
+  background-color: #5d306a;
+  text-align: right;
+  padding: 0.3rem 0 0.3rem 0;
+}
+
+.menu-margin{
+  margin-left:2rem
+}
+
+.index-tree{
+  background: none;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+  width: 0px;  /* Remove scrollbar space */
+  background: transparent;  /* Optional: just make scrollbar invisible */
+}
+
+.white-text{
+  color: white;
+  cursor: pointer;
+}
+
+.white-text:hover{
+  font-weight: bold;
+}
+
+li {
+  list-style-type: none;
+}
+
+.lesson-button {
+  margin: 0.5rem;
+}
+
+.lesson-view-button {
+  margin-left: 2rem;
+  top: 0.75rem;
+  position: absolute;
+  cursor: pointer;
+}
+
+.add-block-button {
+  background-color: #5d306a;
+  color: white;
+  margin-left: 1rem;
+}
+
+.delete-block-button {
+  background-color: indianred;
+  color: white;
+  margin-left: 1rem;
+}
+
+.lesson {
+  margin-left: 3rem;
+}
+
+.title {
+  top: -0.3rem;
+}

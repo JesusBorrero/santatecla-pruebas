@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+  <body>
+
+    <h2>Selecciona una unidad para ver sus ejercicios de listado, definición y tipo test</h2>
+    <h4>Después seleciona para copiar su ruta</h4>
+
+
+    <mat-form-field >
+      <input matInput (keyup)="applyFilterUnits($event.target.value)" placeholder="Nombre de la unidad">
+    </mat-form-field>
+
+    <mat-accordion *ngFor = "let unit of this.unitsResult">
+      <mat-expansion-panel class="card">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{unit.name}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-tab-group>
+          <mat-tab *ngIf="unit?.definitionQuestions.length > 0" label="Definición">
+            <div *ngFor = "let question of unit.definitionQuestions">
+              <mat-card class="cardin" (click)="openLink($event, 'insert.question/' + unit.id + '/' + question.id)">
+                {{question.questionText}}
+              </mat-card>
+            </div>
+          </mat-tab>
+          <mat-tab *ngIf="unit?.listQuestions.length > 0" label="Listado">
+            <div *ngFor = "let question of unit.listQuestions">
+              <mat-card class="cardin" (click)="openLink($event, 'insert.question/' + unit.id + '/' + question.id)">
+                {{question.questionText}}
+              </mat-card>
+            </div>
+          </mat-tab>
+          <mat-tab *ngIf="unit?.testQuestions.length > 0" label="Test">
+            <div *ngFor = "let question of unit.testQuestions">
+              <mat-card class="cardin" (click)="openLink($event, 'insert.question/' + unit.id + '/' + question.id)">
+                {{question.questionText}}
+              </mat-card>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+  </body>
+</html>

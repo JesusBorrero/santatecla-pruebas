@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <div class="row center-align">
+      <div class="column">
+        <span *ngIf="moduleResultsReady">
+          <mat-card class="charts-cards">
+            <mat-card-title>
+              Realización y media de los sub-módulos que contienen preguntas
+            </mat-card-title>
+            <mat-card-content>
+              <div>
+                <mat-form-field class="letf-margin">
+                  <input matInput (keyup)="applyFilterModule($event.target.value)" placeholder="Nombre del módulo">
+                </mat-form-field>
+                <mat-icon>search</mat-icon>
+              </div>
+              <table mat-table [dataSource]="this.showingModuleResults" class="mat-elevation-z8 center-table">
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef class="columnWidth center-align"> {{this.course.module.name}} </th>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="realization">
+                <th mat-header-cell *matHeaderCellDef class="columnWidth center-align"> % Realización </th>
+                <td mat-cell *matCellDef="let element"> {{element.points[0].toFixed(2)}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="average">
+                <th mat-header-cell *matHeaderCellDef class="columnWidth center-align"> Media </th>
+                <td mat-cell *matCellDef="let element"> {{element.points[1].toFixed(2)}} </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+              <tr mat-row *matRowDef="let row; columns: columnsToDisplay;" class="columnWidth center-align"></tr>
+            </table>
+            </mat-card-content>
+          </mat-card>
+        </span>
+      </div>
+
+      <div class="column" *ngIf="this.moduleResultsReady">
+        <mat-card class="charts-cards">
+          <mat-card-title>
+            Media de cada sub-módulo
+          </mat-card-title>
+          <mat-card-content>
+            <ngx-charts-bar-vertical
+              [results]="histogram"
+              [gradient]="false"
+              [xAxis]="true"
+              [yAxis]="true"
+              [legend]="false"
+              [showXAxisLabel]="true"
+              [showYAxisLabel]="true"
+              [xAxisLabel]="xAxisLabel"
+              [yAxisLabel]="yAxisLabel">
+            </ngx-charts-bar-vertical>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+    </div>
+
+</body>
+</html>

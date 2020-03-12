@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <body class="card-content">
+    <h1 mat-dialog-title *ngIf="!data.isEditing">Añadir nueva pregunta</h1>
+    <h1 mat-dialog-title *ngIf="data.isEditing">Editar pregunta</h1>
+
+    <div mat-dialog-content>
+      <div *ngIf="!data.isEditing" class="button-row">
+        <button *ngFor="let type of questionTypes" (click)="setQuestion(type.id)"
+                [ngClass]="subtype == type.id ? 'question-button mat-button active-type' : 'tool question-button mat-button'">
+          {{type.name}}
+        </button>
+      </div>
+
+      <!-- DEFINITION FORM -->
+      <div *ngIf="subtype == 'DefinitionQuestion'">
+        <form class="add-question-form">
+          <mat-form-field>
+            <textarea matInput name="question" (input)="changeTextArea($event)" placeholder="Pregunta" [(ngModel)]="questionInput" type="text" required>
+            </textarea>
+          </mat-form-field>
+        </form>
+      </div>
+
+      <!--LIST FORM -->
+      <div *ngIf="subtype == 'ListQuestion'">
+        <form class="add-question-form">
+          <div class="add-question-form-list">
+            <mat-form-field>
+              <textarea matInput name="question" (input)="changeTextArea($event)" placeholder="Pregunta" [(ngModel)]="questionInput" type="text" required>
+              </textarea>
+            </mat-form-field>
+            <div>
+              <mat-form-field>
+                <input matInput name="answer" placeholder="Respuesta posible" [(ngModel)]="answerInput" type="text"/>
+              </mat-form-field>
+              <mat-checkbox name="correct" [(ngModel)]="correct" value="false">
+                Correcta
+              </mat-checkbox>
+              <button (click)="addPossibleListAnswer()" class="mat-button add-answer-button tool">
+                Añadir
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- TEST FORM -->
+      <div *ngIf="subtype == 'TestQuestion'">
+        <form class="add-question-form">
+          <div class="add-question-form-list">
+            <mat-form-field>
+              <textarea matInput name="question" (input)="changeTextArea($event)" placeholder="Pregunta" [(ngModel)]="questionInput" type="text" required>
+              </textarea>
+            </mat-form-field>
+            <div>
+              <mat-form-field>
+                <input matInput name="answer" placeholder="Respuesta posible"  [(ngModel)]="answerInput" type="text"/>
+              </mat-form-field>
+              <mat-checkbox name="correct" [(ngModel)]="correct" value="false" [disabled]="correctTestAnswerSelected">
+                Correcta
+              </mat-checkbox>
+              <button (click)="addPossibleTestAnswer()" class="mat-button add-answer-button tool">
+                Añadir
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="add-question-form">
+        <mat-list role="list">
+          <mat-list-item role="listitem" *ngFor="let answer of bindedAnswerKeys">
+            <p matLine> {{answer}} </p>
+            <mat-icon *ngIf="possibleAnswers.get(answer)">done_all</mat-icon>
+            <button mat-button (click)="deletePossibleAnswer(answer)" >
+              <mat-icon class="delete-icon">clear</mat-icon>
+            </button>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </div>
+
+    <div mat-dialog-actions>
+      <button mat-button (click)="onNoClick()">Cancelar</button>
+      <!--<button mat-button [mat-dialog-close]="true" cdkFocusInitial>
+        Responder
+      </button>-->
+      <button (click)="sendQuestion()" [mat-dialog-close]="true" class="mat-button question-button tool">
+        Guardar
+      </button>
+    </div>
+  </body>
+</html>

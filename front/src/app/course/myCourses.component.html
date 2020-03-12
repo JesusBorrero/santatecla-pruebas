@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html>
+<body>
+
+  <div id="course-search">
+    <mat-form-field appearance="outline" id="search">
+      <mat-label>Buscar curso</mat-label>
+      <input id="search-input" matInput [(ngModel)]="searchField" (ngModelChange)="search()"/>
+    </mat-form-field>
+  </div>
+  <button mat-button *ngIf="this.loginService.isAdmin" id="new-course-button" (click)="openAddCourseDialog()">
+    <mat-icon>add</mat-icon>
+    Nuevo Curso
+  </button>
+
+  <div class="courses-list center-align">
+    <span *ngFor="let course of showingCourses">
+      <span *ngIf="this.loginService.isAdmin">
+        <button mat-button  [ngClass]="loginService.isAdmin ? 'course-button admin-course-button' : 'course-button user-course-button'" [routerLink]="['/course', course.id]">
+          {{course.name}}
+        </button>
+      </span>
+      <span *ngIf="!this.loginService.isAdmin">
+        <button mat-button  [ngClass]="loginService.isAdmin ? 'course-button admin-course-button' : 'course-button user-course-button'" [routerLink]="['/course', course.id, 'modules', course.module.id]">
+          {{course.name}}
+        </button>
+      </span>
+      <mat-icon *ngIf="this.loginService.isAdmin" class="delete-course" (click)="deleteCourse(course)">delete</mat-icon>
+      <p></p>
+    </span>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+.columnWidth{
+  border-collapse: collapse;
+  padding: 5px;
+}
+
+.row {
+  margin-top: 5%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.top-margin {
+  margin-top: 6rem;
+  position: absolute;
+  margin-left: 40%;
+}
+
+.letf-margin {
+  margin-left:32%
+}
+
+.progress-table {
+  height: 25rem;
+  padding: 0.5rem;
+}
+
+.center-align {
+  text-align: center;
+  align-content: center;
+  justify-content: center;
+}
+
+.center-table{
+  margin: 0 auto;
+}
+
+.title {
+  margin-top: 8rem;
+}
+
+.extended-info{
+  cursor: pointer;
+}
+
+#spinner{
+  position: relative;
+  width: 8rem;
+  height: 8rem;
+  left: 40%;
+  top: 40%;
+}

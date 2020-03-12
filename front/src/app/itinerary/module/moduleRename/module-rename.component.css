@@ -1,0 +1,32 @@
+#dialog {
+  padding: 1rem 2rem 1rem 2rem;
+  text-align: center;
+}
+
+#info {
+  margin-bottom: 2rem;
+}
+
+#discard-button {
+  background-color: #f9c4c4;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
+
+#discard-button:hover {
+  background-color: #e4b3b3;
+}
+
+#save-button {
+  background-color: #e7e3f9;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
+
+#save-button {
+  background-color: #d7d4e8;
+}
+
+#courseName {
+  margin-bottom: 2rem;
+}

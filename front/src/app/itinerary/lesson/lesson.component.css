@@ -1,0 +1,88 @@
+#lesson-search {
+  position: absolute;
+  top: 4rem;
+  width: 37%;
+  left: 32%;
+}
+
+#search {
+  width: 100%;
+}
+
+.new-lesson-button {
+  position: fixed;
+  color: white;
+  background-color: #7d3c90;
+  top: 3.45rem;
+  z-index: 501;
+  right: 1rem;
+}
+
+.tool:hover {
+  background-color: #a769b8;
+}
+
+.lessons-list {
+  position: absolute;
+  top: 10rem;
+  width: 50%;
+  left: 25%;
+}
+
+.lesson-button {
+  margin-top: 0.5rem;
+  width: 85%;
+  padding: 1rem 0 1rem 2rem;
+  text-align: left;
+}
+
+.admin-lesson-button {
+  background-color: #f9f2fd;
+}
+
+.user-lesson-button {
+  background-color: #eaeefd;
+}
+
+#options-lesson-button {
+  height: 4.2rem;
+  background-color: #f9f2fd;
+  margin-left: 0.5rem;
+  cursor: pointer;
+}
+
+#delete-option {
+  color: indianred;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #9e2abb !important;
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #9e2abb !important;
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick{
+  color: #9e2abb !important;
+}
+
+::ng-deep .mat-input-element {
+  caret-color: #9e2abb !important;
+}
+
+::ng-deep .mat-form-field-invalid .mat-input-element, .mat-warn .mat-input-element {
+  caret-color: #9e2abb !important;
+}
+
+::ng-deep .mat-form-field-label {
+  color: rgba(0,0,0,.6)!important;
+}
+
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  color: #9e2abb !important;
+}
+
+::ng-deep .mat-form-field.mat-form-field-invalid .mat-form-field-label {
+  color: #9e2abb !important;
+}
