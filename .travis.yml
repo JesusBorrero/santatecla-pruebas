@@ -8,17 +8,10 @@ os: windows
 services:
   - docker
 
-script:
-  - cd docker
-  - cd ../front
-
-    # Remove old generated resources
-  - PowerShell -Command "Remove-Item dist\front\* -Force -Recurse"
-  - PowerShell -Command "Remove-Item ..\back\src\main\resources\static\* -Force -Recurse"
-
-    # Build angular app
+before_install:
   - docker run --rm --name angular-cli -v ${PWD}:/angular -w /angular node /bin/bash -c "npm install; npm run build"
 
+script:
   - cd ../back
 
     # Copy new generated resources on back static
