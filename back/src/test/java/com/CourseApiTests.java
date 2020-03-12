@@ -218,14 +218,7 @@ public class CourseApiTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name", is("Test Module")));
     }
-
-    @Test
-    public void testNotFoundGetModuleProgress() throws Exception{
-        mvc.perform(MockMvcRequestBuilders.get("/api/course/2/module/progress")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(404));
-    }
-
+    
     @Test
     public void testGetStudentProgress() throws Exception{
         Question question = new Question();
