@@ -4,7 +4,7 @@ services:
   - docker
 
 script:
-
+  - echo "$DOCKER_USER"
   # Build angular app
   - cd front
   - docker run --rm --name angular-cli -v ${PWD}:/angular -w /angular node /bin/bash -c "npm install; npm run build"
@@ -19,8 +19,8 @@ script:
   # Build docker image
   - if [ "$TRAVIS_BRANCH" = "master" ]; then mkdir -p "../docker/build/" && cp -r target/back-0.0.1-SNAPSHOT.jar ../docker/build/; fi
   - if [ "$TRAVIS_BRANCH" = "master" ]; then cd ../docker; fi
-  - if [ "$TRAVIS_BRANCH" = "master" ]; then docker build -t sigma98/santateclapruebas .; fi
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then docker build -t "$DOCKER_USER"/santateclapruebas .; fi
 
   # Push to Docker Hub
-  - if [ "$TRAVIS_BRANCH" = "master" ]; then docker login -u=sigma98 -p=santatecla; fi
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then docker login -u="$DOCKER_USER" -p="$DOCKER_PASSWORD"; fi
   - if [ "$TRAVIS_BRANCH" = "master" ]; then docker push sigma98/santateclapruebas; fi
