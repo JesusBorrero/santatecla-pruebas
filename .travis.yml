@@ -4,7 +4,7 @@ services:
   - docker
 
 script:
-  - echo "$DOCKER_USERNAME"
+
   # Build angular app
   - cd front
   - docker run --rm --name angular-cli -v ${PWD}:/angular -w /angular node /bin/bash -c "npm install; npm run build"
