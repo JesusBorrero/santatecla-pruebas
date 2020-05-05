@@ -12,4 +12,5 @@ addons:
 
 script:
   # Start sonar scanner
+  # PRUEBA
   - sonar-scanner
