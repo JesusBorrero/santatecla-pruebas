@@ -1,8 +1,9 @@
 import { Router, ActivatedRoute } from '@angular/router';
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {LoginService} from '../auth/login.service';
-import {Unit} from '../unit/unit.model';
 import {TabService} from '../tab/tab.service';
+import {Tab} from '../tab/tab.model';
+import {UnitService} from "../unit/unit.service";
 
 @Component({
   selector: 'app-menu',
@@ -12,10 +13,7 @@ import {TabService} from '../tab/tab.service';
 
 export class MenuComponent {
 
-  constructor(private router: Router,
-              private activatedRoute: ActivatedRoute,
-              public loginService: LoginService,
-              private tabService: TabService) {}
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, public loginService: LoginService, private tabService: TabService, public unitService: UnitService) {}
 
   logout() {
     this.loginService.logout().subscribe(
@@ -24,6 +22,14 @@ export class MenuComponent {
       },
       (error) => console.log('Error when trying to logout: ' + error),
     );
+    this.tabService.emptyTabs();
+  }
+
+  closeTab(tab: Tab) {
+    if (tab.isActive) {
+      this.router.navigate([tab.closeLink]);
+    }
+    this.tabService.removeTab(tab);
   }
 
 }

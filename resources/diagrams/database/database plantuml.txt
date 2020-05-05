@@ -1,0 +1,99 @@
+@startuml
+class Unit {
+  name: String
+}
+class Card {
+  name: String
+  content: String
+}
+ 
+class Relation {
+  relationType: Enum
+}
+
+class Block{
+  name: String
+}
+
+class Module{
+}
+
+class Lesson{
+}
+
+class Slide {
+  name: String
+  content: String
+}
+
+class Course {
+  name: String
+  description: String
+}
+
+class User {
+  name: String
+  password: Hash
+  role: Enum
+}
+
+class Question {
+  questionText: String
+}
+
+class DefinitionQuestion
+
+class DefinitionAnswer {
+  justification: String
+  user: User
+}
+
+class ListQuestion {
+  possibleAnswers: String[]
+  correctAnswers: String[]
+}
+
+class Answer
+Answer <<Interface>>
+
+class ListAnswer {
+  user: User
+}
+
+class TestQuestion {
+  possibleAnswers: String[]
+  correctAnswers: String
+}
+
+class TestAnswer {
+  user: User
+}
+
+Question <|-down- ListQuestion
+Question <|-down- DefinitionQuestion
+Question <|-down- TestQuestion
+DefinitionQuestion "1" *-down-> "*" DefinitionAnswer
+ListQuestion "1" *-down-> "*" ListAnswer
+TestQuestion "1" *-down-> "*" TestAnswer
+Answer<|.up. DefinitionAnswer
+Answer<|.up. ListAnswer
+Answer<|.up. TestAnswer
+
+Relation "1" --> "1" Unit
+
+Block<|-down- Module
+Block<|-down- Lesson
+
+Module "*"-up-> "*" Block
+
+Unit "1" *-down-> "*" Relation
+Unit "1" *-down-> "*" Card
+Unit "1" *-up-> "*" Module
+Unit "1" *-up-> "*" Lesson
+Unit "1" *-up-> "*" Question
+
+Lesson "1" *-down-> "*" Slide
+
+Course "1" *-down-> "1" Module
+Course "1" *-right-> "*" User
+@enduml

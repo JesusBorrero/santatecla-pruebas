@@ -2,7 +2,6 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {LoginService, User} from '../auth/login.service';
 import {Course} from './course.model';
 import {ActivatedRoute, Router} from '@angular/router';
-import {TabService} from '../tab/tab.service';
 import {UnitService} from '../unit/unit.service';
 import {Module} from '../itinerary/module/module.model';
 import {MAT_DIALOG_DATA, MatBottomSheet, MatDialog, MatDialogRef, MatSnackBar} from '@angular/material';
@@ -27,7 +26,6 @@ export class NewCourseComponent implements OnInit {
   constructor(private courseService: CourseService,
               public loginService: LoginService, private routing: Router,
               private activatedRoute: ActivatedRoute,
-              private tabService: TabService,
               private unitService: UnitService,
               private bottomSheet: MatBottomSheet,
               private myCoursesDialogRef: MatDialogRef<MyCoursesComponent>,
@@ -46,8 +44,10 @@ export class NewCourseComponent implements OnInit {
         this.courseName = this.course.name;
         this.courseDescription = this.course.description;
         this.chosenModule = this.course.module;
-        this.tabService.setCourse(this.courseName, this.courseId); }, error => {console.log(error); });
-      }
+      }, error => {
+        console.log(error);
+      });
+    }
   }
 
   save() {

@@ -1,27 +1,20 @@
 package com.itinerary.lesson;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.GeneralRestController;
 import com.slide.Slide;
 
 import com.unit.Unit;
-import com.unit.UnitService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/units")
-public class UnitLessonRestController extends GeneralRestController {
-
-    @Autowired
-    protected UnitService unitService;
+public class UnitLessonRestController extends GeneralRestController implements UnitLessonController{
 
     @RequestMapping(value = "/{unitId}/lessons/{lessonId}/slides/{slideId}", method = RequestMethod.GET)
     public ResponseEntity<Slide> getSlideFromLesson(@PathVariable long unitId, @PathVariable long lessonId, @PathVariable long slideId, HttpServletResponse response) {

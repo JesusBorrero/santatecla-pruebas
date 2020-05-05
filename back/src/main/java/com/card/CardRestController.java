@@ -16,13 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/units")
-public class CardRestController extends GeneralRestController {
-
-    @Autowired
-    protected UnitService unitService;
-
-    @Autowired
-    protected CardService cardService;
+public class CardRestController extends GeneralRestController implements CardController{
 
     @GetMapping(value = "/{unitId}/cards")
     public ResponseEntity<Iterable<Card>> getCards(@PathVariable int unitId) {
@@ -61,6 +55,9 @@ public class CardRestController extends GeneralRestController {
         Card updatedCard = unit.get().getCard(cardId);
         if (updatedCard == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if(!card.getName().equals(updatedCard.getName())){
+            this.slideService.updateAllSlidesCardName(unit.get().getName(), updatedCard.getName(), card.getName());
         }
         updatedCard.update(card);
         cardService.save(updatedCard);

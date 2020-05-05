@@ -4,19 +4,19 @@
 <span *ngIf="this.loginService.isAdmin">
   <div id="lateral-panel" [ngClass]="showMenu ? 'left-zero' : 'hidden-menu'">
 
-    <button [ngClass]="activeTab == 0 ? 'tab activeTab mat-button' : 'tab mat-button'" (click)="activateTab(0)">
-      <mat-icon [ngClass]="showMenu ? 'tab-icon' : 'tab-icon-without-menu'">description</mat-icon>
-      <span class="tab-text" *ngIf="showMenu">Contenido</span>
+    <button [ngClass]="activeBreadcrumb == 0 ? 'breadcrumb activeBreadcrumb mat-button' : 'breadcrumb mat-button'" (click)="activateBreadcrumb(0)">
+      <mat-icon [ngClass]="showMenu ? 'breadcrumb-icon' : 'breadcrumb-icon-without-menu'">description</mat-icon>
+      <span class="breadcrumb-text" *ngIf="showMenu">Contenido</span>
     </button>
 
-    <button [ngClass]="activeTab == 1 ? 'tab activeTab mat-button' : 'tab mat-button'" (click)="activateTab(1)">
-      <mat-icon [ngClass]="showMenu ? 'tab-icon' : 'tab-icon-without-menu'">bar_chart</mat-icon>
-      <span class="tab-text" *ngIf="showMenu">Seguimiento del módulo</span>
+    <button [ngClass]="activeBreadcrumb == 1 ? 'breadcrumb activeBreadcrumb mat-button' : 'breadcrumb mat-button'" (click)="activateBreadcrumb(1)">
+      <mat-icon [ngClass]="showMenu ? 'breadcrumb-icon' : 'breadcrumb-icon-without-menu'">bar_chart</mat-icon>
+      <span class="breadcrumb-text" *ngIf="showMenu">Seguimiento del módulo</span>
     </button>
 
-    <button [ngClass]="activeTab == 2 ? 'tab activeTab mat-button' : 'tab mat-button'" (click)="activateTab(2)">
-      <mat-icon [ngClass]="showMenu ? 'tab-icon' : 'tab-icon-without-menu'">bar_chart</mat-icon>
-      <span class="tab-text" *ngIf="showMenu">Seguimiento de la clase</span>
+    <button [ngClass]="activeBreadcrumb == 2 ? 'breadcrumb activeBreadcrumb mat-button' : 'breadcrumb mat-button'" (click)="activateBreadcrumb(2)">
+      <mat-icon [ngClass]="showMenu ? 'breadcrumb-icon' : 'breadcrumb-icon-without-menu'">bar_chart</mat-icon>
+      <span class="breadcrumb-text" *ngIf="showMenu">Seguimiento de la clase</span>
     </button>
 
   </div>
@@ -30,7 +30,7 @@
   </div>
 
   <div id="course-content" [ngClass]="showMenu ? 'with-menu' : 'without-menu'">
-    <div *ngIf="this.activeTab == 0">
+    <div *ngIf="this.activeBreadcrumb == 0">
       <h1 class="tab-group">
         {{course?.name}}
         <div class="mat-button" (click)="openEditCourseDialog()">
@@ -46,7 +46,7 @@
                   <span class="mat-tree-node" id="{{node1.name}}">
                     <button mat-icon-button disabled></button>
                     <mat-card class="lesson-button">
-                      {{node1?.name}}
+                      {{node1?.name}} <mat-icon class="lesson-view-button" (click)="viewLesson(node1.id)" matTooltip="Ver lección">subscriptions</mat-icon>
                     </mat-card>
                   </span>
             </mat-tree-node>
@@ -81,8 +81,8 @@
 
     </div>
 
-    <app-module-progress *ngIf="activeTab==1"></app-module-progress>
-    <app-class-progress *ngIf="activeTab==2"></app-class-progress>
+    <app-module-progress *ngIf="activeBreadcrumb==1"></app-module-progress>
+    <app-class-progress *ngIf="activeBreadcrumb==2"></app-class-progress>
 
   </div>
 </span>

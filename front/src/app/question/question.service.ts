@@ -187,16 +187,19 @@ export class QuestionService {
     return this.http.get(this.baseUrl + unitID + '/question/definition/' + questionID + '/uncorrectedCount');
   }
 
-  getDefinitionUserAnswers(unitID, questionID, userID: number) {
-    return this.http.get(this.baseUrl + unitID + '/question/definition/' + questionID + '/answer/user/' + userID);
+  getDefinitionUserAnswers(unitID, questionID, userID, blockID, courseID: number) {
+    return this.http.get(this.baseUrl + unitID + '/question/definition/' + questionID + '/answer/user/' + userID +
+    '?blockId=' + blockID + '&courseId=' + courseID);
   }
 
-  getListUserAnswers(unitID, questionID, userID: number) {
-    return this.http.get(this.baseUrl + unitID + '/question/list/' + questionID + '/answer/user/' + userID);
+  getListUserAnswers(unitID, questionID, userID, blockID, courseID: number) {
+    return this.http.get(this.baseUrl + unitID + '/question/list/' + questionID + '/answer/user/' + userID +
+      '?blockId=' + blockID + '&courseId=' + courseID);
   }
 
-  getTestUserAnswers(unitID, questionID, userID: number) {
-    return this.http.get(this.baseUrl + unitID + '/question/test/' + questionID + '/answer/user/' + userID);
+  getTestUserAnswers(unitID, questionID, userID, blockID, courseID: number) {
+    return this.http.get(this.baseUrl + unitID + '/question/test/' + questionID + '/answer/user/' + userID +
+      '?blockId=' + blockID + '&courseId=' + courseID);
   }
 
   addBlockToQuestion(unitID, questionID, blockID: number,) {

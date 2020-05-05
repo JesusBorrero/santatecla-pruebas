@@ -1,5 +1,7 @@
 package com.slide;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,11 +9,14 @@ public class Slide {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(notes = "The slide ID. It is unique", required = true)
     protected long id;
 
+    @ApiModelProperty(notes = "The name of the slide", required = true)
     private String name;
 
     @Column(columnDefinition = "MEDIUMTEXT")
+    @ApiModelProperty(notes = "The content of the slide. It is written with AsciiDoc", required = true)
     private String content;
 
     public Slide() {}

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.GeneralRestController;
-import com.card.Card;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/slides")
-public class SlideRestController extends GeneralRestController {
+public class SlideRestController extends GeneralRestController implements SlideController {
 
     @GetMapping(value="/")
     public MappingJacksonValue slides(){

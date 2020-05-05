@@ -11,6 +11,8 @@ public class Image {
 
     private String name;
 
+    private long unitId;
+
     @Lob
     private Byte[] image;
 
@@ -47,5 +49,13 @@ public class Image {
 
     public void setImage(Byte[] image) {
         this.image = image;
+    }
+
+    public long getUnitId() {
+        return unitId;
+    }
+
+    public void setUnitId(long unitId) {
+        this.unitId = unitId;
     }
 }

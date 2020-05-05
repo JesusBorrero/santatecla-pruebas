@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
@@ -34,6 +35,7 @@ import static org.junit.Assert.assertThat;
 @AutoConfigureMockMvc
 @WithMockUser(roles="ADMIN")
 public class UnitApiTests {
+
     @Autowired
     private MockMvc mvc;
 
@@ -47,90 +49,137 @@ public class UnitApiTests {
 
     @Before
     public void initialize() {
-        Unit unit = new Unit();
-        unit.setId(1);
-        unit.setName("Test Unit");
 
         ArrayList<Unit> units = new ArrayList<>();
-        units.add(unit);
 
-        Relation relation = new Relation();
-        relation.setIncoming((long)4);
-        relation.setOutgoing((long)1);
+        Unit unit1 = new Unit("One");
+        unit1.setId(1);
+        units.add(unit1);
+        Unit unit2 = new Unit("Two");
+        unit2.setId(2);
+        units.add(unit2);
+        Unit unit3 = new Unit("Three");
+        unit3.setId(3);
+        units.add(unit3);
+        Unit unit4 = new Unit("Three");
+        unit4.setId(4);
+        units.add(unit4);
+
+        Relation relation1 = new Relation();
+        relation1.setIncoming((long)1);
+        relation1.setOutgoing((long)3);
+        unit1.addIncomingRelation(relation1);
+        unit2.addOutgoingRelation(relation1);
+
+        Relation relation2 = new Relation();
+        relation2.setIncoming((long)2);
+        relation2.setOutgoing((long)4);
+        unit3.addIncomingRelation(relation2);
+        unit4.addOutgoingRelation(relation2);
 
         given(unitService.findAll()).willReturn(units);
-        given(unitService.findOne(1)).willReturn(Optional.of(unit));
-        given(unitService.findOne(2)).willReturn(Optional.empty());
-        given(unitService.findOne(3)).willReturn(Optional.of(unit));
+        given(unitService.findOne(1)).willReturn(Optional.of(unit1));
+        given(unitService.findOne(2)).willReturn(Optional.of(unit2));
+        given(unitService.findOne(3)).willReturn(Optional.of(unit3));
+        given(unitService.findOne(4)).willReturn(Optional.of(unit4));
+
         given(unitService.isValidName(ArgumentMatchers.any())).willReturn(true);
-        given(unitService.getAbsoluteName(ArgumentMatchers.any())).willReturn("/Test Unit");
-        given(unitService.findByNameContaining("Te")).willReturn(units);
-        given(relationService.findOne(1)).willReturn(Optional.of(relation));
-        given(relationService.findOne(2)).willReturn(Optional.empty());
+
+        given(unitService.ableToDeleteUnit(unit1)).willReturn(false);
+        given(unitService.ableToDeleteUnit(unit2)).willReturn(false);
+        given(unitService.ableToDeleteUnit(unit3)).willReturn(true);
+        given(unitService.ableToDeleteUnit(unit4)).willReturn(true);
+
+        given(unitService.findByNameContaining("")).willReturn(units);
+        given(unitService.findByNameContaining("w")).willReturn(units.stream().filter(unit -> unit.getName().contains("w")).collect(Collectors.toList()));
+
+        given(unitService.getAbsoluteName(unit1)).willReturn("/One");
+        given(unitService.getAbsoluteName(unit2)).willReturn("/Two");
+        given(unitService.getAbsoluteName(unit3)).willReturn("One/Three");
+        given(unitService.getAbsoluteName(unit4)).willReturn("Two/Three");
+
+        given(relationService.findOne(1)).willReturn(Optional.of(relation1));
+        given(relationService.findOne(2)).willReturn(Optional.of(relation2));
+        given(relationService.findOne(3)).willReturn(Optional.empty());
+
     }
 
     @Test
-    public void testGetUnits() throws Exception{
+    public void testGetUnits() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/api/units/")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name", is("Test Unit")));
+                .andExpect(jsonPath("$[0].name", is("One")))
+                .andExpect(jsonPath("$[1].name", is("Two")))
+                .andExpect(jsonPath("$[2].name", is("Three")))
+                .andExpect(jsonPath("$[3].name", is("Three")));
     }
 
     @Test
-    public void testGetUnit() throws Exception{
-        mvc.perform(MockMvcRequestBuilders.get("/api/units/1")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("Test Unit")));
+    public void testGetUnit() throws Exception {
+        int[] ids = {1, 2, 3, 4};
+        for (int id : ids) {
+            mvc.perform(MockMvcRequestBuilders.get("/api/units/" + id)
+                    .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.id", is(id)));
+        }
     }
 
     @Test
-    public void testNotFoundGetUnit() throws Exception{
-        mvc.perform(MockMvcRequestBuilders.get("/api/units/2")
+    public void testNotFoundGetUnit() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/api/units/10")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
 
     @Test
-    public void testCreateSimpleUnit() throws Exception{
-        Unit unit = new Unit();
-        unit.setName("Test Unit");
-
+    public void testCreateSimpleUnit() throws Exception {
+        String newUnitName1 = "NewUnitOne";
+        Unit newUnit1 = new Unit(newUnitName1);
         mvc.perform(MockMvcRequestBuilders.post("/api/units/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonParser.toJson(unit)))
+                .content(jsonParser.toJson(newUnit1)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("Test Unit")));
+                .andExpect(jsonPath("$.name", is(newUnitName1)));
+        String newUnitName2 = "NewUnitTwo";
+        Unit newUnit2 = new Unit(newUnitName2);
+        mvc.perform(MockMvcRequestBuilders.post("/api/units/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonParser.toJson(newUnit2)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is(newUnitName2)));
     }
 
     @Test
-    public void testCreateIncomingAndOutgoingRelationsUnit() throws Exception{
-        Unit unit = new Unit();
-        unit.setName("Test Unit");
+    public void testCreateRelation() throws Exception {
+        Unit incoming = new Unit("Incoming");
+        Unit outgoing = new Unit("Outgoing");
 
         Relation relation = new Relation();
         relation.setIncoming((long)1);
         relation.setOutgoing((long)2);
-        unit.addOutgoingRelation(relation);
-
-        Relation relation1 = new Relation();
-        relation1.setIncoming((long)3);
-        relation1.setOutgoing((long)1);
-        unit.addIncomingRelation(relation1);
+        incoming.addIncomingRelation(relation);
+        outgoing.addOutgoingRelation(relation);
 
         mvc.perform(MockMvcRequestBuilders.post("/api/units/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonParser.toJson(unit)))
+                .content(jsonParser.toJson(incoming)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("Test Unit")))
-                .andExpect(jsonPath("$.incomingRelations[0].incoming", is(3)));
+                .andExpect(jsonPath("$.name", is("Incoming")))
+                .andExpect(jsonPath("$.incomingRelations[0].incoming", is(1)));
+
+        mvc.perform(MockMvcRequestBuilders.post("/api/units/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonParser.toJson(outgoing)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("Outgoing")))
+                .andExpect(jsonPath("$.outgoingRelations[0].outgoing", is(2)));
     }
 
     @Test
-    public void testConflictCreateUnit() throws Exception{
-        Unit unit = new Unit();
-        unit.setName("Test Unit");
+    public void testConflictCreateUnit() throws Exception {
+        Unit unit = new Unit("ConflictUnitName");
 
         given(unitService.isValidName(ArgumentMatchers.any())).willReturn(false);
 
@@ -141,14 +190,11 @@ public class UnitApiTests {
     }
 
     @Test
-    public void testUpdateUnits() throws Exception{
-        Unit unit = new Unit();
+    public void testUpdateUnits() throws Exception {
+        Unit unit = new Unit("UpdateUnitOne");
         unit.setId(1);
-        unit.setName("Test Unit");
-
-        Unit unit2 = new Unit();
-        unit2.setId(3);
-        unit2.setName("Test Unit 2");
+        Unit unit2 = new Unit("UpdateUnitTwo");
+        unit2.setId(2);
 
         ArrayList<Unit> units = new ArrayList<>();
         units.add(unit);
@@ -158,18 +204,16 @@ public class UnitApiTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonParser.toJson(units)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[1].name", is("Test Unit 2")));
+                .andExpect(jsonPath("$[0].name", is("UpdateUnitOne")))
+                .andExpect(jsonPath("$[1].name", is("UpdateUnitTwo")));
     }
 
     @Test
-    public void testNotFoundUpdateUnits() throws Exception{
-        Unit unit = new Unit();
+    public void testNotFoundUpdateUnits() throws Exception {
+        Unit unit = new Unit("UpdateUnitOne");
         unit.setId(1);
-        unit.setName("Test Unit");
-
-        Unit unit2 = new Unit();
-        unit2.setId(2);
-        unit2.setName("Test Unit 2");
+        Unit unit2 = new Unit("UpdateUnitTen");
+        unit2.setId(10);
 
         ArrayList<Unit> units = new ArrayList<>();
         units.add(unit);
@@ -182,54 +226,61 @@ public class UnitApiTests {
     }
 
     @Test
-    public void testDeleteUnit() throws Exception{
+    public void testDeleteUnit() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.delete("/api/units/3")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testConflictDeleteUnit() throws Exception {
         mvc.perform(MockMvcRequestBuilders.delete("/api/units/1")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().is(409));
     }
 
     @Test
-    public void testNotFoundUnit() throws Exception{
-        mvc.perform(MockMvcRequestBuilders.delete("/api/units/2")
+    public void testNotFoundUnit() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.delete("/api/units/10")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(404));
     }
 
     @Test
-    public void testDeleteRelation() throws Exception{
-        mvc.perform(MockMvcRequestBuilders.delete("/api/units/relations/1")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void testNotFoundDeleteRelation() throws Exception{
-        mvc.perform(MockMvcRequestBuilders.delete("/api/units/relations/2")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(404));
-    }
-
-    @Test
-    public void testSearchUnits() throws Exception{
-        mvc.perform(MockMvcRequestBuilders.get("/api/units/search?name=Te")
+    public void testSearchUnits() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/api/units/search?name=")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name", is("Test Unit")));
+                .andExpect(jsonPath("$[0].name", is("One")))
+                .andExpect(jsonPath("$[1].name", is("Two")))
+                .andExpect(jsonPath("$[2].name", is("Three")))
+                .andExpect(jsonPath("$[3].name", is("Three")));
+        mvc.perform(MockMvcRequestBuilders.get("/api/units/search?name=w")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name", is("Two")));
     }
 
     @Test
-    public void testGetAbsoluteName() throws Exception{
+    public void testGetAbsoluteName() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/api/units/1/absoluteName")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("/Test Unit")));
+                .andExpect(jsonPath("$.name", is("/One")));
+        mvc.perform(MockMvcRequestBuilders.get("/api/units/3/absoluteName")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("One/Three")));
+        mvc.perform(MockMvcRequestBuilders.get("/api/units/4/absoluteName")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is("Two/Three")));
     }
 
     @Test
-    public void testValidName() throws Exception{
-        Unit unit = new Unit();
+    public void testValidName() throws Exception {
+        Unit unit = new Unit("ValidName");
         unit.setId(1);
-        unit.setName("Test Unit");
 
         MvcResult result = mvc.perform(MockMvcRequestBuilders.post("/api/units/valid")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -241,10 +292,11 @@ public class UnitApiTests {
     }
 
     @Test
-    public void testGetName() throws Exception{
+    public void testGetName() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/api/units/1/name")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.response", is("Test Unit")));
+                .andExpect(jsonPath("$.response", is("One")));
     }
+
 }

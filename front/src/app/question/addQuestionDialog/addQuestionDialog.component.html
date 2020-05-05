@@ -7,7 +7,7 @@
     <div mat-dialog-content>
       <div *ngIf="!data.isEditing" class="button-row">
         <button *ngFor="let type of questionTypes" (click)="setQuestion(type.id)"
-                [ngClass]="subtype == type.id ? 'question-button mat-button active-type' : 'tool question-button mat-button'">
+                [ngClass]="((loginService.isAdmin) && (subtype == type.id)) ? 'question-button mat-button active-type admin-button' : ((loginService.isAdmin && (subtype != type.id)) ? 'tool question-button mat-button admin-button' : ((subtype == type.id) ? 'question-button mat-button active-type user-button' : 'tool question-button mat-button user-button'))">
           {{type.name}}
         </button>
       </div>
@@ -86,7 +86,7 @@
       <!--<button mat-button [mat-dialog-close]="true" cdkFocusInitial>
         Responder
       </button>-->
-      <button (click)="sendQuestion()" [mat-dialog-close]="true" class="mat-button question-button tool">
+      <button (click)="sendQuestion()" [mat-dialog-close]="true" [ngClass]="loginService.isAdmin ? 'mat-button question-button tool admin-button' : 'mat-button question-button tool user-button'">
         Guardar
       </button>
     </div>

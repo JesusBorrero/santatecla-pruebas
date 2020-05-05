@@ -45,7 +45,7 @@
 }
 
 .tool:hover {
-  background-color: #a769b8;
+  opacity: 70%;
 }
 
 table {
@@ -98,8 +98,15 @@ th.mat-sort-header-sorted {
 }
 
 .question-button {
-  background-color: #7d3c90;
   color: #ffffff;
+}
+
+.admin-button {
+  background-color: #7d3c90;
+}
+
+.user-button {
+  background-color: #5b70c1;
 }
 
 .active-type {
@@ -279,3 +286,16 @@ th.mat-sort-header-sorted {
   color: grey;
   font-size: 15px;
 }
+
+.toolsBar {
+  height: 6.2rem;
+  padding-left: 0.5rem;
+  background-color: #5d306a;
+}
+
+.tools {
+  color: white;
+  position: absolute;
+  top: 3.7rem;
+}
+

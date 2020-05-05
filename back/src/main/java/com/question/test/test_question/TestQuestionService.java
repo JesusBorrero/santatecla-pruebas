@@ -1,5 +1,7 @@
 package com.question.test.test_question;
 
+import com.question.test.test_answer.TestAnswer;
+import com.question.test.test_answer.TestAnswerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,9 @@ public class TestQuestionService {
 
     @Autowired
     private TestQuestionRepository testRepository;
+
+    @Autowired
+    private TestAnswerRepository answerRepository;
 
     public TestQuestion save(TestQuestion q) {
         return this.testRepository.save(q);
@@ -28,8 +33,8 @@ public class TestQuestionService {
         return this.testRepository.findById(id);
     }
 
-    public List<Object> findUserAnswers(long userId, long questionId){
-        return this.testRepository.findUserAnswers(userId, questionId);
+    public List<TestAnswer> findUserAnswers(long questionId, long userId, long blockId, long courseId){
+        return this.answerRepository.findUserAnswers(questionId, userId, blockId, courseId);
     }
 
     public List<Object> findChosenWrongAnswersCount(long id){

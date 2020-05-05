@@ -13,7 +13,6 @@ import com.itinerary.lesson.Lesson;
 import com.itinerary.lesson.LessonRepository;
 import com.itinerary.module.Module;
 import com.itinerary.module.ModuleRepository;
-import com.question.Question;
 import com.question.definition.definition_answer.DefinitionAnswer;
 import com.question.definition.definition_question.DefinitionQuestion;
 import com.question.definition.definition_question.DefinitionQuestionRepository;
@@ -31,10 +30,6 @@ import com.unit.Unit;
 import com.unit.UnitRepository;
 import com.user.User;
 import com.user.UserRepository;
-
-import com.image.Image;
-import com.image.ImageRepository;
-import org.aspectj.weaver.ast.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -95,6 +90,7 @@ public class DatabaseInitializer {
                 Slide slide10 = new Slide("Introducción");
                 Slide slide11 = new Slide("Compiladores e interpretes");
                 Slide slide12 = new Slide("Funciones");
+                Slide slide13 = new Slide("Ejemplo ejercicios");
 
                 slide1.addContent("\nLos programas de computador constituyen una\n" +
                         "representación de uno o más algoritmos diseñados para\n" +
@@ -161,6 +157,9 @@ public class DatabaseInitializer {
                 slide04.addContent("\n" +
                         "insert.slide/Programación funcional/Introducción a la programación funcional/Paradigmas de la programación\n");
 
+                slide13.addContent("\n" +
+                        "insert.question/1/1\n\ninsert.question/1/5\n\ninsert.question/1/6\n");
+
                 slideRepository.save(slide1);
                 slideRepository.save(slide01);
                 slideRepository.save(slide02);
@@ -177,6 +176,7 @@ public class DatabaseInitializer {
                 slideRepository.save(slide10);
                 slideRepository.save(slide11);
                 slideRepository.save(slide12);
+                slideRepository.save(slide13);
 
                 //Lesson
                 Lesson lesson1 = new Lesson("Introducción a la programación funcional");
@@ -191,6 +191,12 @@ public class DatabaseInitializer {
                 Lesson lesson10 = new Lesson("Ficheros");
                 Lesson lesson11 = new Lesson("Introducción, Tipos de datos, Operadores y Estructura de control");
                 Lesson lesson12 = new Lesson("Funciones y Objetos");
+
+                List<Long> questionIds = new ArrayList<>();
+                questionIds.add((long)1);
+                questionIds.add((long)5);
+                questionIds.add((long)6);
+                lesson1.setQuestionsIds(questionIds);
 
                 lesson1.getSlides().add(slide1);
                 lesson1.getSlides().add(slide01);
@@ -208,6 +214,7 @@ public class DatabaseInitializer {
                 lesson10.getSlides().add(slide10);
                 lesson11.getSlides().add(slide11);
                 lesson12.getSlides().add(slide12);
+                lesson1.getSlides().add(slide13);
 
                 lessonRepository.save(lesson1);
                 lessonRepository.save(lesson2);
@@ -841,10 +848,6 @@ public class DatabaseInitializer {
                 relationRepository.save(relation10);
                 unit5.addIncomingRelation(relation10);
                 unit8.addOutgoingRelation(relation10);
-                Relation relation11 = new Relation(Relation.RelationType.AGGREGATION, unit5.getId(), unit8.getId());
-                relationRepository.save(relation11);
-                unit5.addIncomingRelation(relation11);
-                unit8.addOutgoingRelation(relation11);
                 Relation relation12 = new Relation(Relation.RelationType.INHERITANCE, unit8.getId(), unit9.getId());
                 relationRepository.save(relation12);
                 unit8.addIncomingRelation(relation12);

@@ -4,24 +4,24 @@
 
   <div id="lateral-panel" [ngClass]="showMenu ? 'left-zero' : 'hidden-menu'">
 
-    <button [ngClass]="activeTab == 0 ? 'tab activeTab mat-button' : 'tab mat-button'" (click)="activateTab(0)">
-      <mat-icon [ngClass]="showMenu ? 'tab-icon' : 'tab-icon-without-menu'">view_stream</mat-icon>
-      <span class="tab-text" *ngIf="showMenu">Fichas</span>
+    <button [ngClass]="activeBreadcrumb == 0 ? 'breadcrumb activeBreadcrumb mat-button' : 'breadcrumb mat-button'" (click)="activateBreadcrumb(0)">
+      <mat-icon [ngClass]="showMenu ? 'breadcrumb-icon' : 'breadcrumb-icon-without-menu'">view_stream</mat-icon>
+      <span class="breadcrumb-text" *ngIf="showMenu">Fichas</span>
     </button>
 
-    <button [ngClass]="activeTab == 1 ? 'tab activeTab mat-button' : 'tab mat-button'" (click)="activateTab(1)">
-      <mat-icon [ngClass]="showMenu ? 'tab-icon' : 'tab-icon-without-menu'">edit</mat-icon>
-      <span class="tab-text" *ngIf="showMenu">Ejercicios</span>
+    <button [ngClass]="activeBreadcrumb == 1 ? 'breadcrumb activeBreadcrumb mat-button' : 'breadcrumb mat-button'" (click)="activateBreadcrumb(1)">
+      <mat-icon [ngClass]="showMenu ? 'breadcrumb-icon' : 'breadcrumb-icon-without-menu'">edit</mat-icon>
+      <span class="breadcrumb-text" *ngIf="showMenu">Ejercicios</span>
     </button>
 
-    <button [ngClass]="activeTab == 2 ? 'tab activeTab mat-button' : 'tab mat-button'" (click)="activateTab(2)">
-      <mat-icon [ngClass]="showMenu ? 'tab-icon' : 'tab-icon-without-menu'">slideshow</mat-icon>
-      <span class="tab-text" *ngIf="showMenu">Lecciones</span>
+    <button [ngClass]="activeBreadcrumb == 2 ? 'breadcrumb activeBreadcrumb mat-button' : 'breadcrumb mat-button'" (click)="activateBreadcrumb(2)">
+      <mat-icon [ngClass]="showMenu ? 'breadcrumb-icon' : 'breadcrumb-icon-without-menu'">slideshow</mat-icon>
+      <span class="breadcrumb-text" *ngIf="showMenu">Lecciones</span>
     </button>
 
-    <button [ngClass]="activeTab == 3 ? 'tab activeTab mat-button' : 'tab mat-button'" (click)="activateTab(3)">
-      <mat-icon [ngClass]="showMenu ? 'tab-icon' : 'tab-icon-without-menu'">vertical_split</mat-icon>
-      <span class="tab-text" *ngIf="showMenu">Itinerarios</span>
+    <button [ngClass]="activeBreadcrumb == 3 ? 'breadcrumb activeBreadcrumb mat-button' : 'breadcrumb mat-button'" (click)="activateBreadcrumb(3)">
+      <mat-icon [ngClass]="showMenu ? 'breadcrumb-icon' : 'breadcrumb-icon-without-menu'">vertical_split</mat-icon>
+      <span class="breadcrumb-text" *ngIf="showMenu">Itinerarios</span>
     </button>
 
   </div>
@@ -29,10 +29,10 @@
   <div id="top-panel" [ngClass]="showMenu ? 'with-menu' : 'without-menu'"></div>
 
   <div id="unit-course-content" [ngClass]="showMenu ? 'with-menu' : 'without-menu'">
-    <app-cards *ngIf="activeTab==0"></app-cards>
-    <app-questions *ngIf="activeTab==1"></app-questions>
-    <app-lessons *ngIf="activeTab==2"></app-lessons>
-    <app-modules *ngIf="activeTab==3"></app-modules>
+    <app-cards #cards *ngIf="activeBreadcrumb==0"></app-cards>
+    <app-questions #questions *ngIf="activeBreadcrumb==1"></app-questions>
+    <app-lessons #lessons *ngIf="activeBreadcrumb==2"></app-lessons>
+    <app-modules #modules *ngIf="activeBreadcrumb==3"></app-modules>
   </div>
 
 </body>

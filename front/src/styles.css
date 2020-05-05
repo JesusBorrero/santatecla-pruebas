@@ -14,9 +14,30 @@ body {
 
 #uml {
   position: absolute;
-  width: calc(100% - 20rem);
-  height: calc(100% - 11rem);
   z-index: 1;
+}
+
+.uml-size-1 {
+  width: calc(50% - 24rem) !important;
+  height: calc(50% - 11rem) !important;
+  margin: calc(25% - 6rem) 0 0 25% !important;
+}
+
+.uml-size-2 {
+  width: calc(60% - 24rem) !important;
+  height: calc(55% - 11rem) !important;
+  margin: calc(22.5% - 6rem) 0 0 20% !important;
+}
+
+.uml-size-3 {
+  width: calc(70% - 24rem) !important;
+  height: calc(60% - 11rem) !important;
+  margin: calc(20% - 6rem) 0 0 15% !important;
+}
+
+.uml-size-default {
+  width: calc(100% - 24rem) !important;
+  height: calc(100% - 11rem) !important;
 }
 
 #loader {
@@ -173,7 +194,7 @@ body {
   background-color: #e5e9f0 !important;
 }
 
-.tab {
+.breadcrumb {
   background-color: #7d3c90;
   color: #ffffff;
   padding: 0.3rem 0 0.3rem 3.5rem !important;
@@ -183,25 +204,25 @@ body {
   height: 3rem;
 }
 
-.tab:hover {
+.breadcrumb:hover {
   background-color: #a769b8;
 }
 
-.activeTab {
+.activeBreadcrumb {
   background-color: #a769b8;
 }
 
-.tab-text {
+.breadcrumb-text {
   margin-left: 0.5rem;
 }
 
-.tab-icon {
+.breadcrumb-icon {
   position: absolute;
   left: 1.37rem;
   margin-top: 0.4rem;
 }
 
-.tab-icon-without-menu {
+.breadcrumb-icon-without-menu {
   position: absolute;
   left: 1.37rem;
   top: 0.78rem;

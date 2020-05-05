@@ -6,8 +6,12 @@
     <h4>Después seleciona una slide para copiar su ruta</h4>
 
     <mat-form-field id="unitSearcher">
-      <input matInput (keyup)="applyFilterUnits($event.target.value)" placeholder="Nombre de la unidad">
+      <input #input matInput (keyup)="applyFilterUnits($event.target.value)" placeholder="Nombre de la unidad">
     </mat-form-field>
+
+    <div id="spinner-container" *ngIf="showSpinner">
+      <img id="spinner" src="../../../../assets/img/spinner.gif">
+    </div>
 
     <mat-accordion *ngFor = "let unit of this.unitsResult">
       <mat-expansion-panel class="card">

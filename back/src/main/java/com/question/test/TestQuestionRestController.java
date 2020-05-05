@@ -1,10 +1,10 @@
 package com.question.test;
 
 import com.GeneralRestController;
+import com.question.QuestionController;
 import com.question.test.test_answer.TestAnswer;
 import com.question.test.test_question.TestQuestion;
 import com.unit.Unit;
-import org.aspectj.weaver.ast.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +14,12 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/units/{unitID}/question/test")
-public class TestQuestionRestController extends GeneralRestController {
+public class TestQuestionRestController
+        extends GeneralRestController
+        implements QuestionController<TestQuestion, TestAnswer> {
 
     @GetMapping("")
-    public ResponseEntity<List<TestQuestion>> getTestQuestions(@PathVariable long unitID) {
+    public ResponseEntity<List<TestQuestion>> getQuestions(@PathVariable long unitID) {
         Optional<Unit> unit = this.unitService.findOne(unitID);
 
         if (unit.isPresent())
@@ -27,7 +29,7 @@ public class TestQuestionRestController extends GeneralRestController {
     }
 
     @GetMapping("/{questionID}")
-    public ResponseEntity<TestQuestion> getTestQuestion(@PathVariable long unitID, @PathVariable long questionID) {
+    public ResponseEntity<TestQuestion> getQuestion(@PathVariable long unitID, @PathVariable long questionID) {
         Optional<Unit> unit = this.unitService.findOne(unitID);
         Optional<TestQuestion> question = this.testQuestionService.findOne(questionID);
 
@@ -38,7 +40,7 @@ public class TestQuestionRestController extends GeneralRestController {
     }
 
     @PostMapping("")
-    public ResponseEntity<TestQuestion> addTestQuestion(@PathVariable long unitID, @RequestBody TestQuestion question) {
+    public ResponseEntity<TestQuestion> addQuestion(@PathVariable long unitID, @RequestBody TestQuestion question) {
         Optional<Unit> unit = this.unitService.findOne(unitID);
 
         if (unit.isPresent()) {
@@ -52,7 +54,7 @@ public class TestQuestionRestController extends GeneralRestController {
     }
 
     @DeleteMapping("/{questionID}")
-    public ResponseEntity<TestQuestion> deleteTestQuestion(@PathVariable long unitID, @PathVariable long questionID) {
+    public ResponseEntity<TestQuestion> deleteQuestion(@PathVariable long unitID, @PathVariable long questionID) {
         Optional<Unit> unit = this.unitService.findOne(unitID);
         Optional<TestQuestion> question = this.testQuestionService.findOne(questionID);
 
@@ -80,7 +82,7 @@ public class TestQuestionRestController extends GeneralRestController {
     }
 
     @GetMapping(value = "/{questionID}/answer")
-    public ResponseEntity<List<TestAnswer>> getTestAnswers(@PathVariable long unitID, @PathVariable long questionID) {
+    public ResponseEntity<List<TestAnswer>> getAnswers(@PathVariable long unitID, @PathVariable long questionID) {
         Optional<Unit> unit = this.unitService.findOne(unitID);
         Optional<TestQuestion> question = this.testQuestionService.findOne(questionID);
 
@@ -92,7 +94,7 @@ public class TestQuestionRestController extends GeneralRestController {
     }
 
     @PostMapping("/{questionID}/answer")
-    public ResponseEntity<TestAnswer> addTestAnswer(@PathVariable long unitID, @PathVariable long questionID, @RequestBody TestAnswer answer) {
+    public ResponseEntity<TestAnswer> addAnswer(@PathVariable long unitID, @PathVariable long questionID, @RequestBody TestAnswer answer) {
         Optional<Unit> unit = this.unitService.findOne(unitID);
         Optional<TestQuestion> question = this.testQuestionService.findOne(questionID);
 
@@ -105,9 +107,13 @@ public class TestQuestionRestController extends GeneralRestController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/{id}/answer/user/{userId}")
-    public ResponseEntity<List<Object>> getUserAnswers(@PathVariable long id, @PathVariable long userId) {
-        return new ResponseEntity<>(this.testQuestionService.findUserAnswers(userId, id), HttpStatus.OK);
+    @GetMapping("/{questionID}/answer/user/{userID}")
+    public ResponseEntity<List<TestAnswer>> getUserAnswers(@RequestParam long blockId,
+                                                           @RequestParam long courseId,
+                                                           @PathVariable long questionID,
+                                                           @PathVariable long userID) {
+        return new ResponseEntity<>(
+                this.testQuestionService.findUserAnswers(questionID, userID, blockId, courseId), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{questionID}/chosenWrongAnswersCount")

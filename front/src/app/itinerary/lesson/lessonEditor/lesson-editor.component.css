@@ -22,6 +22,10 @@
   background-color: #7d3c90;
 }
 
+.return {
+  margin-right: 2rem;
+}
+
 .std-tool {
   margin-left: 0.5rem;
   background-color: #05132f;
@@ -102,18 +106,14 @@
 
 .spinner {
   position: absolute;
-  width: 10%;
+  width: 5rem;
   margin-right: 45%;
   margin-left: 45%;
   margin-top: 30%;
 }
 
 .center {
-  position: absolute;
-  width: 10%;
-  margin-top: 20%;
-  margin-right: 45%;
-  margin-left: 45%;
+  margin-top: 15% !important;
   z-index: 1000;
 }
 
@@ -140,4 +140,19 @@
 
 .btn-span {
   margin-left: 0.5rem;
+}
+
+.done-icon {
+  margin-left: 2rem;
+  color: green
+}
+
+.wrong-icon {
+  margin-left: 2rem;
+  color: red;
+}
+
+.pending-icon {
+  margin-left: 2rem;
+  color: grey;
 }

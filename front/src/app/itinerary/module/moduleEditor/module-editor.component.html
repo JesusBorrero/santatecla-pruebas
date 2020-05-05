@@ -2,6 +2,13 @@
 <html>
   <body>
 
+      <mat-chip-list *ngIf="loginService.isAdmin" class="tools">
+        <button mat-button class="return" [routerLink]="['/unit/' + tabService.activeTab?.unitId]">
+          <mat-icon>navigate_before</mat-icon>
+          <span class="btn-span">Volver</span>
+        </button>
+      </mat-chip-list>
+
     <!-- TOOLS BAR -->
     <div *ngIf="loginService.isLogged" [ngClass]="loginService.isAdmin ? 'toolsBar admin' : 'toolsBar student'"></div>
 
@@ -54,7 +61,7 @@
           <li id="{{node2.name}}">
             <div class="mat-tree-node">
               <button mat-icon-button matTreeNodeToggle
-                      [attr.aria-label]="'toggle ' + node2?.name">
+                      [attr.aria-label]="'toggle ' + node2?.name" (click)="addOpenedBlock(node2.id, node2)">
                 <mat-icon class="mat-icon-rtl-mirror">
                   {{treeControl.isExpanded(node2) ? 'expand_more' : 'chevron_right'}}
                 </mat-icon>

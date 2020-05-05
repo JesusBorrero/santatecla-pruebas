@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.question.Question;
 import com.question.definition.definition_answer.DefinitionAnswer;
+import com.question.definition.definition_answer.DefinitionAnswerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +14,9 @@ public class DefinitionQuestionService {
 
     @Autowired
     private DefinitionQuestionRepository definitionRepository;
+
+    @Autowired
+    private DefinitionAnswerRepository answerRepository;
 
     public DefinitionQuestion save(DefinitionQuestion q) {
         return this.definitionRepository.save(q);
@@ -41,8 +44,8 @@ public class DefinitionQuestionService {
         return Optional.empty();
     }
 
-    public List<Object> findUserAnswers(long userId, long questionId) {
-        return this.definitionRepository.findUserAnswers(userId, questionId);
+    public List<DefinitionAnswer> findUserAnswers(long questionId, long userId, long blockId, long courseId) {
+        return this.answerRepository.findUserAnswers(questionId, userId, blockId, courseId);
     }
 
     public Optional<List<DefinitionAnswer>> findCorrectedAnswers(long questionId) {

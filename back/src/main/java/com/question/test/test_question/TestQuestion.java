@@ -3,10 +3,12 @@ package com.question.test.test_question;
 import com.google.gson.annotations.SerializedName;
 import com.question.Question;
 import com.question.test.test_answer.TestAnswer;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,14 +18,19 @@ public class TestQuestion extends Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @SerializedName("testQuestionId")
+    @NotNull
+    @ApiModelProperty(notes = "The test question ID. It is unique",  required = true)
     private long id;
 
+    @ApiModelProperty(notes = "List of possible answers to the question")
     @ElementCollection(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<String> possibleAnswers;
 
+    @ApiModelProperty(notes = "The unique correct answer", required = true)
     private String correctAnswer;
 
+    @ApiModelProperty(notes = "List of users answers to the question")
     @OneToMany(cascade = CascadeType.ALL)
     private List<TestAnswer> testAnswers;
 

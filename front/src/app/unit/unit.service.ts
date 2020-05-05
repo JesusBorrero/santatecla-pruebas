@@ -6,6 +6,7 @@ import {Relation} from '../relation/relation.model';
 @Injectable()
 export class UnitService {
 
+  UNIT_NAME_SEPARATOR = '/';
   baseUrl = '/api/units/';
 
   constructor(private http: HttpClient) {}
@@ -28,6 +29,19 @@ export class UnitService {
   searchByNameContaining(name: string) {
     const params = new HttpParams().set('name', name);
     return this.http.get(this.baseUrl + 'search/', { params: params });
+  }
+
+  getUnambiguousName(id: number) {
+    return this.http.get(this.baseUrl + id + '/unambiguousName');
+  }
+
+  getUnitPrefixName(completeName: string) {
+    const nameLength = completeName.split(this.UNIT_NAME_SEPARATOR)[completeName.split(this.UNIT_NAME_SEPARATOR).length - 1].length;
+    return completeName.substring(0, completeName.length - nameLength);
+  }
+
+  getUnitRealName(completeName: string) {
+    return completeName.split(this.UNIT_NAME_SEPARATOR)[completeName.split(this.UNIT_NAME_SEPARATOR).length - 1];
   }
 
   createUnit(unit: Unit) {
@@ -55,16 +69,16 @@ export class UnitService {
     return this.http.delete<Unit>(this.baseUrl + id);
   }
 
-  deleteRelation(id: number) {
-    return this.http.delete<Relation>(this.baseUrl + 'relations/' + id);
-  }
-
   getCard(cardId: number, unitId: number) {
     return this.http.get(this.baseUrl + unitId + '/cards/' + cardId);
   }
 
   getUnitName(id: number) {
     return this.http.get(this.baseUrl + id + '/name');
+  }
+
+  getModuleUnit(moduleId: number) {
+    return this.http.get(this.baseUrl + 'module/' + moduleId);
   }
 
 }

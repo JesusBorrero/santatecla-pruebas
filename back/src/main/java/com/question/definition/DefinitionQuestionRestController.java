@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.GeneralRestController;
+import com.question.QuestionController;
 import com.question.definition.definition_answer.DefinitionAnswer;
 import com.question.definition.definition_question.DefinitionQuestion;
 
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/units/{unitID}/question/definition")
-public class DefinitionQuestionRestController extends GeneralRestController {
+public class DefinitionQuestionRestController
+        extends GeneralRestController
+        implements QuestionController<DefinitionQuestion, DefinitionAnswer> {
 
     @GetMapping("")
     public ResponseEntity<List<DefinitionQuestion>> getQuestions(@PathVariable long unitID) {
@@ -27,7 +30,7 @@ public class DefinitionQuestionRestController extends GeneralRestController {
     }
 
     @GetMapping("/{questionID}")
-    public ResponseEntity<DefinitionQuestion> getDefinitionQuestion(@PathVariable long unitID, @PathVariable long questionID) {
+    public ResponseEntity<DefinitionQuestion> getQuestion(@PathVariable long unitID, @PathVariable long questionID) {
         Optional<Unit> unit = this.unitService.findOne(unitID);
         Optional<DefinitionQuestion> question = this.definitionQuestionService.findOne(questionID);
 
@@ -38,7 +41,7 @@ public class DefinitionQuestionRestController extends GeneralRestController {
     }
 
     @PostMapping("")
-    public ResponseEntity<DefinitionQuestion> addDefinitionQuestion(@PathVariable long unitID, @RequestBody DefinitionQuestion question) {
+    public ResponseEntity<DefinitionQuestion> addQuestion(@PathVariable long unitID, @RequestBody DefinitionQuestion question) {
         Optional<Unit> unit = this.unitService.findOne(unitID);
 
         if (unit.isPresent()) {
@@ -52,7 +55,7 @@ public class DefinitionQuestionRestController extends GeneralRestController {
     }
 
     @DeleteMapping("/{questionID}")
-    public ResponseEntity<DefinitionQuestion> deleteDefinitionQuestion(@PathVariable long unitID, @PathVariable long questionID) {
+    public ResponseEntity<DefinitionQuestion> deleteQuestion(@PathVariable long unitID, @PathVariable long questionID) {
         Optional<Unit> unit = this.unitService.findOne(unitID);
         Optional<DefinitionQuestion> question = this.definitionQuestionService.findOne(questionID);
 
@@ -79,7 +82,7 @@ public class DefinitionQuestionRestController extends GeneralRestController {
     }
 
     @GetMapping(value = "/{questionID}/answer")
-    public ResponseEntity<List<DefinitionAnswer>> getDefinitionAnswers(
+    public ResponseEntity<List<DefinitionAnswer>> getAnswers (
             @PathVariable long unitID,
             @PathVariable long questionID,
             @RequestParam(required = false) String corrected) {
@@ -101,7 +104,7 @@ public class DefinitionQuestionRestController extends GeneralRestController {
     }
 
     @PostMapping("/{questionID}/answer")
-    public ResponseEntity<DefinitionAnswer> addDefinitionAnswer(@PathVariable long unitID, @PathVariable long questionID, @RequestBody DefinitionAnswer answer) {
+    public ResponseEntity<DefinitionAnswer> addAnswer(@PathVariable long unitID, @PathVariable long questionID, @RequestBody DefinitionAnswer answer) {
         Optional<Unit> unit = this.unitService.findOne(unitID);
         Optional<DefinitionQuestion> question = this.definitionQuestionService.findOne(questionID);
 
@@ -115,7 +118,7 @@ public class DefinitionQuestionRestController extends GeneralRestController {
     }
 
     @PutMapping("/{questionID}/answer/{answerID}")
-    public ResponseEntity<DefinitionAnswer> updateDefinitionAnswer(
+    public ResponseEntity<DefinitionAnswer> updateAnswer(
             @PathVariable long unitID,
             @PathVariable long questionID,
             @PathVariable long answerID,
@@ -157,7 +160,11 @@ public class DefinitionQuestionRestController extends GeneralRestController {
     }
 
     @GetMapping("/{questionID}/answer/user/{userID}")
-    public ResponseEntity<List<Object>> getUserAnswers(@PathVariable long questionID, @PathVariable long userID) {
-        return new ResponseEntity<>(this.definitionQuestionService.findUserAnswers(userID, questionID), HttpStatus.OK);
+    public ResponseEntity<List<DefinitionAnswer>> getUserAnswers(@RequestParam long blockId,
+                                                                 @RequestParam long courseId,
+                                                                 @PathVariable long questionID,
+                                                                 @PathVariable long userID) {
+        return new ResponseEntity<>(
+                this.definitionQuestionService.findUserAnswers(questionID, userID, blockId, courseId), HttpStatus.OK);
     }
 }

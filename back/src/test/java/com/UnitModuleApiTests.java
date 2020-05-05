@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
@@ -78,7 +79,7 @@ public class UnitModuleApiTests {
 
         Module module = new Module();
         module.setName("Test Module");
-        ArrayList<Long> parents = new ArrayList<>();
+        HashSet<Long> parents = new HashSet<>();
         parents.add((long)2);
         module.setParentsId(parents);
 

@@ -4,10 +4,12 @@ import com.google.gson.annotations.SerializedName;
 import com.itinerary.module.Module;
 import com.unit.Unit;
 import com.user.User;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,18 +18,29 @@ public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @SerializedName("courseId")
+    @NotNull
+    @ApiModelProperty(notes = "The course ID. It is unique",  required = true)
     private long id;
 
+    @NotNull
+    @ApiModelProperty(notes = "The course name", required = true)
     private String name;
+
+    @NotNull
+    @ApiModelProperty(notes = "A short description of the course", required = true)
     private String description;
 
+    @NotNull
+    @ApiModelProperty(notes = "The module that will be taught in the course", required = true)
     @ManyToOne
     private Module module;
 
+    @ApiModelProperty(notes = "The students studying the course", required = true)
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<User> students;
 
+    @ApiModelProperty(notes = "The teacher that created the course", required = true)
     @ManyToOne
     private User teacher;
 

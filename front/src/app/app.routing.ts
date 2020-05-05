@@ -22,11 +22,12 @@ import {ImageComponent} from './images/image.component';
 import {LessonSlidesToolComponent} from './itinerary/lesson/lessonTools/lesson-slides-tool.component';
 import {QuestionTrackingComponent} from './question/questionTracking/questionTracking.component';
 import {UnitsQuestionsToolComponent} from './itinerary/lesson/lessonTools/units-questions-tool.component';
+import {ConfirmDeactivateGuard} from "./view/confirm-deactivate-guard";
 
 
 const appRoutes = [
   { path: '' , component: HomeComponent },
-  { path: 'unit' , component: ViewComponent },
+  { path: 'unit' , component: ViewComponent, canDeactivate: [ConfirmDeactivateGuard] },
   { path: 'unit/:unitId', component: UnitComponent },
   { path: 'unitsCardsTool', component: UnitsCardsToolComponent },
   { path: 'lessonSlidesTool', component: LessonSlidesToolComponent },
@@ -39,6 +40,7 @@ const appRoutes = [
   { path: 'units/:unitId/modules', component: ModuleComponent },
   { path: 'units/:unitId/lessons/:lessonId', component: LessonEditorComponent },
   { path: 'units/:unitId/modules/:moduleId/lessons/:lessonId', component: LessonEditorComponent },
+  { path: 'course/:courseId/units/:unitId/modules/:moduleId/lessons/:lessonId', component: LessonEditorComponent },
   { path: 'units/:unitId/modules/:moduleId', component: ModuleEditorComponent },
   { path: 'course/:courseId/modules/:moduleId', component: ModuleEditorComponent },
   { path: 'units/:unitId/question', component: QuestionComponent },

@@ -216,7 +216,14 @@ public class CourseApiTests {
         mvc.perform(MockMvcRequestBuilders.get("/api/course/1/module/progress")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name", is("Test Module")));
+                .andExpect(jsonPath("$.value.nombre", is("Test Module")));
+    }
+
+    @Test
+    public void testNotFoundGetModuleProgress() throws Exception{
+        mvc.perform(MockMvcRequestBuilders.get("/api/course/2/module/progress")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(404));
     }
 
     @Test
@@ -251,6 +258,13 @@ public class CourseApiTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].studentName", is("Test User")))
                 .andExpect(jsonPath("$[0].average", is(1.0)));
+    }
+
+    @Test
+    public void testNotFoundGetStudentProgress() throws Exception{
+        mvc.perform(MockMvcRequestBuilders.get("/api/course/2/students/progress")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(404));
     }
 
     @Test

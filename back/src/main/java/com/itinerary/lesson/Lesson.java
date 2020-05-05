@@ -7,20 +7,24 @@ import javax.persistence.*;
 
 import com.itinerary.block.Block;
 import com.slide.*;
+import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 public class Lesson extends Block {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(notes = "The lesson name", required = true)
     protected long id;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @OrderColumn
+    @ApiModelProperty(notes = "A list with the slides inside the lesson", required = true)
     private List<Slide> slides;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @OrderColumn
+    @ApiModelProperty(notes = "A list with the ids of the questions inside the lesson", required = true)
     private List<Long> questionsIds;
 
     public Lesson(){

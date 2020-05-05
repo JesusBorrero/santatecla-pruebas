@@ -2,6 +2,7 @@ package com.unit;
 
 import java.util.*;
 
+import com.relation.Relation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,10 @@ public class UnitService {
 
 	public void delete(long id) {
 		unitRepository.deleteById(id);
+	}
+
+	public List<Unit> findByName(String name) {
+		return resolveDuplicateNames(unitRepository.findByName(name));
 	}
 
 	public List<Unit> findByNameContaining(String name) {
@@ -115,6 +120,10 @@ public class UnitService {
 		return null;
 	}
 
+	public String getUnambiguousName(Unit unit) {
+		return findByNameContaining(unit.getName()).stream().filter(u -> (unit.getId() == u.getId())).findAny().orElse(unit).getName();
+	}
+
 	public String getAbsoluteName(Unit unit) {
 		Unit parent = unit;
 		String absoluteName = "";
@@ -128,13 +137,42 @@ public class UnitService {
 	}
 
 	public boolean isValidName(Unit unit) {
-		for(Unit nameContaining : unitRepository.findByNameContaining(unit.getName())) {
-			if ((nameContaining.getId() != unit.getId()) && (nameContaining.getName().equals(unit.getName())) &&
-				((getAbsoluteName(nameContaining).contains(getAbsoluteName(unit))) || (getAbsoluteName(unit).contains(getAbsoluteName(nameContaining))))) {
+		for(Unit unitWithNameContaining : unitRepository.findByNameContaining(unit.getName())) {
+			if ((unitWithNameContaining.getId() != unit.getId()) && (unitWithNameContaining.getName().equals(unit.getName())) &&
+				((getAbsoluteName(unitWithNameContaining).contains(getAbsoluteName(unit))) || (getAbsoluteName(unit).contains(getAbsoluteName(unitWithNameContaining))))) {
+				return false;
+			}
+		}
+		for (Unit unitWithName : unitRepository.findByName(unit.getName())) {
+			if (unit.getId() != unitWithName.getId()) {
+				for (Relation unitOutgoingRelation : unit.getOutgoingRelations()) {
+					for (Relation unitWithNameOutgoingRelation : unitWithName.getOutgoingRelations()) {
+						if (unitOutgoingRelation.getIncoming().equals(unitWithNameOutgoingRelation.getIncoming())) {
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	public boolean ableToDeleteUnit(Unit unit) {
+		for (Relation relation : unit.getIncomingRelations()) {
+			Unit outgoing = findOne(relation.getOutgoing()).get();
+			if ((outgoing.getOutgoingRelations().size() <= 1) && (findByName(outgoing.getName()).size() > 1)) {
 				return false;
 			}
 		}
 		return true;
+	}
+
+	public Long findLessonUnit(long lessonId){
+		return this.unitRepository.findLessonUnit(lessonId);
+	}
+
+	public Long findModuleUnit(long moduleId){
+		return this.unitRepository.findModuleUnit(moduleId);
 	}
 
 }

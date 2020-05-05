@@ -178,3 +178,13 @@ li {
 .title {
   top: -0.3rem;
 }
+
+.tools {
+  color: white;
+  position: absolute;
+  top: 3.7rem;
+}
+
+.return {
+  margin-right: 2rem;
+}

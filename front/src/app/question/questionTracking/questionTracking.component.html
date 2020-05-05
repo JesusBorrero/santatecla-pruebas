@@ -4,7 +4,17 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body class="question-tracking">
+<body>
+
+  <div class="toolsBar">
+    <mat-chip-list class="tools">
+      <button mat-button class="return" [routerLink]="['/unit/' + tabService.activeTab?.unitId]">
+        <mat-icon>navigate_before</mat-icon>
+        <span class="btn-span">Volver</span>
+      </button>
+    </mat-chip-list>
+  </div>
+
   <h1 class="center-title">Resumen de resultados</h1>
 
   <h3 class="center-title">Pregunta: {{this.question?.questionText}}</h3>

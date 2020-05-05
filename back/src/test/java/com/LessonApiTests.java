@@ -89,12 +89,12 @@ public class LessonApiTests {
     @Test
     public void testEditLesson() throws Exception{
         Lesson lesson2 = new Lesson();
-        lesson2.setName("Test Lesson 2");
+        lesson2.setName("Test Lesson");
 
         mvc.perform(MockMvcRequestBuilders.put("/api/lessons/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonParser.toJson(lesson2)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("Test Lesson 2")));
+                .andExpect(jsonPath("$.name", is("Test Lesson")));
     }
 }

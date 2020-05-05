@@ -116,7 +116,7 @@ public class ModuleApiTests {
         mvc.perform(MockMvcRequestBuilders.post("/api/modules/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonParser.toJson(block)))
-                .andExpect(status().is(201));
+                .andExpect(status().is(200));
 
         assertThat(module.getBlocks().size(), is(1));
     }

@@ -3,6 +3,7 @@ package com.itinerary.module;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import com.GeneralRestController;
 
@@ -19,10 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/units")
-public class UnitModuleRestController extends GeneralRestController {
-
-    @Autowired
-    protected UnitService unitService;
+public class UnitModuleRestController extends GeneralRestController implements UnitModuleController{
 
     @PostMapping(value = "/{unitId}/modules")
     @ResponseStatus(HttpStatus.CREATED)
@@ -48,7 +46,7 @@ public class UnitModuleRestController extends GeneralRestController {
             Optional<Module> module = this.moduleService.findOne(moduleId);
             if (module.isPresent()) {
                 unit.get().getModules().remove(module.get());
-                List<Long> parents = module.get().getParentsId();
+                Set<Long> parents = module.get().getParentsId();
                 if (parents != null) {
                     List<Long> idUsed = new ArrayList<>();
                     for (Long pId : parents) {
@@ -62,7 +60,7 @@ public class UnitModuleRestController extends GeneralRestController {
                     List<Block> blocks = module.get().getBlocks();
                     if (blocks != null) {
                         for (Block b : blocks) {
-                            List<Long> iDs = b.getParentsId();
+                            Set<Long> iDs = b.getParentsId();
                             if (iDs != null) {
                                 List<Long> iDsUsed = new ArrayList<>();
                                 for (Long id : iDs) {

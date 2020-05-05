@@ -44,9 +44,9 @@ export class AnswerQuestionDialogComponent implements OnInit {
   listAnswer: ListAnswer;
   testAnswer: TestAnswer;
 
-  definitionAnswers;
-  listAnswers;
-  testAnswers;
+  definitionAnswers: DefinitionAnswer[];
+  listAnswers: ListAnswer[];
+  testAnswers: TestAnswer[];
 
   subtype: string;
   spinner: boolean;
@@ -102,7 +102,8 @@ export class AnswerQuestionDialogComponent implements OnInit {
   getPreviousUserAnswers() {
     switch (this.subtype) {
       case 'DefinitionQuestion': {
-        this.questionService.getDefinitionUserAnswers(this.unitId, this.data.question.id, this.loginService.getCurrentUser().id).subscribe(
+        this.questionService.getDefinitionUserAnswers(this.unitId, this.data.question.id, this.loginService.getCurrentUser().id,
+          this.data.blockId, this.data.courseId).subscribe(
           (data: DefinitionAnswer[]) => {
             this.definitionAnswers = data;
             this.updateQuestionDone();
@@ -111,7 +112,8 @@ export class AnswerQuestionDialogComponent implements OnInit {
         break;
       }
       case 'ListQuestion': {
-        this.questionService.getListUserAnswers(this.unitId, this.data.question.id, this.loginService.getCurrentUser().id).subscribe(
+        this.questionService.getListUserAnswers(this.unitId, this.data.question.id, this.loginService.getCurrentUser().id,
+          this.data.blockId, this.data.courseId).subscribe(
           (data: ListAnswer[]) => {
             this.listAnswers = data;
             this.updateQuestionDone();
@@ -120,7 +122,8 @@ export class AnswerQuestionDialogComponent implements OnInit {
         break;
       }
       case 'TestQuestion': {
-        this.questionService.getTestUserAnswers(this.unitId, this.data.question.id, this.loginService.getCurrentUser().id).subscribe(
+        this.questionService.getTestUserAnswers(this.unitId, this.data.question.id, this.loginService.getCurrentUser().id,
+          this.data.blockId, this.data.courseId).subscribe(
           (data: TestAnswer[]) => {
             this.testAnswers = data;
             this.updateQuestionDone();

@@ -2,6 +2,7 @@ package com.itinerary.module;
 
 import com.google.gson.annotations.SerializedName;
 import com.itinerary.block.Block;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,10 +13,12 @@ public class Module extends Block {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @SerializedName("moduleId")
+    @ApiModelProperty(notes = "The module ID. It is unique", required = true)
     protected long id;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @OrderColumn
+    @ApiModelProperty(notes = "The blocks inside the module", required = true)
     private List<Block> blocks;
 
     public Module(){

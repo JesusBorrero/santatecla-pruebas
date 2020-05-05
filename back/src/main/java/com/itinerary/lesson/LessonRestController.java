@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/lessons")
-public class LessonRestController extends GeneralRestController {
+public class LessonRestController extends GeneralRestController implements LessonController{
 
     @GetMapping(value="/")
     public MappingJacksonValue lessons(){
@@ -48,11 +48,22 @@ public class LessonRestController extends GeneralRestController {
 
     @PutMapping(value="/{id}")
     public ResponseEntity<Lesson> updateLesson(@PathVariable long id, @RequestBody Lesson lesson) {
-        for (Slide slide: lesson.getSlides()) {
-            this.slideService.save(slide);
-        }
         Optional<Lesson> l = this.lessonService.findOne(id);
+        Slide oldSlide;
         if (l.isPresent()) {
+            if(!lesson.getName().equals(l.get().getName())){
+                long unitId = this.unitService.findLessonUnit(l.get().getId());
+                this.slideService.updateAllSlidesLessonName(l.get().getName(), lesson.getName(),
+                        this.unitService.findOne(unitId).get().getName(), lesson);
+            }
+            for (Slide slide: lesson.getSlides()) {
+                oldSlide = this.slideService.findOne(slide.getId()).get();
+                if(!oldSlide.getName().equals(slide.getName())){
+                    this.slideService.updateAllSlidesSlideName(l.get().getName(), oldSlide.getName(), slide.getName(), lesson);
+                }
+                this.slideService.save(slide);
+            }
+
             List<Long> diferences = l.get().compareId(lesson.getSlides());
             for (long diferenceId: diferences) {
                 this.slideService.delete(diferenceId);

@@ -1,7 +1,7 @@
 import { Unit } from '../../../unit/unit.model';
 import { SlideService } from '../../../slide/slide.service';
 import { Lesson } from '../lesson.model';
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { TdDialogService } from '@covalent/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
@@ -14,10 +14,8 @@ import Asciidoctor from 'asciidoctor';
 import {Slide} from '../../../slide/slide.model';
 import {DefinitionQuestionService} from '../../../question/definitionQuestion/definitionQuestion.service';
 import {UnitsCardsToolComponent} from '../lessonTools/units-cards-tool.component';
-import {TabService} from '../../../tab/tab.service';
 import {UnitLessonService} from '../unit-lesson.service';
 import {CourseService} from '../../../course/course.service';
-import {Course} from '../../../course/course.model';
 import {ModuleService} from '../../module/module.service';
 import {Module} from '../../module/module.model';
 import {ImageService} from '../../../images/image.service';
@@ -33,6 +31,11 @@ import {AnswerQuestionDialogComponent} from '../../../question/answerQuestionDia
 import {Question} from '../../../question/question.model';
 import {UnitsQuestionsToolComponent} from '../lessonTools/units-questions-tool.component';
 import {ClipboardService} from 'ngx-clipboard';
+import {TabService} from '../../../tab/tab.service';
+import {Tab} from '../../../tab/tab.model';
+import {TestAnswer} from '../../../question/testQuestion/testAnswer.model';
+import {ListAnswer} from '../../../question/listQuestion/listAnswer.model';
+import {DefinitionAnswer} from '../../../question/definitionQuestion/definitionAnswer.model';
 
 
 function convertToHTML(text) {
@@ -41,12 +44,17 @@ function convertToHTML(text) {
   return(html);
 }
 
+enum State {
+  Correct = 0,
+  Wrong,
+  Uncorrected,
+}
+
 @Component({
   selector: 'app-lesson-editor',
   templateUrl: './lesson-editor.component.html',
   styleUrls: ['./lesson-editor.component.css']
 })
-
 export class LessonEditorComponent implements OnInit {
 
   contentHTML: any[];
@@ -83,7 +91,16 @@ export class LessonEditorComponent implements OnInit {
   questions: Question[];
   questionsCount: number;
 
+  // Map questionId - Question
+  mapQuestions: Map<number, Question>;
+  // Map Question - Boolean question done
+  mapQuestionsDone: Map<Question, State>;
+
   cursorPosition: number;
+
+  extraExtend = true;
+
+  actualTab: Tab;
 
   constructor(private slideService: SlideService,
               private router: Router,
@@ -107,7 +124,6 @@ export class LessonEditorComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.contentSlide = 0;
 
     this.activatedRoute.params.subscribe(params => {
@@ -118,22 +134,25 @@ export class LessonEditorComponent implements OnInit {
         if (this.loginService.isAdmin) {
           this.moduleId = params.moduleId;
           this.unitService.getUnit(this.unitId).subscribe((unit: Unit) => {
-            if (typeof this.moduleId === 'undefined') {
-              this.tabService.setLesson(unit.name, this.unitId, lesson.name);
-            } else {
-              this.moduleService.getModule(this.moduleId).subscribe((module: Module) => {
-                this.tabService.setLessonInModule(unit.name, this.unitId, module.name, module.id, lesson.name);
-              });
+              if (typeof this.moduleId === 'undefined') {
+                this.tabService.addTab(new Tab('Unidad', +unit.id, unit.name, unit.id, null, null));
+                this.tabService.updateActiveTabLink('Lección', this.lessonId, lesson.name, unit.id, null, null);
+              } else {
+                this.moduleService.getModule(this.moduleId).subscribe((module: Module) => {
+                  this.tabService.addTab(new Tab('Unidad', +unit.id, unit.name, unit.id, null, null));
+                  this.tabService.updateActiveTabLink('Lección', this.lessonId, lesson.name, unit.id, null, module.id);
+                });
             }
           });
         } else {
           this.moduleId = params.moduleId;
-          this.moduleService.getModule(this.moduleId).subscribe((module: Module) => {
-            this.courseService.getCourse(this.unitId).subscribe((course: Course) => {
-              this.courseId = course.id;
-              this.tabService.setLessonInModule(course.name, course.id, module.name, module.id, lesson.name);
-            });
-          });
+          this.courseId = params.courseId;
+          const tab = new Tab('Lección', this.lessonId, lesson.name, '' + this.unitId, this.courseId, this.moduleId);
+          tab.setIsNotAdmin();
+          this.tabService.addTab(tab);
+          this.actualTab = this.tabService.activeTab;
+          this.contentSlide = this.actualTab.studentLessonSlideNumber;
+          this.progress = this.actualTab.studentLessonSlideProgress;
         }
         this.loadItinerary();
       });
@@ -161,13 +180,74 @@ export class LessonEditorComponent implements OnInit {
   }
 
   loadQuestions() {
-    this.questions = [];
+    this.mapQuestionsDone = new Map<Question, number>();
+    this.mapQuestions = new Map<number, Question>();
     this.lesson.questionsIds.forEach((questionId) => {
-      this.questions.push();
-    });
-    this.lesson.questionsIds.forEach((questionId, index) => {
       this.questionService.getQuestion(questionId).subscribe((data: Question) => {
-        this.questions.splice(index, 0, data);
+        if (!this.loginService.isAdmin) {
+          if (data.subtype === 'TestQuestion') {
+            this.questionService.getTestUserAnswers(this.unitId, questionId, this.loginService.getCurrentUser().id,
+              this.lessonId, this.courseId).subscribe((response: TestAnswer[]) => {
+                if (response.length === 0) {
+                  this.mapQuestionsDone.set(data, null);
+                } else {
+                  if (response[0].correct) {
+                    this.mapQuestionsDone.set(data, State.Correct);
+                  } else {
+                    this.mapQuestionsDone.set(data, State.Wrong);
+                  }
+                }
+                this.questions = Array.from(this.mapQuestionsDone.keys());
+                for (const q of this.questions) {
+                  this.mapQuestions.set(q.id, q);
+                }
+            }, error => {
+              console.log(error);
+            });
+          } else if (data.subtype === 'ListQuestion') {
+            this.questionService.getListUserAnswers(this.unitId, questionId, this.loginService.getCurrentUser().id,
+              this.lessonId, this.courseId).subscribe((response: ListAnswer[]) => {
+              if (response.length === 0) {
+                this.mapQuestionsDone.set(data, null);
+              } else {
+                if (response[0].correct) {
+                  this.mapQuestionsDone.set(data, State.Correct);
+                } else {
+                  this.mapQuestionsDone.set(data, State.Wrong);
+                }
+              }
+              this.questions = Array.from(this.mapQuestionsDone.keys());
+              for (const q of this.questions) {
+                this.mapQuestions.set(q.id, q);
+              }
+            }, error => {
+              console.log(error);
+            });
+          } else {
+            this.questionService.getDefinitionUserAnswers(this.unitId, questionId, this.loginService.getCurrentUser().id,
+              this.lessonId, this.courseId).subscribe((response: DefinitionAnswer[]) => {
+              if (response.length === 0) {
+                this.mapQuestionsDone.set(data, null);
+              } else {
+                if (response[0].corrected) {
+                  if (response[0].correct) {
+                    this.mapQuestionsDone.set(data, State.Correct);
+                  } else {
+                    this.mapQuestionsDone.set(data, State.Wrong);
+                  }
+                } else {
+                  this.mapQuestionsDone.set(data, State.Uncorrected);
+                }
+              }
+              this.questions = Array.from(this.mapQuestionsDone.keys());
+              for (const q of this.questions) {
+                this.mapQuestions.set(q.id, q);
+              }
+            }, error => {
+              console.log(error);
+            });
+          }
+        }
       });
     });
   }
@@ -238,6 +318,18 @@ export class LessonEditorComponent implements OnInit {
         } else {
           this.extractedData.splice(contentCounter, 1, 'ERROR\n');
         }
+      } else if (type === 'image') {
+        contentEmbedded = await this.imageService.getImage(unit, content1).toPromise().catch((error) => {});
+        if (typeof contentEmbedded !== 'undefined') {
+          const image = this.convertImage(contentEmbedded.image);
+          const img = '++++\n' +
+            '<img class="img-lesson" src="' + image + '">\n' +
+            '++++\n' +
+            '\n';
+          this.extractedData.splice(contentCounter, 1, img);
+        } else {
+          this.extractedData.splice(contentCounter, 1, 'ERROR\n');
+        }
       }
     } else {
       if (type === 'card') {
@@ -255,20 +347,6 @@ export class LessonEditorComponent implements OnInit {
         } else {
           this.extractedData.splice(contentCounter, 1, contentEmbedded[0].content.split('=== ')[1]);
         }
-      }
-    }
-
-    if (type === 'image') {
-      contentEmbedded = await this.imageService.getImage(content1).toPromise().catch((error) => {});
-      if (typeof contentEmbedded !== 'undefined') {
-        const image = this.convertImage(contentEmbedded.image);
-        const img = '++++\n' +
-          '<img class="img-lesson" src="' + image + '">\n' +
-          '++++\n' +
-          '\n';
-        this.extractedData.splice(contentCounter, 1, img);
-      } else {
-        this.extractedData.splice(contentCounter, 1, 'ERROR\n');
       }
     }
 
@@ -335,7 +413,7 @@ export class LessonEditorComponent implements OnInit {
           contentCounter = contentCounter + 1;
         } else if (parameters[0] === 'image') {
           this.position.push(counter);
-          this.getEmbeddedContent(Number(parameters[1]), null, null, content, contentCounter, 'image');
+          this.getEmbeddedContent(Number(parameters[2]), null, Number(parameters[1]), content, contentCounter, 'image');
           contentCounter = contentCounter + 1;
         }
       }
@@ -365,12 +443,21 @@ export class LessonEditorComponent implements OnInit {
         this.subSlideCount = this.subSlideCount + 1;
         this.extendContent(this.lessonContentExtended);
       } else {
+        if (this.extraExtend) {
+          this.extraExtend = false;
+          this.extendContent(this.lessonContentExtended);
+        }
         this.showSpinner = false;
         this.viewHTMLVersion();
         this.updateQuestionsBlocks(this.lesson.questionsIds, this.newQuestionsIds);
         this.contentToItinerary(this.lessonContent);
-        this.lessonService.updateLesson(this.lesson).subscribe();
-        this.progress = (1 / (this.contentHTML.length)) * 100;
+        if (this.loginService.isAdmin) {
+          this.lessonService.updateLesson(this.lesson).subscribe();
+        }
+        if (this.progress === 0) {
+          this.progress = (1 / (this.contentHTML.length)) * 100;
+          this.actualTab.studentLessonSlideProgress = this.progress;
+        }
       }
     }
   }
@@ -437,11 +524,13 @@ export class LessonEditorComponent implements OnInit {
   updateHTMLView() {
     this.contentToItinerary(this.lessonContent);
     this.showSpinner = true;
-    this.lessonService.updateLesson(this.lesson).subscribe((_) => {
-      this.loadItinerary();
-    }, (error) => {
-      console.error(error);
-    });
+    if (this.loginService.isAdmin) {
+      this.lessonService.updateLesson(this.lesson).subscribe((_) => {
+        this.loadItinerary();
+      }, (error) => {
+        console.error(error);
+      });
+    }
   }
 
   openCardsBottomSheet(): void {
@@ -453,8 +542,10 @@ export class LessonEditorComponent implements OnInit {
 
   openImageBottomSheet(): void {
     this.getCursorPosition();
-    this.bottomSheet.open(ImageComponent, {data: ''}).afterDismissed().subscribe(result => {
-      this.pasteFromClipboard(result);
+    this.bottomSheet.open(ImageComponent, {data: {unitId: this.unitId}}).afterDismissed().subscribe(result => {
+      if (result !== undefined) {
+        this.pasteFromClipboard(result);
+      }
     });
   }
 
@@ -490,20 +581,16 @@ export class LessonEditorComponent implements OnInit {
 
   nextSlide() {
     this.contentSlide++;
+    this.actualTab.studentLessonSlideNumber ++;
     this.progress = this.progress + ((1 / (this.contentHTML.length)) * 100);
+    this.actualTab.studentLessonSlideProgress += ((1 / (this.contentHTML.length)) * 100);
   }
 
   prevSlide() {
     this.contentSlide--;
+    this.actualTab.studentLessonSlideNumber --;
     this.progress = this.progress - ((1 / (this.contentHTML.length)) * 100);
-  }
-
-  scrollText() {
-    const div = document.getElementById('slide-area-editor');
-    const div2 = document.getElementById('text-area-editor');
-    if (div) {
-      div.scrollTop = div2.scrollTop;
-    }
+    this.actualTab.studentLessonSlideProgress -= ((1 / (this.contentHTML.length)) * 100);
   }
 
   openQuestion(questionID: number, subtype: string) {

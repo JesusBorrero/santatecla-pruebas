@@ -9,18 +9,23 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 
 import com.google.gson.annotations.SerializedName;
 import com.question.Question;
 import com.question.definition.definition_answer.DefinitionAnswer;
+import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 public class DefinitionQuestion extends Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @SerializedName("definitionQuestionId")
+    @NotNull
+    @ApiModelProperty(notes = "The definition question ID. It is unique",  required = true)
     private long id;
 
+    @ApiModelProperty(notes = "List of users answers to the question")
     @OneToMany(cascade = CascadeType.ALL)
     private List<DefinitionAnswer> definitionAnswers;
 

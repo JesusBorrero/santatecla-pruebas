@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {LoginService} from '../auth/login.service';
 import {Course} from './course.model';
 import {Router} from '@angular/router';
-import {TabService} from '../tab/tab.service';
 import {TdDialogService} from '@covalent/core';
 import {MatDialog} from '@angular/material';
 import {NewCourseComponent} from './newCourse.component';
@@ -18,18 +17,13 @@ export class MyCoursesComponent implements OnInit {
   searchField = '';
   showingCourses: Course[];
 
-  constructor(public loginService: LoginService,
-              private courseService: CourseService,
-              private router: Router,
-              private tabService: TabService,
-              private dialogService: TdDialogService,
-              public dialog: MatDialog) {
+  constructor(public loginService: LoginService, private courseService: CourseService, private router: Router,
+              private dialogService: TdDialogService, public dialog: MatDialog) {
     this.courses = [];
     this.showingCourses = [];
   }
 
   ngOnInit() {
-    this.tabService.setCourses();
     if (this.loginService.isAdmin) {
       this.courseService.getTeacherCourses(this.loginService.getCurrentUser().id).subscribe((data: Course[]) => {
         this.courses = data;
@@ -75,7 +69,6 @@ export class MyCoursesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
       if (result === 1) {
         this.ngOnInit();
       }

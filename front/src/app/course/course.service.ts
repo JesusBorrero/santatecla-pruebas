@@ -57,7 +57,7 @@ export class CourseService {
     return this.http.put<Course>('/api/course/' + id, body, {headers});
   }
 
-  searchUserByNameContaining(name: string) {
-    return this.http.get('/api/student/search/' + name);
+  findModuleUnit(moduleId: number) {
+    return this.http.get('/api/course/module/' + moduleId + '/unit');
   }
 }

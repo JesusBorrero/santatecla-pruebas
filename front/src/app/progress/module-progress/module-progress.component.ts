@@ -1,13 +1,10 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { ProgressService } from '../progress.service';
-import {LoginService, User} from '../../auth/login.service';
+import {LoginService} from '../../auth/login.service';
 import {Course} from '../../course/course.model';
-import {UserResult} from '../items/userResult.model';
 import {ActivatedRoute} from '@angular/router';
 import {CourseService} from '../../course/course.service';
-import {BrowserModule, DomSanitizer} from '@angular/platform-browser';
-import {MatIconRegistry} from '@angular/material';
-import {DatePipe} from '@angular/common';
+import {ProgressNode} from '../items/progressNode.model';
 
 @Component({
   selector: 'app-module-progress',
@@ -18,13 +15,16 @@ import {DatePipe} from '@angular/common';
 export class ModuleProgressComponent implements OnInit {
   courseId: number;
   course: Course;
-  moduleResults: UserResult[];
-  columnsToDisplay = ['name', 'realization', 'average'];
+  moduleResults: ProgressNode;
+
+  treeTableOptions = {verticalSeparator: true, capitalisedHeader: true, highlightRowOnHover: true,
+    customColumnOrder: ['nombre', 'realizacion', 'media']};
+
   moduleResultsReady = false;
+
   histogram = [];
   xAxisLabel = 'Módulo';
   yAxisLabel = 'Media';
-  showingModuleResults: UserResult[];
 
   constructor(private courseService: CourseService,
               public loginService: LoginService,
@@ -39,9 +39,8 @@ export class ModuleProgressComponent implements OnInit {
         this.course = data;
       }, error => {console.log(error); });
 
-      this.progressService.getModuleProgress(this.courseId).subscribe((data: UserResult[]) => {
+      this.progressService.getModuleProgress(this.courseId).subscribe((data: ProgressNode) => {
         this.moduleResults = data;
-        this.showingModuleResults = this.moduleResults;
         this.buildHistogramData();
         this.moduleResultsReady = true;
       }, error => {console.log(error); });
@@ -49,17 +48,8 @@ export class ModuleProgressComponent implements OnInit {
   }
 
   buildHistogramData() {
-    for (let module of this.moduleResults) {
-      this.histogram.push({name: module.name, value: module.points[1]});
-    }
-  }
-
-  applyFilterModule(value: string) {
-    this.showingModuleResults = [];
-    for (let result of this.moduleResults) {
-      if (result.name.toLowerCase().includes(value.toLowerCase())) {
-        this.showingModuleResults.push(result);
-      }
+    for (let child of this.moduleResults.children) {
+      this.histogram.push({name: child.value.nombre, value: child.value.media});
     }
   }
 

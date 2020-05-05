@@ -111,12 +111,14 @@ public class CardsApiTests {
 
         Card card1 = new Card();
         card1.setId(1);
+        card1.setName("TestName");
         card1.setContent("TestContent");
 
         unit1.addCard(card1);
 
         Card card2 = new Card();
         card2.setId(2);
+        card2.setName("TestName");
         card2.setContent("TestContent2");
 
         given(unitService.findOne(1)).willReturn(Optional.of(unit1));

@@ -13,11 +13,11 @@
     </div>
 
     <div *ngIf="!showSpinner" cdkDropList #cardList class="cardList" (cdkDropListDropped)="drop($event)">
-      <mat-accordion multi="true" class="card-container" *ngFor="let card of cards; let i = index" cdkDrag>
+      <mat-accordion multi="true" class="card-container" *ngFor="let card of cards; let i = index" cdkDrag  [cdkDragDisabled]="!cardsView[i]">
         <mat-icon id="delete-card-button" (click)="deleteCard(card.id, i)" matTooltip="Eliminar">delete</mat-icon>
         <mat-icon *ngIf="cardsView[i]" class="edit-card-button" (click)="editCard(i)" matTooltip="Editar">edit</mat-icon>
-        <mat-icon *ngIf="!cardsView[i]" class="edit-card-button" (click)="viewCard(i)" matTooltip="Visualizar">remove_red_eye</mat-icon>
-        <mat-expansion-panel [ngClass]="card.id != 0 ? 'card saved-card' : 'card new-card'" expanded="true">
+        <mat-icon *ngIf="!cardsView[i]" class="edit-card-button" (click)="viewCard(i)" matTooltip="Visualizar" >remove_red_eye</mat-icon>
+        <mat-expansion-panel [ngClass]="card.id != 0 ? 'card saved-card' : 'card new-card'" expanded="true" [disabled]="!cardsView[i]">
           <mat-expansion-panel-header class="card-header">
             <mat-panel-title>
               <div *ngIf="!cardsView[i]">

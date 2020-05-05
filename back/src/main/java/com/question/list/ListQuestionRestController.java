@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.GeneralRestController;
 
+import com.question.QuestionController;
 import com.question.list.list_answer.ListAnswer;
 import com.question.list.list_question.ListQuestion;
 import com.unit.Unit;
@@ -14,10 +15,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/units/{unitID}/question/list")
-public class ListQuestionRestController extends GeneralRestController {
+public class ListQuestionRestController
+        extends GeneralRestController
+        implements QuestionController<ListQuestion, ListAnswer> {
 
     @GetMapping("")
-    public ResponseEntity<List<ListQuestion>> getListQuestions(@PathVariable long unitID) {
+    public ResponseEntity<List<ListQuestion>> getQuestions(@PathVariable long unitID) {
         Optional<Unit> unit = this.unitService.findOne(unitID);
 
         if (unit.isPresent())
@@ -27,7 +30,7 @@ public class ListQuestionRestController extends GeneralRestController {
     }
 
     @GetMapping("/{questionID}")
-    public ResponseEntity<ListQuestion> getListQuestion(@PathVariable long unitID, @PathVariable long questionID) {
+    public ResponseEntity<ListQuestion> getQuestion(@PathVariable long unitID, @PathVariable long questionID) {
         Optional<Unit> unit = this.unitService.findOne(unitID);
         Optional<ListQuestion> question = this.listQuestionService.findOne(questionID);
 
@@ -38,7 +41,7 @@ public class ListQuestionRestController extends GeneralRestController {
     }
 
     @PostMapping("")
-    public ResponseEntity<ListQuestion> addListQuestion(@PathVariable long unitID, @RequestBody ListQuestion question) {
+    public ResponseEntity<ListQuestion> addQuestion(@PathVariable long unitID, @RequestBody ListQuestion question) {
         Optional<Unit> unit = this.unitService.findOne(unitID);
 
         if (unit.isPresent()) {
@@ -52,7 +55,7 @@ public class ListQuestionRestController extends GeneralRestController {
     }
 
     @DeleteMapping("/{questionID}")
-    public ResponseEntity<ListQuestion> deleteListQuestion(@PathVariable long unitID, @PathVariable long questionID) {
+    public ResponseEntity<ListQuestion> deleteQuestion(@PathVariable long unitID, @PathVariable long questionID) {
         Optional<Unit> unit = this.unitService.findOne(unitID);
         Optional<ListQuestion> question = this.listQuestionService.findOne(questionID);
 
@@ -80,7 +83,7 @@ public class ListQuestionRestController extends GeneralRestController {
     }
 
     @GetMapping(value = "/{questionID}/answer")
-    public ResponseEntity<List<ListAnswer>> getListAnswers(@PathVariable long unitID, @PathVariable long questionID) {
+    public ResponseEntity<List<ListAnswer>> getAnswers(@PathVariable long unitID, @PathVariable long questionID) {
         Optional<Unit> unit = this.unitService.findOne(unitID);
         Optional<ListQuestion> question = this.listQuestionService.findOne(questionID);
 
@@ -92,7 +95,7 @@ public class ListQuestionRestController extends GeneralRestController {
     }
 
     @PostMapping("/{questionID}/answer")
-    public ResponseEntity<ListAnswer> addListAnswer(@PathVariable long unitID, @PathVariable long questionID, @RequestBody ListAnswer answer) {
+    public ResponseEntity<ListAnswer> addAnswer(@PathVariable long unitID, @PathVariable long questionID, @RequestBody ListAnswer answer) {
         Optional<Unit> unit = this.unitService.findOne(unitID);
         Optional<ListQuestion> question = this.listQuestionService.findOne(questionID);
 
@@ -118,7 +121,10 @@ public class ListQuestionRestController extends GeneralRestController {
     }
 
     @GetMapping("/{questionID}/answer/user/{userID}")
-    public ResponseEntity<List<Object>> getUserAnswers(@PathVariable long questionID, @PathVariable long userID) {
-        return new ResponseEntity<>(this.listQuestionService.findUserAnswers(userID, questionID), HttpStatus.OK);
+    public ResponseEntity<List<ListAnswer>> getUserAnswers(@RequestParam long blockId,
+                                                           @RequestParam long courseId,
+                                                           @PathVariable long questionID,
+                                                           @PathVariable long userID) {
+        return new ResponseEntity<>(this.listQuestionService.findUserAnswers(questionID, userID, blockId, courseId), HttpStatus.OK);
     }
 }

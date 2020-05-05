@@ -3,7 +3,10 @@
 <body>
   <div>
 
-    <img src="../../../assets/img/spinner.gif" id="spinner" class="top-margin" *ngIf="!classResultsReady">
+    <div id="spinner-container" *ngIf="!classResultsReady">
+      <img id="spinner" src="../../assets/img/spinner.gif">
+      <span id="spinner-text">Cargando...</span>
+    </div>
 
     <div class="top-margin">
       <div class="row">

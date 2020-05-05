@@ -23,15 +23,5 @@ script:
   # Create jar
   - mvn package
 
-  # Build docker image
-  - if [ "$TRAVIS_BRANCH" = "master" ]; then mkdir -p "../docker/build/" && cp -r target/back-0.0.1-SNAPSHOT.jar ../docker/build/; fi
-  - if [ "$TRAVIS_BRANCH" = "master" ]; then cd ../docker; fi
-  - if [ "$TRAVIS_BRANCH" = "master" ]; then docker build -t "$DOCKER_USERNAME"/santatecla .; fi
-
-  # Push to Docker Hub
-  - if [ "$TRAVIS_BRANCH" = "master" ]; then docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"; fi
-  - if [ "$TRAVIS_BRANCH" = "master" ]; then docker push "$DOCKER_USERNAME"/santatecla; fi
-
   # Start sonar scanner
   - sonar-scanner
-

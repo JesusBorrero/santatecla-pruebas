@@ -11,7 +11,6 @@ import {Module} from '../module.model';
 
 import { LoginService } from '../../../auth/login.service';
 import { UnitService } from '../../../unit/unit.service';
-import {TabService} from '../../../tab/tab.service';
 import {ModuleService} from '../module.service';
 import {CourseService} from '../../../course/course.service';
 import {Course} from '../../../course/course.model';
@@ -19,6 +18,8 @@ import {UnitsBlocksToolComponent} from './units-blocks-tool.component';
 import {MatDialog} from '@angular/material/dialog';
 import {Block} from '../../block.model';
 import {ConfirmActionComponent} from '../../../confirmAction/confirm-action.component';
+import {TabService} from '../../../tab/tab.service';
+import {Tab} from '../../../tab/tab.model';
 
 @Component({
   selector: 'app-module-editor',
@@ -43,7 +44,6 @@ export class ModuleEditorComponent implements OnInit {
   table: Map<Block, number>;
 
   showMenu: boolean;
-  activeTab = 0;
 
   viewLessonPosition = 'after';
   optionInfoPosition = 'after';
@@ -52,6 +52,8 @@ export class ModuleEditorComponent implements OnInit {
   confirmText2 = 'Se eliminará permanentemente';
   button1 = 'Cancelar';
   button2 = 'Borrar';
+
+  actualTab: Tab;
 
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
@@ -89,11 +91,33 @@ export class ModuleEditorComponent implements OnInit {
 
         if (this.unitId !== undefined) {
           this.unitService.getUnit(this.unitId).subscribe((unit: Unit) => {
-            this.tabService.setUnitModule(unit.name, this.unitId, module.name, module.id);
+            this.tabService.addTab(new Tab('Unidad', +unit.id, unit.name, unit.id, null, null));
+            this.tabService.updateActiveTabLink('Itinerario', this.moduleId, module.name, unit.id, null, null);
+            this.actualTab = this.tabService.activeTab;
+            if (this.actualTab.openedModuleNodes.length !== 0) {
+              this.expandNodesById();
+            }
           });
         } else {
           this.courseService.getCourse(this.courseId).subscribe((course: Course) => {
-            this.tabService.setCourseModule(course.module.id, course.id, course.name);
+            this.unitService.getModuleUnit(course.module.id).subscribe((unit: Unit) => {
+              this.unitId = +unit.id;
+              if (this.loginService.isAdmin) {
+                this.tabService.addTab(new Tab('Unidad', +unit.id, unit.name, unit.id, null, null));
+                this.tabService.updateActiveTabLink('Itinerario', this.moduleId, module.name, null, course.id, null);
+                this.actualTab = this.tabService.activeTab;
+                if (this.actualTab.openedModuleNodes.length !== 0) {
+                  this.expandNodesById();
+                }
+              } else {
+                this.tabService.addTab(new Tab('Curso', +this.courseId, course.name, null, this.courseId, null));
+                this.tabService.updateCourseActiveTabLink('Itinerario', course.module.id, course.module.name, null, course.id, null);
+                this.actualTab = this.tabService.activeTab;
+                if (this.actualTab.openedModuleNodes.length !== 0) {
+                  this.expandNodesById();
+                }
+              }
+            }, error => {console.log(error); });
           });
         }
       });
@@ -114,6 +138,12 @@ export class ModuleEditorComponent implements OnInit {
   }
 
   expandNode(node: Module) {
+    if (node.blocks) {
+      this.actualTab.studentAddOpenedNode(this.module, node.id);
+    } else {
+      this.actualTab.studentAddOpenedLesson(this.module, node.id);
+    }
+
     this.expandParents(this.module, node.id);
     this.treeControl.expand(node);
     window.scrollTo(document.getElementById(node.name).offsetLeft, document.getElementById(node.name).offsetTop);
@@ -142,7 +172,7 @@ export class ModuleEditorComponent implements OnInit {
     if (this.loginService.isAdmin) {
       this.router.navigate(['/units/' + this.unitId + '/modules/' + this.moduleId + '/lessons/' + lessonId]);
     } else {
-      this.router.navigate(['/units/' + this.courseId + '/modules/' + this.moduleId + '/lessons/' + lessonId]);
+      this.router.navigate(['/course/' + this.courseId + '/units/' + this.unitId + '/modules/' + this.moduleId + '/lessons/' + lessonId]);
     }
   }
 
@@ -167,6 +197,27 @@ export class ModuleEditorComponent implements OnInit {
         });
       }
     });
+  }
+
+  addOpenedBlock(id: number, module: Module) {
+    if (!this.actualTab.addOpenedNode(id, module)) {
+      this.closeModuleChilds(module);
+    }
+  }
+
+  expandNodesById() {
+    for (let id of this.actualTab.openedModuleNodes) {
+      this.expandParents(this.module, id);
+    }
+  }
+
+  closeModuleChilds(module: Module) {
+    if (module.blocks) {
+      for (let block of module.blocks) {
+        this.treeControl.collapse(block);
+        this.closeModuleChilds(block);
+      }
+    }
   }
 
 }

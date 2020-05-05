@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
@@ -18,6 +20,7 @@ public class User {
 	@NotNull
 	private String name;
 
+	@JsonIgnore
 	@NotNull
 	private String passwordHash;
 

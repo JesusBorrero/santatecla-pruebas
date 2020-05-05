@@ -7,6 +7,7 @@ import { ClipboardService } from 'ngx-clipboard';
 import {Block} from '../../block.model';
 import {ModuleService} from '../module.service';
 import {LoginService} from '../../../auth/login.service';
+import {MatSnackBar} from '@angular/material';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class UnitsBlocksToolComponent implements OnInit {
               private bottomSheetRef: MatBottomSheetRef<UnitsBlocksToolComponent>,
               public loginService: LoginService,
               private clipboardService: ClipboardService,
+              private snackBar: MatSnackBar,
               @Optional() @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) {
   }
 
@@ -57,14 +59,14 @@ export class UnitsBlocksToolComponent implements OnInit {
   }
 
   addBlockInToModule(event: MouseEvent, block: Block): void {
-    if (!this.data.parentsId.includes(block.id)) {
-      this.moduleService.addBlock(this.data.id, block).subscribe( () => {
-        this.bottomSheetRef.dismiss();
-        event.preventDefault();
-      });
-    } else {
-      console.log('No se puede añadir');
-    }
+    this.moduleService.addBlock(this.data.id, block).subscribe( () => {
+      this.bottomSheetRef.dismiss();
+      event.preventDefault();
+    }, error => {
+      this.snackBar.open('No es posible introducir este itinerario porque contiene el mismo en el que se está intentando insertar o alguno de sus padres.',
+        'Entendido', {
+      duration: 5000,
+    }); });
   }
 
   addModuleIntoCourse(event: MouseEvent, block: Block) {

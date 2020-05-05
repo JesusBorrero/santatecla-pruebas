@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.card.Card;
+import com.image.Image;
 import com.itinerary.module.Module;
 import com.question.definition.definition_question.DefinitionQuestion;
 import com.itinerary.lesson.Lesson;
@@ -50,6 +51,9 @@ public class Unit {
     @ManyToMany
     private List<TestQuestion> testQuestions;
 
+    @OneToMany
+    private List<Image> images;
+
     public Unit() {
         this.cards = new ArrayList<>();
         this.lessons = new ArrayList<>();
@@ -59,6 +63,7 @@ public class Unit {
         this.definitionQuestions = new ArrayList<>();
         this.listQuestions = new ArrayList<>();
         this.testQuestions = new ArrayList<>();
+        this.images = new ArrayList<>();
     }
 
     public Unit(String name) {
@@ -214,5 +219,15 @@ public class Unit {
         this.testQuestions = testQuestions;
     }
 
+    public List<Image> getImages() {
+        return images;
+    }
 
+    public void setImages(List<Image> images) {
+        this.images = images;
+    }
+
+    public void addImage(Image image){
+        this.images.add(image);
+    }
 }

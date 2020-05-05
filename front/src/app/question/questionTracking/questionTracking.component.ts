@@ -3,9 +3,10 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {QuestionService} from '../question.service';
 import {Question} from '../question.model';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
-import {TabService} from '../../tab/tab.service';
 import {UnitService} from '../../unit/unit.service';
 import {DefinitionAnswer} from '../definitionQuestion/definitionAnswer.model';
+import {Tab} from '../../tab/tab.model';
+import {TabService} from '../../tab/tab.service';
 
 
 @Component({
@@ -43,8 +44,8 @@ export class QuestionTrackingComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private questionService: QuestionService,
-    private tabService: TabService,
-    private unitService: UnitService) {
+    private unitService: UnitService,
+    public tabService: TabService) {
   }
 
   ngOnInit() {
@@ -63,7 +64,11 @@ export class QuestionTrackingComponent implements OnInit {
 
         this.questionService.getUnitTestQuestion(this.unitId, this.questionId).subscribe((data: any) => {
           this.question = data;
-          this.getUnitNameAndSetTab();
+          this.unitService.getUnitName(this.unitId).subscribe((data: any) => {
+            this.unitName = data.response;
+            this.tabService.addTab(new Tab('Unidad', +this.unitId, this.unitName, '' + this.unitId, null, null));
+            this.tabService.updateActiveTabLink('TestQuestion', this.questionId, '', '' + this.unitId, null, null);
+          }, error => { console.log(error); });
         }, error => { console.log(error); });
       } else if (this.questionType === 'ListQuestion') {
         this.getCorrectWrongAnswerCount();
@@ -75,7 +80,11 @@ export class QuestionTrackingComponent implements OnInit {
 
         this.questionService.getUnitListQuestion(this.unitId, this.questionId).subscribe((data: any) => {
           this.question = data;
-          this.getUnitNameAndSetTab();
+          this.unitService.getUnitName(this.unitId).subscribe((data: any) => {
+            this.unitName = data.response;
+            this.tabService.addTab(new Tab('Unidad', +this.unitId, this.unitName, '' + this.unitId, null, null));
+            this.tabService.updateActiveTabLink('ListQuestion', this.questionId, '', '' + this.unitId, null, null);
+          }, error => { console.log(error); });
         }, error => { console.log(error); });
       } else if (this.questionType === 'DefinitionQuestion') {
 
@@ -97,7 +106,11 @@ export class QuestionTrackingComponent implements OnInit {
 
         this.questionService.getUnitDefinitionQuestion(this.unitId, this.questionId).subscribe((data: any) => {
           this.question = data;
-          this.getUnitNameAndSetTab();
+          this.unitService.getUnitName(this.unitId).subscribe((data: any) => {
+            this.unitName = data.response;
+            this.tabService.addTab(new Tab('Unidad', +this.unitId, this.unitName, '' + this.unitId, null, null));
+            this.tabService.updateActiveTabLink('DefinitionQuestion', this.questionId, '', '' + this.unitId, null, null);
+          }, error => { console.log(error); });
         }, error => { console.log(error); });
 
         this.questionService.getUnitDefinitionAnswersNotCorrected(this.unitId, this.questionId).subscribe((data: DefinitionAnswer[]) => {
@@ -114,7 +127,6 @@ export class QuestionTrackingComponent implements OnInit {
   getUnitNameAndSetTab() {
     this.unitService.getUnitName(this.unitId).subscribe((data: any) => {
       this.unitName = data.response;
-      this.tabService.setQuestion(this.questionId, this.question.questionText, this.unitName, this.unitId);
     }, error => { console.log(error); });
   }
 

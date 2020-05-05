@@ -1,0 +1,325 @@
+
+http://www.plantuml.com
+
+
+Create unit
+
+
+@startuml
+participant Browser
+participant API
+control UnitRestController
+participant UnitService
+participant UnitRepository
+database Database
+
+Browser -> API: HTTP Request POST new Unit
+API -> UnitRestController: createUnit
+UnitRestController -> UnitService: isValidName
+UnitService -> UnitRepository: findByNameContaining
+UnitRepository -> Database: MySQL query
+Database --> UnitRepository: Result
+UnitRepository --> UnitService: list of Unit
+UnitService --> UnitRestController: is valid
+UnitRestController -> UnitService: save
+UnitService -> UnitRepository: save
+UnitRepository -> Database: MySQL query
+Database --> UnitRepository: Result
+UnitRepository --> UnitService: Unit
+UnitService --> UnitRestController: created Unit
+UnitRestController --> API: created Unit
+API --> Browser: created Unit
+@enduml
+
+
+
+Create relation
+
+
+@startuml
+participant Browser
+participant API
+control UnitRestController
+participant UnitService
+participant UnitRepository
+participant RelationService
+participant RelationRepository
+database Database
+
+Browser -> API: HTTP Request PUT update Units
+API -> UnitRestController: updateUnits
+UnitRestController -> UnitService: isValidName
+UnitService -> UnitRepository: findByNameContaining
+UnitRepository -> Database: MySQL query
+Database --> UnitRepository: Result list
+UnitRepository --> UnitService: list of Unit
+UnitService --> UnitRestController: is valid
+UnitRestController -> RelationService: save all relations
+RelationService -> RelationRepository: save
+RelationRepository -> Database: MySQL query
+Database --> RelationRepository: Result
+RelationRepository --> RelationService: Relation
+RelationService --> UnitRestController: list of Relation
+UnitRestController --> API: list of updated Units
+API --> Browser: list of updated Units
+@enduml
+
+
+
+Create card
+
+
+@startuml
+participant Browser
+participant API
+control CardRestController 
+participant CardService 
+participant CardRepository
+participant UnitService
+participant UnitRepository
+database Database
+
+Browser -> API: HTTP Request POST new Card
+API -> CardRestController: createCard(unitID, Card)
+CardRestController -> UnitService: findById(unitID)
+UnitService -> UnitRepository: findById(unitID)
+UnitRepository -> Database: MySQL query
+
+Database --> UnitRepository: Unit
+UnitRepository --> UnitService: Unit
+UnitService --> CardRestController: Unit
+
+CardRestController -> CardService: save(unitID)
+CardService -> CardRepository: save(Card)
+CardRepository -> Database: Save Card
+Database --> CardRepository: Saved Card
+CardRepository --> CardService: Saved Card
+CardService --> CardRestController: Saved Card
+CardRestController --> API: Saved Card
+API --> Browser: HTTP Response Saved Card
+@enduml
+
+
+
+Create question
+
+
+@startuml
+participant Browser
+participant API
+control TestQuestionRestController
+participant UnitService
+participant UnitRepository
+participant TestQuestionService
+participant TestQuestionRepository 
+database Database
+
+Browser -> API: HTTP Request POST new TestQuestion
+API -> TestQuestionRestController: addQuestion(unitID, TestQuestion)
+TestQuestionRestController -> UnitService: findById(unitID)
+UnitService -> UnitRepository: findById(unitID)
+UnitRepository -> Database: MySQL query
+
+Database --> UnitRepository: Unit
+UnitRepository --> UnitService: Unit
+UnitService --> TestQuestionRestController: Unit
+
+TestQuestionRestController -> TestQuestionService: save(TestQuestion)
+TestQuestionService-> TestQuestionRepository: save(TestQuestion)
+TestQuestionRepository -> Database: add question row
+
+Database --> UnitRepository: Saved Question
+UnitRepository --> UnitService: Saved Question
+UnitService --> TestQuestionRestController: Saved Question
+TestQuestionRestController --> API: Saved Question
+API --> Browser: HTTP Response Saved Question
+@enduml
+
+
+Create lesson
+
+
+@startuml
+participant Browser
+participant API
+control UnitLessonRestController
+participant LessonService
+participant UnitService
+participant UnitRepository
+database Database
+
+Browser -> API: HTTP Request POST new Lesson
+API -> UnitLessonRestController: addLesson(unitID, Lesson)
+UnitLessonRestController -> UnitService: findById(unitID)
+UnitService -> UnitRepository: findById(unitID)
+UnitRepository -> Database: MySQL query
+
+Database --> UnitRepository: Unit
+UnitRepository --> UnitService: Unit
+UnitService --> UnitLessonRestController: Unit
+
+UnitLessonRestController -> UnitLessonRestController: Add Lesson to Unit
+UnitLessonRestController -> LessonService: save(Updated Unit)
+LessonService -> UnitService: save(Updated Unit)
+UnitService -> UnitRepository: save(Updated Unit)
+UnitRepository -> Database: Update Unit
+
+Database --> UnitRepository: Updated Unit
+UnitRepository --> UnitService: Updated Unit
+UnitService --> LessonService: Updated Unit
+LessonService --> UnitLessonRestController: Saved Lesson
+UnitLessonRestController --> API: Saved Lesson
+API --> Browser: HTTP Response Saved Lesson
+@enduml
+
+
+Insert elements in a lesson
+
+@startuml
+participant Browser
+participant API
+control LessonRestController
+participant LessonService
+participant LessonRepository
+participant SlideService
+participant SlideRepository
+database Database
+
+Browser -> API: HTTP Request PUT Lesson
+API -> LessonRestController: updateLesson(lessonID, newLesson)
+LessonRestController -> LessonService: findById(lessonID)
+LessonService-> LessonRepository: findById(lessonID)
+LessonRepository-> Database: MySQL query
+
+Database --> LessonRepository: previousLesson
+LessonRepository--> LessonService: previousLesson
+LessonService--> LessonRestController : previousLesson
+
+LessonRestController -> SlideService: updateSlides(previousLesson, newLesson)
+SlideService-> SlideRepository: findByContent(previousLesson)
+SlideRepository -> Database: MySQL query
+
+Database --> SlideRepository : Slides
+SlideRepository --> SlideService: Slides
+
+SlideService -> SlideRepository : save(updatedSlide)
+SlideRepository -> Database: MySQL query
+
+Database --> SlideRepository : Updated slide
+SlideRepository --> SlideService: Updated slide
+SlideService --> LessonRestController: Updated slide
+
+LessonRestController -> LessonService: save(newLesson)
+LessonService -> LessonRepository: save(newLesson)
+LessonRepository -> Database : MySQL query
+
+Database --> LessonRepository : Updated Lesson
+LessonRepository --> LessonService : Updated Lesson
+LessonService --> LessonRestController : Updated Lesson
+LessonRestController --> API: Updated Lesson
+API --> Browser: HTTP Response Updated Lesson
+@enduml
+
+Create itinerary (module)
+
+
+@startuml
+participant Browser
+participant API
+control UnitModuleRestController
+participant ModuleService
+participant UnitService
+participant UnitRepository
+database Database
+
+Browser -> API: HTTP Request POST new Module
+API -> UnitModuleRestController: addModule(unitID, Module)
+UnitModuleRestController -> UnitService: findById(unitID)
+UnitService -> UnitRepository: findById(unitID)
+UnitRepository -> Database: MySQL query
+
+Database --> UnitRepository: Unit
+UnitRepository --> UnitService: Unit
+UnitService --> UnitModuleRestController: Unit
+
+UnitModuleRestController -> UnitModuleRestController: Add Module to Unit
+UnitModuleRestController -> ModuleService: save(Updated Unit)
+ModuleService -> UnitService: save(Updated Unit)
+UnitService -> UnitRepository: save(Updated Unit)
+UnitRepository -> Database: Update Unit
+
+Database --> UnitRepository: Updated Unit
+UnitRepository --> UnitService: Updated Unit
+UnitService --> ModuleService: Updated Unit
+ModuleService --> UnitModuleRestController: Saved Module
+UnitModuleRestController --> API: Saved Module
+API --> Browser: HTTP Response Saved Module
+@enduml
+
+
+Create course
+
+
+@startuml
+participant Browser
+participant API
+control CourseRestController
+participant CourseService
+participant CourseRepository
+database Database
+
+Browser -> API: HTTP Request POST new Course
+API -> CourseRestController: createCourse
+CourseRestController -> CourseService: save(Course)
+CourseService -> CourseRepository: save(Course)
+CourseRepository -> Database: Save Course
+
+Database --> CourseRepository: Saved Course
+CourseRepository --> CourseService: Saved Course
+CourseService --> CourseRestController: Saved Course
+CourseRestController --> API: Saved Course
+API --> Browser:  HTTP Response Saved Course
+@enduml
+
+
+Answer question
+
+
+@startuml
+participant Browser
+participant API
+control TestQuestionRestController
+participant UnitService
+participant UnitRepository
+participant TestQuestionService
+participant TestQuestionRepository 
+database Database
+Browser -> API: HTTP Request POST new TestAnswer
+API -> TestQuestionRestController: addAnswer(unitID, QuestionID, TestQuestion)
+TestQuestionRestController -> UnitService: findById(unitID)
+UnitService -> UnitRepository: findById(unitID)
+UnitRepository -> Database: MySQL query
+
+Database --> UnitRepository: Unit
+UnitRepository --> UnitService: Unit
+UnitService --> TestQuestionRestController: Unit
+
+TestQuestionRestController -> TestQuestionService: findById(QuestionID)
+TestQuestionService-> TestQuestionRepository: findById(QuestionID)
+TestQuestionRepository -> Database: MySQL query
+
+Database --> UnitRepository: Question
+UnitRepository --> UnitService: Question
+UnitService --> TestQuestionRestController: Question
+
+TestQuestionRestController -> TestQuestionRestController: Add Answer to Question 
+TestQuestionRestController -> TestQuestionService: save(Updated TestQuestion)
+TestQuestionService-> TestQuestionRepository: save(Updated TestQuestion)
+TestQuestionRepository -> Database: Update TestQuestion
+
+Database --> TestQuestionRepository : Updated TestQuestion
+TestQuestionRepository --> TestQuestionService: Updated TestQuestion
+TestQuestionService--> TestQuestionRestController: Saved Answer
+TestQuestionRestController --> API: Saved Answer
+API --> Browser: HTTP Response Saved Answer
+@enduml
