@@ -12,16 +12,5 @@ addons:
 
 script:
 
-  # Build angular app
-  - cd front
-  - docker run --rm --name angular-cli -v ${PWD}:/angular -w /angular node /bin/bash -c "npm install; npm run build"
-
-  # Copy new generated resources on back static
-  - cd ../back
-  - mkdir -p "src/main/resources/static/" && cp -r ../front/dist/front/* src/main/resources/static/
-
-  # Create jar
-  - mvn package
-
   # Start sonar scanner
   - sonar-scanner
