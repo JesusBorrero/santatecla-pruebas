@@ -13,6 +13,8 @@ import {ImageService} from '../images/image.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {MatAccordion} from '@angular/material/expansion';
 
+// SONAR TEST
+
 function convertToHTML(text) {
   const asciidoctor = Asciidoctor();
   const html = asciidoctor.convert(text);
