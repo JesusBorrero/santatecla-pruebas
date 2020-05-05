@@ -4,6 +4,12 @@ services:
   - docker
   - maven
 
+addons:
+  sonarcloud:
+    organization: "jesusborrero"
+    token:
+      secure: "9cc2d91d603456aa2216d679f4dd75eaceb79073"
+
 script:
 
   # Build angular app
@@ -25,4 +31,7 @@ script:
   # Push to Docker Hub
   - if [ "$TRAVIS_BRANCH" = "master" ]; then docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"; fi
   - if [ "$TRAVIS_BRANCH" = "master" ]; then docker push "$DOCKER_USERNAME"/santatecla; fi
+
+  # Start sonar scanner
+  - sonar-scanner
 
