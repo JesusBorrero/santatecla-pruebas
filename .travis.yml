@@ -2,6 +2,7 @@ language: java
 
 services:
   - docker
+  - maven
 
 script:
 
@@ -14,13 +15,14 @@ script:
   - mkdir -p "src/main/resources/static/" && cp -r ../front/dist/front/* src/main/resources/static/
 
   # Create jar
-  - docker run -it --rm -v ${PWD}:/usr/src/project -w /usr/src/project maven:alpine mvn -DskipTests package
+  - mvn package
 
   # Build docker image
   - if [ "$TRAVIS_BRANCH" = "master" ]; then mkdir -p "../docker/build/" && cp -r target/back-0.0.1-SNAPSHOT.jar ../docker/build/; fi
   - if [ "$TRAVIS_BRANCH" = "master" ]; then cd ../docker; fi
-  - if [ "$TRAVIS_BRANCH" = "master" ]; then docker build -t "$DOCKER_USERNAME"/santateclapruebas .; fi
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then docker build -t "$DOCKER_USERNAME"/santatecla .; fi
 
   # Push to Docker Hub
   - if [ "$TRAVIS_BRANCH" = "master" ]; then docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"; fi
-  - if [ "$TRAVIS_BRANCH" = "master" ]; then docker push sigma98/santateclapruebas; fi
+  - if [ "$TRAVIS_BRANCH" = "master" ]; then docker push "$DOCKER_USERNAME"/santatecla; fi
+
