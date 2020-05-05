@@ -19,6 +19,8 @@ function convertToHTML(text) {
   return(html);
 }
 
+// SONAR TEST
+
 @Component({
   selector: 'app-cards',
   templateUrl: './card.component.html',
