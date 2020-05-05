@@ -15,8 +15,8 @@
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
-		<sonar.projectKey>JesusBorrero_santatecla-pruebas</sonar.projectKey>
-		<sonar.organization>jesusborrero</sonar.organization>
+		<sonar.projectKey>codeurjc_santatecla</sonar.projectKey>
+		<sonar.organization>codeurjc</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<sonar.login>9cc2d91d603456aa2216d679f4dd75eaceb79073</sonar.login>
 		<sonar.password></sonar.password>
