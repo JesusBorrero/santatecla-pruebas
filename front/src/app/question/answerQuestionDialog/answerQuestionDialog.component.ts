@@ -3,7 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {DefinitionQuestion} from '../definitionQuestion/definitionQuestion.model';
 import {DefinitionAnswer} from '../definitionQuestion/definitionAnswer.model';
 import {ActivatedRoute, Router} from '@angular/router';
-import {LoginService, User} from '../../auth/login.service';
+import {LoginService} from '../../auth/login.service';
 import {UnitService} from '../../unit/unit.service';
 import {DefinitionQuestionService} from '../definitionQuestion/definitionQuestion.service';
 import {Question} from '../question.model';
@@ -16,7 +16,6 @@ import {ListQuestionService} from '../listQuestion/listQuestion.service';
 import {TestQuestionService} from '../testQuestion/testQuestion.service';
 import {LessonEditorComponent} from '../../itinerary/lesson/lessonEditor/lesson-editor.component';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-import {forEach} from '@angular/router/src/utils/collection';
 
 const QUESTION_TYPES = [
   {id: 'DefinitionQuestion', name: 'Definición'},

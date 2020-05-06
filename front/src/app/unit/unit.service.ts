@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Unit } from './unit.model';
-import {Relation} from '../relation/relation.model';
 
 @Injectable()
 export class UnitService {

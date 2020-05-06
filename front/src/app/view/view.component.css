@@ -86,9 +86,6 @@ mat-label {
 #uml-edit-input {
   position: absolute;
   z-index: 2;
-}
-
-#uml-edit-input {
   background: transparent;
   border: none;
   outline: none;

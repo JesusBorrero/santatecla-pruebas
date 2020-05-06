@@ -6,7 +6,6 @@ import {TestQuestion} from './testQuestion/testQuestion.model';
 import {DefinitionAnswer} from './definitionQuestion/definitionAnswer.model';
 import {ListAnswer} from './listQuestion/listAnswer.model';
 import {TestAnswer} from './testQuestion/testAnswer.model';
-import {Unit} from '../unit/unit.model';
 
 @Injectable()
 export class QuestionService {
