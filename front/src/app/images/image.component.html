@@ -1,5 +1,10 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="es">
+
+<head>
+  <title>image-component</title>
+</head>
+
   <body>
 
     <div class="image-selector-header">
@@ -16,7 +21,7 @@
     </div>
 
     <div id="spinner-container" *ngIf="showSpinner">
-      <img id="spinner" src="../../../../assets/img/spinner.gif">
+      <img alt="Spinner" id="spinner" src="../../../../assets/img/spinner.gif">
     </div>
 
     <div *ngFor="let image of imagesResult">

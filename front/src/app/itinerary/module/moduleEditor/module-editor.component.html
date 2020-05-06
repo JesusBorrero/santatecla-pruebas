@@ -1,5 +1,10 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="es">
+
+<head>
+  <title>module-editor-component</title>
+</head>
+
   <body>
 
       <mat-chip-list *ngIf="loginService.isAdmin" class="tools">
@@ -58,22 +63,24 @@
         </mat-tree-node>
         <!-- This is the tree node template for expandable nodes -->
         <mat-nested-tree-node *matTreeNodeDef="let node2; when: hasChild">
-          <li id="{{node2.name}}">
-            <div class="mat-tree-node">
-              <button mat-icon-button matTreeNodeToggle
-                      [attr.aria-label]="'toggle ' + node2?.name" (click)="addOpenedBlock(node2.id, node2)">
-                <mat-icon class="mat-icon-rtl-mirror">
-                  {{treeControl.isExpanded(node2) ? 'expand_more' : 'chevron_right'}}
-                </mat-icon>
-              </button>
-              <h3>{{node2?.name}}</h3>
-              <button *ngIf="loginService.isAdmin" mat-icon-button class="add-block-button" (click)="addBlock(node2)" matTooltip="Añadir bloque" [matTooltipPosition]="optionInfoPosition"><mat-icon>add</mat-icon></button>
-              <button *ngIf="loginService.isAdmin" mat-icon-button class="delete-block-button" (click)="deleteBlock(node2, node2?.id)" matTooltip="Eliminar" [matTooltipPosition]="optionInfoPosition"><mat-icon>delete</mat-icon></button>
-            </div>
-            <ul [class.example-tree-invisible]="!treeControl.isExpanded(node2)">
-              <ng-container matTreeNodeOutlet></ng-container>
-            </ul>
-          </li>
+          <ul>
+            <li id="{{node2.name}}">
+              <div class="mat-tree-node">
+                <button mat-icon-button matTreeNodeToggle
+                        [attr.aria-label]="'toggle ' + node2?.name" (click)="addOpenedBlock(node2.id, node2)">
+                  <mat-icon class="mat-icon-rtl-mirror">
+                    {{treeControl.isExpanded(node2) ? 'expand_more' : 'chevron_right'}}
+                  </mat-icon>
+                </button>
+                <h3>{{node2?.name}}</h3>
+                <button *ngIf="loginService.isAdmin" mat-icon-button class="add-block-button" (click)="addBlock(node2)" matTooltip="Añadir bloque" [matTooltipPosition]="optionInfoPosition"><mat-icon>add</mat-icon></button>
+                <button *ngIf="loginService.isAdmin" mat-icon-button class="delete-block-button" (click)="deleteBlock(node2, node2?.id)" matTooltip="Eliminar" [matTooltipPosition]="optionInfoPosition"><mat-icon>delete</mat-icon></button>
+              </div>
+              <ul [class.example-tree-invisible]="!treeControl.isExpanded(node2)">
+                <ng-container matTreeNodeOutlet></ng-container>
+              </ul>
+            </li>
+          </ul>
         </mat-nested-tree-node>
       </mat-tree>
 

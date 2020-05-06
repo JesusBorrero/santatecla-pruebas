@@ -1,5 +1,9 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="es">
+<head>
+  <title>card-component</title>
+</head>
+
   <body>
 
     <button id="add-button" mat-button (click)="addCard()">
@@ -8,7 +12,7 @@
     </button>
 
     <div id="spinner-container" *ngIf="showSpinner">
-      <img id="spinner" src="../../assets/img/spinner.gif">
+      <img alt="Spinner" id="spinner" src="../../assets/img/spinner.gif">
       <span id="spinner-text">Cargando...</span>
     </div>
 

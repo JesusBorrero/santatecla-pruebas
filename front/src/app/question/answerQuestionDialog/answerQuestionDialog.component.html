@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
+
+<head>
+  <title>answer-question-dialog-component</title>
+</head>
+
   <body>
     <h1 mat-dialog-title>{{ data.question.questionText }}</h1>
 
     <div *ngIf="spinner" mat-dialog-content>
-      <img src="../../../assets/img/spinner.gif" id="spinner">
+      <img alt="Spinner" src="../../../assets/img/spinner.gif" id="spinner">
     </div>
 
     <div *ngIf="!spinner" mat-dialog-content>

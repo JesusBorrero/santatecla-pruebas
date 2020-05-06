@@ -1,5 +1,10 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="es">
+
+<head>
+  <title>lesson-editor-component</title>
+</head>
+
   <body>
 
     <!-- TOOLS BAR -->
@@ -36,7 +41,7 @@
         <mat-menu #menu="matMenu">
           <div *ngFor="let id of lesson?.questionsIds; let i = index">
             <button mat-menu-item (click)="openQuestion(mapQuestions.get(id)?.id, mapQuestions.get(id)?.subtype)">
-              <span><b>Ejercicio {{i}}</b> {{mapQuestions.get(id)?.questionText}}</span>
+              <span><strong>Ejercicio {{i}}</strong> {{mapQuestions.get(id)?.questionText}}</span>
               <mat-icon *ngIf="mapQuestionsDone?.get(mapQuestions?.get(id)) != null && mapQuestionsDone?.get(mapQuestions?.get(id)) == 0" class="done-icon">done</mat-icon>
               <mat-icon *ngIf="mapQuestionsDone?.get(mapQuestions?.get(id)) != null && mapQuestionsDone?.get(mapQuestions?.get(id)) == 1" class="wrong-icon">close</mat-icon>
               <mat-icon *ngIf="mapQuestionsDone?.get(mapQuestions?.get(id)) != null && mapQuestionsDone?.get(mapQuestions?.get(id)) == 2" class="pending-icon">av_timer</mat-icon>
@@ -57,8 +62,8 @@
 
     <!-- HTML REPRESENTATION -->
     <div [ngClass]="loginService.isAdmin ? 'html-lesson-representation-editor' : 'html-lesson-view'">
-      <img class="spinner" src="../../../../assets/img/spinner.gif" *ngIf="loginService.isAdmin && showSpinner">
-      <img class="spinner center" src="../../../../assets/img/spinner.gif" *ngIf="(!loginService.isAdmin) && showSpinner">
+      <img alt="Spinner" class="spinner" src="../../../../assets/img/spinner.gif" *ngIf="loginService.isAdmin && showSpinner">
+      <img alt="Spinner-center" class="spinner center" src="../../../../assets/img/spinner.gif" *ngIf="(!loginService.isAdmin) && showSpinner">
       <h1 [ngClass]="!loginService.isAdmin ? 'html-lesson-title' : ''">{{lesson?.name}}</h1>
       <mat-card *ngIf="(loginService.isAdmin && !showSpinner)" id="slide-area-editor" class="slides-container">
         <div *ngIf="loginService.isAdmin">

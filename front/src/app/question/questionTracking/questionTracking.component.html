@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>question-tracking-component</title>
 </head>
 <body>
 
@@ -34,21 +34,21 @@
 
     <div *ngIf="this.questionType == 'DefinitionQuestion'">
       <mat-card class="corrected-card" *ngIf="this.resultsReady">
-        <mat-card-title class="card-title">Respuestas corregidas</mat-card-title>
+        <mat-card-title class="card-title" id="corrected-questions-table">Respuestas corregidas</mat-card-title>
         <mat-card-content class="center-corrected-table">
 
           <mat-form-field>
             <input matInput (keyup)="applyFilterCorrected($event.target.value)" placeholder="Filtrar">
           </mat-form-field>
 
-          <table mat-table [dataSource]="dataSourceCorrected" class="mat-elevation-z8">
+          <table aria-describedby="corrected-questions-table" mat-table [dataSource]="dataSourceCorrected" class="mat-elevation-z8">
             <ng-container matColumnDef="answer">
-              <th mat-header-cell *matHeaderCellDef> Respuesta </th>
+              <th mat-header-cell *matHeaderCellDef id="answer"> Respuesta </th>
               <td mat-cell *matCellDef="let answer"> {{answer.answerText}} </td>
             </ng-container>
 
             <ng-container matColumnDef="result">
-              <th mat-header-cell *matHeaderCellDef> Resultado </th>
+              <th mat-header-cell *matHeaderCellDef id="result"> Resultado </th>
               <td mat-cell *matCellDef="let answer">
                 <mat-icon *ngIf="answer.correct" class="correct-icon">done</mat-icon>
                 <mat-icon *ngIf="!answer.correct"class="wrong-icon">clear</mat-icon>
@@ -87,21 +87,21 @@
   </mat-card>
 
   <mat-card class="questions-card" *ngIf="this.questionType == 'DefinitionQuestion'">
-    <mat-card-title class="center-title">Respuestas sin corregir</mat-card-title>
+    <mat-card-title class="center-title" id="uncorrected-questions-table">Respuestas sin corregir</mat-card-title>
     <mat-card-content class="center-uncorrected-table">
 
       <mat-form-field>
         <input matInput (keyup)="applyFilterNotCorrected($event.target.value)" placeholder="Filtrar">
       </mat-form-field>
 
-      <table mat-table [dataSource]="dataSourceNotCorrected" class="mat-elevation-z8">
+      <table aria-describedby="uncorrected-questions-table" mat-table [dataSource]="dataSourceNotCorrected" class="mat-elevation-z8">
         <ng-container matColumnDef="answer">
-          <th mat-header-cell *matHeaderCellDef> Respuesta </th>
+          <th mat-header-cell *matHeaderCellDef id="answer-to-correct"> Respuesta </th>
           <td mat-cell *matCellDef="let answer"> {{answer.answerText}} </td>
         </ng-container>
 
         <ng-container matColumnDef="correct">
-          <th mat-header-cell *matHeaderCellDef> Correcta </th>
+          <th mat-header-cell *matHeaderCellDef id="correct"> Correcta </th>
           <td mat-cell *matCellDef="let answer">
             <button mat-button (click)="correctAnswer(answer)">
               <mat-icon class="correct-icon">done</mat-icon>
@@ -110,7 +110,7 @@
         </ng-container>
 
         <ng-container matColumnDef="wrong">
-          <th mat-header-cell *matHeaderCellDef> Incorrecta </th>
+          <th mat-header-cell *matHeaderCellDef id="wrong"> Incorrecta </th>
           <td mat-cell *matCellDef="let answer">
             <button mat-button (click)="wrongAnswer(answer)">
               <mat-icon class="wrong-icon">clear</mat-icon>

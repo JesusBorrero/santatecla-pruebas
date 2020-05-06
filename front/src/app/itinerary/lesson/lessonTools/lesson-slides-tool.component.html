@@ -1,5 +1,10 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="es">
+
+<head>
+  <title>lesson-slides-tool-component</title>
+</head>
+
   <body>
 
     <h2>Selecciona una unidad para ver sus lecciones</h2>
@@ -10,7 +15,7 @@
     </mat-form-field>
 
     <div id="spinner-container" *ngIf="showSpinner">
-      <img id="spinner" src="../../../../assets/img/spinner.gif">
+      <img alt="Spinner" id="spinner" src="../../../../assets/img/spinner.gif">
     </div>
 
     <mat-accordion *ngFor = "let unit of this.unitsResult">

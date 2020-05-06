@@ -1,5 +1,10 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="es">
+
+<head>
+  <title>menu-component</title>
+</head>
+
   <body>
 
     <div *ngIf="loginService.isLogged" [ngClass]="loginService.isAdmin ? 'header admin-header' : 'header user-header'">
@@ -15,7 +20,7 @@
 
         <div mat-button *ngIf="loginService.isAdmin" class="nav-button admin-nav-button">
           <div class="nav-button-link" [routerLink]="['/unit']" (click)="this.tabService.deactivateTabs()">
-            <img class="nav-button-image" src="../../assets/img/uml-icon.png" height="15">
+            <img alt="UML-icon" class="nav-button-image" src="../../assets/img/uml-icon.png" height="15">
             <div class="nav-button-name">Unidades</div>
           </div>
 

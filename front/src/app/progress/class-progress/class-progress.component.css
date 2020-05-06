@@ -29,7 +29,6 @@
 .column {
   display: flex;
   flex-direction: column;
-  flex-basis: 100%;
   flex: 1;
   margin-left: 5%;
   margin-right: 5%;

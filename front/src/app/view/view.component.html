@@ -1,5 +1,10 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="es">
+
+<head>
+  <title>view-component</title>
+</head>
+
   <body>
 
     <div id="lateral-panel" [ngClass]="showMenu ? 'left-zero' : 'hidden-menu'">
@@ -74,7 +79,7 @@
     </button>
 
     <div id="spinner-container" *ngIf="showSpinner">
-      <img id="spinner" src="../../assets/img/spinner.gif">
+      <img alt="Spinner" id="spinner" src="../../assets/img/spinner.gif">
       <span id="spinner-text">Cargando...</span>
       <div id="prevent-click"></div>
     </div>
@@ -93,13 +98,13 @@
       <input id="uml-edit-input" (change)="updateUnitName()">
       <div id="uml-node-options">
 
-        <button id="inheritance-outgoing-button" class="uml-options-button" matTooltip="Crear relación de herencia"><img src="../../assets/img/add-inheritance-outgoing.png" height="15"></button>
+        <button id="inheritance-outgoing-button" class="uml-options-button" matTooltip="Crear relación de herencia"><img alt="Inheritance-outgoing" src="../../assets/img/add-inheritance-outgoing.png" height="15"></button>
         <br>
-        <button id="composition-outgoing-button" class="uml-options-button" matTooltip="Crear relación de composición"><img src="../../assets/img/add-composition-outgoing.png" height="15"></button>
+        <button id="composition-outgoing-button" class="uml-options-button" matTooltip="Crear relación de composición"><img alt="Composition-outgoing" src="../../assets/img/add-composition-outgoing.png" height="15"></button>
         <br>
-        <button id="aggregation-outgoing-button" class="uml-options-button" matTooltip="Crear relación de agregación"><img src="../../assets/img/add-aggregation-outgoing.png" height="15"></button>
+        <button id="aggregation-outgoing-button" class="uml-options-button" matTooltip="Crear relación de agregación"><img alt="Aggregation-outgoing" src="../../assets/img/add-aggregation-outgoing.png" height="15"></button>
         <br>
-        <button id="association-outgoing-button" class="uml-options-button" matTooltip="Crear relación de asociación"><img src="../../assets/img/add-association-outgoing.png" height="15"></button>
+        <button id="association-outgoing-button" class="uml-options-button" matTooltip="Crear relación de asociación"><img alt="Association-outgoing" src="../../assets/img/add-association-outgoing.png" height="15"></button>
         <br>
         <!--<button id="use-outgoing-button" class="uml-options-button"><img src="../../assets/img/add-use-outgoing.png" height="15"></button>-->
         <!--<br>-->
@@ -114,26 +119,26 @@
     <div #umlPathOptions (window:resize)="drawUmlPathOptions()" [hidden]="!showUmlPathOptions">
       <div id="uml-path-options">
         <div *ngIf="selectedRelationType!=='INHERITANCE'">
-          <button id="inheritance-relation-button" class="uml-options-button uml-relation-button" matTooltip="Cambiar tipo de relación a herencia"><img src="../../assets/img/add-inheritance-outgoing.png" height="15"></button>
+          <button id="inheritance-relation-button" class="uml-options-button uml-relation-button" matTooltip="Cambiar tipo de relación a herencia"><img alt="Inheritance-outgoing" src="../../assets/img/add-inheritance-outgoing.png" height="15"></button>
           <br>
         </div>
         <div *ngIf="selectedRelationType!=='COMPOSITION'">
-          <button id="composition-relation-button" class="uml-options-button uml-relation-button" matTooltip="Cambiar tipo de relación a composición"><img src="../../assets/img/add-composition-outgoing.png" height="15"></button>
+          <button id="composition-relation-button" class="uml-options-button uml-relation-button" matTooltip="Cambiar tipo de relación a composición"><img alt="Composition-outgoing" src="../../assets/img/add-composition-outgoing.png" height="15"></button>
           <br>
         </div>
         <div *ngIf="selectedRelationType!=='AGGREGATION'">
-          <button id="aggregation-relation-button" class="uml-options-button uml-relation-button" matTooltip="Cambiar tipo de relación a agregación"><img src="../../assets/img/add-aggregation-outgoing.png" height="15"></button>
+          <button id="aggregation-relation-button" class="uml-options-button uml-relation-button" matTooltip="Cambiar tipo de relación a agregación"><img alt="Aggregation-outgoing" src="../../assets/img/add-aggregation-outgoing.png" height="15"></button>
           <br>
         </div>
         <div *ngIf="selectedRelationType!=='ASSOCIATION'">
-          <button id="association-relation-button" class="uml-options-button uml-relation-button" matTooltip="Cambiar tipo de relación a asociación"><img src="../../assets/img/add-association-outgoing.png" height="15"></button>
+          <button id="association-relation-button" class="uml-options-button uml-relation-button" matTooltip="Cambiar tipo de relación a asociación"><img alt="Association-outgoing" src="../../assets/img/add-association-outgoing.png" height="15"></button>
           <br>
         </div>
         <!--<div *ngIf="selectedRelationType!=='USE'">
           <button id="use-relation-button" class="uml-options-button uml-relation-button"><img src="../../assets/img/add-use-outgoing.png" height="15"></button>
         </div>-->
 
-        <button id="flip-button" class="uml-options-button" matTooltip="Voltear relación"><img src="../../assets/img/flip.png" height="15"></button>
+        <button id="flip-button" class="uml-options-button" matTooltip="Voltear relación"><img alt="Flip" src="../../assets/img/flip.png" height="15"></button>
         <br>
 
         <button class="delete-button uml-options-button" (click)="deleteRelation()" matTooltip="Eliminar relación">
@@ -150,14 +155,14 @@
     <div id="notification-container">
       <mat-card class="notification" *ngIf="clickTutorialNotification">
         <mat-icon>live_help</mat-icon><br>
-        <b>Doble click</b> para entrar<br>
-        <b>Click derecho</b> para editar
+        <strong>Doble click</strong> para entrar<br>
+        <strong>Click derecho</strong> para editar
         <mat-icon class="close-notification" (click)="closeClickTutorialNotification()">close</mat-icon><br>
       </mat-card>
       <mat-card class="notification" *ngIf="newUnitNotification">
         <mat-icon>live_help</mat-icon><br>
         Esa es una unidad nueva<br>
-        <b>Guarda</b> para poder entrar
+        <strong>Guarda</strong> para poder entrar
         <mat-icon class="close-notification" (click)="closeNewUnitNotification()">close</mat-icon><br>
       </mat-card>
     </div>

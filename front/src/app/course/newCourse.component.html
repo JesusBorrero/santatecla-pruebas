@@ -1,8 +1,13 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="es">
+
+<head>
+  <title>new-course-component</title>
+</head>
+
 <body class="center-align">
   <div class="center-align">
-    <img src="../../../assets/img/spinner.gif" id="spinner" class="top-margin" *ngIf="showSpinner">
+    <img alt="Spinner" src="../../../assets/img/spinner.gif" id="spinner" class="top-margin" *ngIf="showSpinner">
 
     <span *ngIf="!this.showSpinner">
       <h1 mat-dialog-title class="center-align title" *ngIf="this.courseId == undefined">Nuevo curso</h1>
