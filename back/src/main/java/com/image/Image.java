@@ -1,5 +1,7 @@
 package com.image;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,13 +9,17 @@ public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(notes = "The image ID. It is unique.",  required = true)
     protected long id;
 
+    @ApiModelProperty(notes = "The image name.",  required = true)
     private String name;
 
+    @ApiModelProperty(notes = "The unit ID that the image belongs.",  required = true)
     private long unitId;
 
     @Lob
+    @ApiModelProperty(notes = "The content of the image.",  required = true)
     private Byte[] image;
 
     public Image() {}

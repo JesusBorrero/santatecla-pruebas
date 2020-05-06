@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {LoginService, User} from '../auth/login.service';
+import {LoginService} from '../auth/login.service';
 import {Course} from './course.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UnitService} from '../unit/unit.service';

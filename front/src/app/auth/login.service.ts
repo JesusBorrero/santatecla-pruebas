@@ -36,13 +36,13 @@ export class LoginService {
       Authorization: 'Basic ' + auth,
       'X-Requested-With': 'XMLHttpRequest',
     });
-    return this.http.get<User>(LOGIN_URL, {headers}).pipe(map(user => {
-      if (user) {
-        this.setCurrentUser(user);
-        user.authdata = auth;
-        localStorage.setItem(CURRENT_USER_ITEM, JSON.stringify(user));
+    return this.http.get<User>(LOGIN_URL, {headers}).pipe(map(currentUser => {
+      if (currentUser) {
+        this.setCurrentUser(currentUser);
+        currentUser.authdata = auth;
+        localStorage.setItem(CURRENT_USER_ITEM, JSON.stringify(currentUser));
       }
-      return user;
+      return currentUser;
     }));
   }
 

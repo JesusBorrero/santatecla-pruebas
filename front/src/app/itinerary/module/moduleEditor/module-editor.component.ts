@@ -4,7 +4,7 @@ import { TdDialogService } from '@covalent/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import {NestedTreeControl} from '@angular/cdk/tree';
-import {MatTreeFlattener, MatTreeNestedDataSource} from '@angular/material/tree';
+import {MatTreeNestedDataSource} from '@angular/material/tree';
 import { DOCUMENT } from '@angular/common';
 
 import {Module} from '../module.model';

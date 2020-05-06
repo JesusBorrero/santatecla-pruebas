@@ -31,10 +31,6 @@
   resize: none;
 }
 
-#card-title {
-  width: 80%;
-}
-
 #delete-card-button {
   color: indianred;
   position: absolute;
@@ -125,6 +121,7 @@
 
 #card-title {
   margin-top: 2rem;
+  width: 80%;
 }
 
 .cardList.cdk-drop-list-dragging .card-container:not(.cdk-drag-placeholder) {

@@ -37,7 +37,6 @@
           <mat-icon>edit</mat-icon>
           <span class="btn-span">Ejercicios</span>
         </button>
-        <!-- TODO openQuestion -->
         <mat-menu #menu="matMenu">
           <div *ngFor="let id of lesson?.questionsIds; let i = index">
             <button mat-menu-item (click)="openQuestion(mapQuestions.get(id)?.id, mapQuestions.get(id)?.subtype)">

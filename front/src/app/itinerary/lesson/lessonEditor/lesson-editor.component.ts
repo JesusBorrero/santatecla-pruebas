@@ -505,7 +505,7 @@ export class LessonEditorComponent implements OnInit {
       slide.content = '=== ' + slide.name + '\n';
       for (let j = 1; j < lines.length; j ++) {
         if (j < lines.length - 2) {
-          if (!(lines[j].split(' ')[0] === '//')) {
+          if ((lines[j].split(' ')[0]) !== '//') {
             slide.content = slide.content + lines[j] + '\n';
           }
         } else {

@@ -1,4 +1,8 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=codeurjc_santatecla&metric=alert_status)](https://sonarcloud.io/dashboard?id=codeurjc_santatecla)
+[![Build Status](https://travis-ci.com/codeurjc/santatecla.svg?branch=master)](https://travis-ci.com/codeurjc/santatecla)
+
 # Santatecla
+
 Santatecla is a revolutionary teaching tool based on material created with structured concepts.
 
 <br/>

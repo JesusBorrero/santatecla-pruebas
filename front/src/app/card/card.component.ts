@@ -1,7 +1,7 @@
 import {Unit } from '../unit/unit.model';
 import {CardService} from './card.service';
 import {Router, ActivatedRoute} from '@angular/router';
-import {AfterViewChecked, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Card} from './card.model';
 import {UnitService} from '../unit/unit.service';
 import {MatDialog} from '@angular/material/dialog';
@@ -11,7 +11,6 @@ import {ImageComponent} from '../images/image.component';
 import {MatBottomSheet} from '@angular/material/bottom-sheet';
 import {ImageService} from '../images/image.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {MatAccordion} from '@angular/material/expansion';
 
 function convertToHTML(text) {
   const asciidoctor = Asciidoctor();
