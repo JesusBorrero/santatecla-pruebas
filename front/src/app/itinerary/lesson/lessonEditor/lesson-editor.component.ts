@@ -188,38 +188,14 @@ export class LessonEditorComponent implements OnInit {
           if (data.subtype === 'TestQuestion') {
             this.questionService.getTestUserAnswers(this.unitId, questionId, this.loginService.getCurrentUser().id,
               this.lessonId, this.courseId).subscribe((response: TestAnswer[]) => {
-                if (response.length === 0) {
-                  this.mapQuestionsDone.set(data, null);
-                } else {
-                  if (response[0].correct) {
-                    this.mapQuestionsDone.set(data, State.Correct);
-                  } else {
-                    this.mapQuestionsDone.set(data, State.Wrong);
-                  }
-                }
-                this.questions = Array.from(this.mapQuestionsDone.keys());
-                for (const q of this.questions) {
-                  this.mapQuestions.set(q.id, q);
-                }
+                this.setQuestionsData(response, data);
             }, error => {
               console.log(error);
             });
           } else if (data.subtype === 'ListQuestion') {
             this.questionService.getListUserAnswers(this.unitId, questionId, this.loginService.getCurrentUser().id,
               this.lessonId, this.courseId).subscribe((response: ListAnswer[]) => {
-              if (response.length === 0) {
-                this.mapQuestionsDone.set(data, null);
-              } else {
-                if (response[0].correct) {
-                  this.mapQuestionsDone.set(data, State.Correct);
-                } else {
-                  this.mapQuestionsDone.set(data, State.Wrong);
-                }
-              }
-              this.questions = Array.from(this.mapQuestionsDone.keys());
-              for (const q of this.questions) {
-                this.mapQuestions.set(q.id, q);
-              }
+                this.setQuestionsData(response, data);
             }, error => {
               console.log(error);
             });
@@ -250,6 +226,22 @@ export class LessonEditorComponent implements OnInit {
         }
       });
     });
+  }
+
+  setQuestionsData(response: any, data: Question) {
+    if (response.length === 0) {
+      this.mapQuestionsDone.set(data, null);
+    } else {
+      if (response[0].correct) {
+        this.mapQuestionsDone.set(data, State.Correct);
+      } else {
+        this.mapQuestionsDone.set(data, State.Wrong);
+      }
+    }
+    this.questions = Array.from(this.mapQuestionsDone.keys());
+    for (const q of this.questions) {
+      this.mapQuestions.set(q.id, q);
+    }
   }
 
   viewHTMLVersion() {
