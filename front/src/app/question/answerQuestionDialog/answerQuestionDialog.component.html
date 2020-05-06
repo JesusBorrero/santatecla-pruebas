@@ -48,8 +48,6 @@
         <div class="answer-info" *ngFor="let answer of listAnswers[0].answer">
           {{answer}}
         </div><br>
-        <!-- TODO Tus respuestas seleccionadas: <br>
-        <span [ngClass]="listAnswer.correct ? 'correct-icon':'wrong-icon'"><i></i></span><br> -->
       </div>
 
       <!-- TEST ANSWER CHECK -->
@@ -122,10 +120,9 @@
     </div>
 
     <div mat-dialog-actions>
-      <button mat-button (click)="onNoClick()">Cancelar</button>
-      <!--<button mat-button [mat-dialog-close]="true" cdkFocusInitial>
-        Responder
-      </button>-->
+      <button mat-button (click)="onNoClick()">
+        Cancelar
+      </button>
       <button *ngIf="!answerSent && !questionDone" (click)="sendAnswer()" [ngClass]="loginService.isAdmin ? 'mat-button question-button tool admin-button' : 'mat-button question-button tool user-button'">
         Responder
       </button>

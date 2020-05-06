@@ -87,10 +87,9 @@
     </div>
 
     <div mat-dialog-actions>
-      <button mat-button (click)="onNoClick()">Cancelar</button>
-      <!--<button mat-button [mat-dialog-close]="true" cdkFocusInitial>
-        Responder
-      </button>-->
+      <button mat-button (click)="onNoClick()">
+        Cancelar
+      </button>
       <button (click)="sendQuestion()" [mat-dialog-close]="true" [ngClass]="loginService.isAdmin ? 'mat-button question-button tool admin-button' : 'mat-button question-button tool user-button'">
         Guardar
       </button>
