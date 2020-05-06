@@ -193,8 +193,10 @@ export class AnswerQuestionDialogComponent implements OnInit {
       return;
     }
 
-    const answersToCompare1 = this.chosenListAnswers.sort();
-    const answersToCompare2 = this.data.question.correctAnswers.sort();
+    const answersToCompare1 = this.chosenListAnswers;
+    const answersToCompare2 = this.data.question.correctAnswers;
+    answersToCompare1.sort();
+    answersToCompare2.sort();
     const isCorrect = JSON.stringify(answersToCompare1) === JSON.stringify(answersToCompare2);
 
     this.listAnswer = {
