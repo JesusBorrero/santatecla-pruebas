@@ -15,7 +15,8 @@ script:
 
   # Build front
   - cd front
-  - npm install; npm run build
+  - npm install
+  - npm run build
   
   # Run front tests
   - npm run test --no-watch --no-progress --browsers=ChromeHeadlessCI
