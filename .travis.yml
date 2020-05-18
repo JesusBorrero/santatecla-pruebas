@@ -16,9 +16,11 @@ addons:
 
 script:
 
-  # Build angular app
+  # Build front
   - cd front
   - docker run --rm --name angular-cli -v ${PWD}:/angular -w /angular node /bin/bash -c "npm install; npm run build"
+  
+  # Run front tests
   - docker run --rm --name angular-cli -v ${PWD}:/angular -w /angular node /bin/bash -c "npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI"
   - docker run --rm --name angular-cli -v ${PWD}:/angular -w /angular node /bin/bash -c "npm run e2e -- --protractor-config=e2e/protractor-ci.conf.js"
 
@@ -26,7 +28,7 @@ script:
   - cd ../back
   - mkdir -p "src/main/resources/static/" && cp -r ../front/dist/front/* src/main/resources/static/
 
-  # Create jar
+  # Build back (create .jar and run tests)
   - mvn package
 
   # Build docker image
