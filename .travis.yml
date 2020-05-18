@@ -13,7 +13,7 @@ addons:
       
 before_script:
   - export DISPLAY=:99.0
-  
+
 script:
 
   # Build front
@@ -22,7 +22,7 @@ script:
   - npm run build
   
   # Run front tests
-  - npm run test --no-watch --no-progress --browsers=ChromeHeadlessCI
+  - npm run test-ci
 
   # Copy new generated resources on back static
   - cd ../back
