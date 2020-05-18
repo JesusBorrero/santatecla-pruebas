@@ -1,7 +1,4 @@
-dist: trusty
-sudo: false
-
-language: node_js
+language: java
 
 env:
   - CHROME_BIN=google-chrome
