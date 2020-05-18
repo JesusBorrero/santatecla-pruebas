@@ -4,11 +4,20 @@ services:
   - docker
   - maven
 
+addons:
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
+
 script:
 
   # Build angular app
   - cd front
   - docker run --rm --name angular-cli -v ${PWD}:/angular -w /angular node /bin/bash -c "npm install; npm run build"
+  - docker run --rm --name angular-cli -v ${PWD}:/angular -w /angular node /bin/bash -c "npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI"
+  - docker run --rm --name angular-cli -v ${PWD}:/angular -w /angular node /bin/bash -c "npm run e2e -- --protractor-config=e2e/protractor-ci.conf.js"
 
   # Copy new generated resources on back static
   - cd ../back
