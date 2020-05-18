@@ -1,5 +1,8 @@
 language: java
 
+env:
+  - CHROME_BIN=google-chrome
+
 services:
   - docker
   - maven
