@@ -1,4 +1,7 @@
-language: java
+dist: trusty
+sudo: false
+
+language: node_js
 
 env:
   - CHROME_BIN=google-chrome
@@ -18,10 +21,10 @@ script:
 
   # Build front
   - cd front
-  - docker run --rm --name angular-cli -v ${PWD}:/angular -w /angular node /bin/bash -c "npm install; npm run build"
+  - npm install; npm run build
   
   # Run front tests
-  - docker run --rm --name angular-cli -v ${PWD}:/angular -w /angular node /bin/bash -c "npm run test --no-watch --no-progress --browsers=ChromeHeadlessCI"
+  - npm run test --no-watch --no-progress --browsers=ChromeHeadlessCI
 
   # Copy new generated resources on back static
   - cd ../back
