@@ -17,7 +17,7 @@ public class RelationService {
 
 	public Optional<Relation> findRelationByIncomingAndOutgoing(Long incoming, Long outgoing) {
 		return relationRepository.findRelationByIncomingAndOutgoing(incoming, outgoing);
-	};
+	}
 
 	public void save(Relation relation) {
 		relationRepository.save(relation);

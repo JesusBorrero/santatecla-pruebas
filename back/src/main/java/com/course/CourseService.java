@@ -1,14 +1,11 @@
 package com.course;
 
 import com.course.items.StudentProgressItem;
-import com.itinerary.block.Block;
-import com.itinerary.module.Module;
 import com.question.Question;
 import com.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -114,7 +111,7 @@ public class CourseService {
         return result*10;
     }
 
-    public void buildInitialStudentGradeGroupedResult(ArrayList<StudentProgressItem> result){
+    public void buildInitialStudentGradeGroupedResult(List<StudentProgressItem> result){
         StudentProgressItem item;
         for (int i = 0; i<11; i++){
             item = new StudentProgressItem("" + i);
@@ -123,7 +120,7 @@ public class CourseService {
         }
     }
 
-    public void buildStudentGradeGroupedResult(ArrayList<StudentProgressItem> result, ArrayList<StudentProgressItem> averages){
+    public void buildStudentGradeGroupedResult(List<StudentProgressItem> result, List<StudentProgressItem> averages){
         for(StudentProgressItem studentProgressItem : averages){
             result.get((int) Math.floor(studentProgressItem.getAverage())).setAverage(result.get((int) Math.floor(studentProgressItem.getAverage())).getAverage() + 1);
         }

@@ -162,7 +162,10 @@ public class Unit {
 
     public void addIncomingRelation(Relation incomingRelation) {
         if (this.incomingRelations.contains(incomingRelation)) {
-            this.getRelation(this.incomingRelations, incomingRelation.getId()).update(incomingRelation);
+            Relation relation = this.getRelation(this.incomingRelations, incomingRelation.getId());
+            if(relation != null){
+                relation.update(incomingRelation);
+            }
         } else {
             int index = 0;
             for (Relation relation : this.incomingRelations) {
@@ -180,7 +183,10 @@ public class Unit {
 
     public void addOutgoingRelation(Relation outgoingRelation) {
         if (this.outgoingRelations.contains(outgoingRelation)) {
-            this.getRelation(this.outgoingRelations, outgoingRelation.getId()).update(outgoingRelation);
+            Relation relation = this.getRelation(this.outgoingRelations, outgoingRelation.getId());
+            if(relation != null){
+                relation.update(outgoingRelation);
+            }
         } else {
             int index = 0;
             for (Relation relation : this.outgoingRelations) {
@@ -242,4 +248,17 @@ public class Unit {
     public void addImage(Image image){
         this.images.add(image);
     }
+
+    public void setLessons(List<Lesson> lessons) {
+        this.lessons = lessons;
+    }
+
+    public void setIncomingRelations(List<Relation> incomingRelations) {
+        this.incomingRelations = incomingRelations;
+    }
+
+    public void setOutgoingRelations(List<Relation> outgoingRelations) {
+        this.outgoingRelations = outgoingRelations;
+    }
+
 }

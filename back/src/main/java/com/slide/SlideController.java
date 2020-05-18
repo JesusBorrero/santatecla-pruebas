@@ -38,7 +38,7 @@ public interface SlideController {
             @ApiResponse(code = 200, message = "Updated slide"),
             @ApiResponse(code = 404, message = "Slide not found")
     })
-    ResponseEntity<Slide> updateSlide(@PathVariable long id, @RequestBody Slide slide);
+    ResponseEntity<Slide> updateSlide(@PathVariable long id, @RequestBody SlideDto slideDto);
 
     @ApiOperation(value = "Return the slide with the requested slideName, lessonName and unitName")
     @ApiResponses(value = {

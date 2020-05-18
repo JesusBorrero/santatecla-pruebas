@@ -37,8 +37,7 @@ public class DefinitionQuestionService {
     public Optional<DefinitionAnswer> findOneAnswer(DefinitionQuestion question, long answerId) {
         for (DefinitionAnswer answer: question.getAnswers()) {
             if (answer.getId() == answerId) {
-                Optional<DefinitionAnswer> optional = Optional.of(answer);
-                return optional;
+                return Optional.of(answer);
             }
         }
         return Optional.empty();

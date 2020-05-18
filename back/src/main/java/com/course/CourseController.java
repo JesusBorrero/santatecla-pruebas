@@ -2,7 +2,7 @@ package com.course;
 
 import com.course.items.ProgressNode;
 import com.course.items.StudentProgressItem;
-import com.user.User;
+import com.user.UserDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -37,14 +37,14 @@ public interface CourseController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The course has been successfully created")
     })
-    ResponseEntity<Course> createCourse(Course course);
+    ResponseEntity<Course> createCourse(CourseDto courseDto);
 
     @ApiOperation(value = "Update the course with the requested id.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The course has been successfully updated"),
             @ApiResponse(code = 404, message = "Course Not Found")
     })
-    ResponseEntity<Course> editCourse(long courseId, Course course);
+    ResponseEntity<Course> editCourse(long courseId, CourseDto courseDto);
 
     @ApiOperation(value = "Delete the course with the requested id.")
     @ApiResponses(value = {
@@ -70,7 +70,7 @@ public interface CourseController {
             @ApiResponse(code = 200, message = "The student has been successfully added"),
             @ApiResponse(code = 404, message = "Course Not Found")
     })
-    ResponseEntity<Course> addStudent(long courseId, User student);
+    ResponseEntity<Course> addStudent(long courseId, UserDto student);
 
     @ApiOperation(value = "Return the unit the lesson with the requested lessonId is in.")
     @ApiResponses(value = {

@@ -6,13 +6,12 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
 @Api
-public interface QuestionController<T extends Question, E extends Answer> {
+public interface QuestionController<T extends QuestionDto, E extends AnswerDto> {
 
     @ApiOperation(value = "Return all the question of the unit with the requested unit id")
     @ApiResponses(value = {

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UnitService {
 
-	private String UNIT_NAME_SEPARATOR = "/";
+	private String unitNameSeparator = "/";
 
 	@Autowired
 	private UnitRepository unitRepository;
@@ -90,11 +90,11 @@ public class UnitService {
 	}
 
 	private void setParentOnName(Unit unit) {
-		unit.setName(getAncestor(unit, getLevel(unit.getName())).getName() + UNIT_NAME_SEPARATOR + unit.getName());
+		unit.setName(getAncestor(unit, getLevel(unit.getName())).getName() + unitNameSeparator + unit.getName());
 	}
 
 	private int getLevel(String name) {
-		return name.split(UNIT_NAME_SEPARATOR).length - 1;
+		return name.split(unitNameSeparator).length - 1;
 	}
 
 	private Unit getAncestor(Unit unit, int level) {
@@ -110,11 +110,15 @@ public class UnitService {
 		Unit parent;
 		int position = 0;
 		visited.add(unit);
+		Optional<Unit> optional;
 		while (unit.getOutgoingRelations().size() > position) {
-			parent = findOne(unit.getOutgoingRelations().get(position).getIncoming()).get();
-			position++;
-			if (!visited.contains(parent)) {
-				return parent;
+			optional = findOne(unit.getOutgoingRelations().get(position).getIncoming());
+			if(optional.isPresent()) {
+				parent = optional.get();
+				position++;
+				if (!visited.contains(parent)) {
+					return parent;
+				}
 			}
 		}
 		return null;
@@ -130,7 +134,7 @@ public class UnitService {
 		Set<Unit> visited = new HashSet<>();
 		while (parent != null) {
 			visited.add(parent);
-			absoluteName = this.UNIT_NAME_SEPARATOR + parent.getName()  + absoluteName;
+			absoluteName = this.unitNameSeparator + parent.getName()  + absoluteName;
 			parent = getParent(parent, visited);
 		}
 		return absoluteName;
@@ -158,10 +162,14 @@ public class UnitService {
 	}
 
 	public boolean ableToDeleteUnit(Unit unit) {
+		Optional<Unit> optional;
 		for (Relation relation : unit.getIncomingRelations()) {
-			Unit outgoing = findOne(relation.getOutgoing()).get();
-			if ((outgoing.getOutgoingRelations().size() <= 1) && (findByName(outgoing.getName()).size() > 1)) {
-				return false;
+			optional = findOne(relation.getOutgoing());
+			if(optional.isPresent()) {
+				Unit outgoing = optional.get();
+				if ((outgoing.getOutgoingRelations().size() <= 1) && (findByName(outgoing.getName()).size() > 1)) {
+					return false;
+				}
 			}
 		}
 		return true;

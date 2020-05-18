@@ -37,14 +37,14 @@ public interface CardController {
             @ApiResponse(code = 200, message = "The Card has been successfully created"),
             @ApiResponse(code = 404, message = "Unit Not Found")
     })
-    ResponseEntity<Card> createCard(long unitId, Card card);
+    ResponseEntity<Card> createCard(long unitId, CardDto cardDto);
 
     @ApiOperation(value = "Upload the card with the requested cardId and in the unit with the requested unitId.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The Card has been successfully updated"),
             @ApiResponse(code = 404, message = "Unit or Card Not Found")
     })
-    ResponseEntity<Card> uploadCard(long unitId, long cardId, Card card);
+    ResponseEntity<Card> uploadCard(long unitId, long cardId, CardDto cardDto);
 
     @ApiOperation(value = "Delete the card with the requested cardId and in the unit with the requested unitId.")
     @ApiResponses(value = {

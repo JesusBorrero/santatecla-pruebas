@@ -2,30 +2,29 @@ package com.itinerary.module;
 
 import com.GeneralRestController;
 import com.itinerary.block.Block;
-import com.itinerary.lesson.Lesson;
-import com.slide.Slide;
-import com.unit.Unit;
-import com.unit.UnitService;
+import com.itinerary.block.BlockDto;
+import com.question.definition.definition_question.DefinitionQuestion;
+import com.question.definition.definition_question.DefinitionQuestionDto;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/modules")
 public class ModuleRestController extends GeneralRestController implements ModuleController{
 
     @Autowired
-    protected UnitService unitService;
+    private ModelMapper modelMapper;
 
     @GetMapping(value="/")
     public MappingJacksonValue modules(){
-        MappingJacksonValue result = new MappingJacksonValue(this.moduleService.findAll());
-        return result;
+        return new MappingJacksonValue(this.moduleService.findAll());
     }
 
     @GetMapping(value="/{id}")
@@ -38,9 +37,11 @@ public class ModuleRestController extends GeneralRestController implements Modul
     }
 
     @PutMapping(value="/{id}")
-    public ResponseEntity<Module> updateModule(@PathVariable long id, @RequestBody Module module){
+    public ResponseEntity<Module> updateModule(@PathVariable long id, @RequestBody ModuleDto moduleDto){
 
         Optional<Module> m = this.moduleService.findOne(id);
+
+        Module module = convertToEntity(moduleDto);
 
         if(m.isPresent()){
             m.get().update(module);
@@ -52,7 +53,10 @@ public class ModuleRestController extends GeneralRestController implements Modul
     }
 
     @PostMapping(value = "/{moduleId}")
-    public ResponseEntity<Block> addBlock(@RequestBody Block block, @PathVariable long moduleId) {
+    public ResponseEntity<Block> addBlock(@RequestBody BlockDto blockDto, @PathVariable long moduleId) {
+
+        Block block = convertToBlockEntity(blockDto);
+
         if(block.getId() != moduleId) {
 
             Optional<Module> module = this.moduleService.findOne(moduleId);
@@ -94,6 +98,18 @@ public class ModuleRestController extends GeneralRestController implements Modul
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
+    }
+
+    private Module convertToEntity(ModuleDto dto) {
+        Module module = modelMapper.map(dto, Module.class);
+        module.setBlocks(dto.getBlocks().stream()
+                .map(this::convertToBlockEntity)
+                .collect(Collectors.toList()));
+        return module;
+    }
+
+    private Block convertToBlockEntity(BlockDto dto) {
+        return modelMapper.map(dto, Block.class);
     }
 
 }

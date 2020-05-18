@@ -7,7 +7,6 @@ import java.util.Optional;
 import com.GeneralRestController;
 
 import com.itinerary.block.Block;
-import com.question.definition.definition_answer.DefinitionAnswer;
 import com.unit.Unit;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -4,36 +4,41 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.GeneralRestController;
 
 import com.itinerary.block.Block;
+import com.itinerary.block.BlockDto;
 import com.unit.Unit;
-import com.unit.UnitService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/units")
-public class UnitModuleRestController extends GeneralRestController implements UnitModuleController{
+public class UnitModuleRestController extends GeneralRestController implements UnitModuleController {
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @PostMapping(value = "/{unitId}/modules")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Module addModule(@RequestBody Module module, @PathVariable long unitId) {
-
+    public ResponseEntity<Module> addModule(@RequestBody ModuleDto moduleDto, @PathVariable long unitId) {
         Optional<Unit> unit = this.unitService.findOne(unitId);
 
-        this.moduleService.save(module);
+        Module module = convertToEntity(moduleDto);
 
-        unit.get().getModules().add(module);
-        this.unitService.save(unit.get());
+        if (unit.isPresent()) {
+            this.moduleService.save(module);
+            unit.get().getModules().add(module);
+            this.unitService.save(unit.get());
 
-        return module;
+            return new ResponseEntity<>(module, HttpStatus.CREATED);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping(value = "/{unitId}/modules/{moduleId}")
@@ -51,7 +56,7 @@ public class UnitModuleRestController extends GeneralRestController implements U
                     List<Long> idUsed = new ArrayList<>();
                     for (Long pId : parents) {
                         Optional<Module> m = this.moduleService.findOne(pId);
-                        if (m.get().getBlocks().contains(module.get())) {
+                        if (m.isPresent() && m.get().getBlocks().contains(module.get())) {
                             m.get().getBlocks().remove(module.get());
                             idUsed.add(pId);
                         }
@@ -79,5 +84,17 @@ public class UnitModuleRestController extends GeneralRestController implements U
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
+    }
+
+    private Module convertToEntity(ModuleDto dto) {
+        Module module = modelMapper.map(dto, Module.class);
+        module.setBlocks(dto.getBlocks().stream()
+                .map(this::convertToBlockEntity)
+                .collect(Collectors.toList()));
+        return module;
+    }
+
+    private Block convertToBlockEntity(BlockDto dto) {
+        return modelMapper.map(dto, Block.class);
     }
 }

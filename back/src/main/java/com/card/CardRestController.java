@@ -5,10 +5,8 @@ import java.util.Optional;
 
 import com.GeneralRestController;
 
-import javax.servlet.http.HttpServletResponse;
-
 import com.unit.Unit;
-import com.unit.UnitService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +14,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/units")
-public class CardRestController extends GeneralRestController implements CardController{
+public class CardRestController extends GeneralRestController implements CardController {
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @GetMapping(value = "/{unitId}/cards")
     public ResponseEntity<Iterable<Card>> getCards(@PathVariable int unitId) {
@@ -27,14 +28,17 @@ public class CardRestController extends GeneralRestController implements CardCon
     @GetMapping(value = "/search/card")
     public ResponseEntity<List<Card>> getCardByName(@RequestParam String unitName, @RequestParam String cardName) {
         List<Card> cards = this.cardService.findByName(unitName, cardName);
-        if (cards.size() == 0) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (cards.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         return new ResponseEntity<>(cards, HttpStatus.OK);
     }
 
     @PostMapping(value = "/{unitId}/cards")
-    public ResponseEntity<Card> createCard(@PathVariable long unitId, @RequestBody Card card) {
+    public ResponseEntity<Card> createCard(@PathVariable long unitId, @RequestBody CardDto cardDto) {
         Optional<Unit> unit = unitService.findOne(unitId);
+
+        Card card = convertToEntity(cardDto);
+
         if (!unit.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -47,8 +51,11 @@ public class CardRestController extends GeneralRestController implements CardCon
     }
 
     @PutMapping(value = "/{unitId}/cards/{cardId}")
-    public ResponseEntity<Card> uploadCard(@PathVariable long unitId, @PathVariable long cardId, @RequestBody Card card) {
+    public ResponseEntity<Card> uploadCard(@PathVariable long unitId, @PathVariable long cardId, @RequestBody CardDto cardDto) {
         Optional<Unit> unit = unitService.findOne(unitId);
+
+        Card card = convertToEntity(cardDto);
+
         if (!unit.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -56,7 +63,7 @@ public class CardRestController extends GeneralRestController implements CardCon
         if (updatedCard == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        if(!card.getName().equals(updatedCard.getName())){
+        if (!card.getName().equals(updatedCard.getName())) {
             this.slideService.updateAllSlidesCardName(unit.get().getName(), updatedCard.getName(), card.getName());
         }
         updatedCard.update(card);
@@ -89,6 +96,10 @@ public class CardRestController extends GeneralRestController implements CardCon
         unitService.save(unit.get());
         cardService.delete(cardId);
         return new ResponseEntity<>(card.get(), HttpStatus.OK);
+    }
+
+    private Card convertToEntity(CardDto dto) {
+        return modelMapper.map(dto, Card.class);
     }
 
 }

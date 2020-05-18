@@ -13,7 +13,7 @@ public interface UnitModuleController {
             @ApiResponse(code = 200, message = "The module has ben successfully created into the unit"),
             @ApiResponse(code = 404, message = "Unit Not Found")
     })
-    Module addModule(Module module, long unitId);
+    ResponseEntity<Module> addModule(ModuleDto moduleDto, long unitId);
 
     @ApiOperation(value = "Delete the module with the requested moduleId from the unit with the requested unitId.")
     @ApiResponses(value = {

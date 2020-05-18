@@ -2,7 +2,6 @@ package com.card;
 
 import java.util.List;
 
-import com.unit.Unit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

@@ -1,6 +1,7 @@
 package com.itinerary.module;
 
 import com.itinerary.block.Block;
+import com.itinerary.block.BlockDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -28,7 +29,7 @@ public interface ModuleController {
             @ApiResponse(code = 200, message = "The module has ben successfully updated"),
             @ApiResponse(code = 404, message = "Module Not Found")
     })
-    ResponseEntity<Module> updateModule(long moduleId, Module module);
+    ResponseEntity<Module> updateModule(long moduleId, ModuleDto moduleDto);
 
     @ApiOperation(value = "Add a block to the module with the requested moduleId.")
     @ApiResponses(value = {
@@ -36,7 +37,7 @@ public interface ModuleController {
             @ApiResponse(code = 409, message = "The block is already into the module"),
             @ApiResponse(code = 404, message = "Module or Block Not Found")
     })
-    ResponseEntity<Block> addBlock(Block block, long moduleId);
+    ResponseEntity<Block> addBlock(BlockDto blockDto, long moduleId);
 
     @ApiOperation(value = "Delete the block with the requested blockId from the module with the requested moduleId.")
     @ApiResponses(value = {

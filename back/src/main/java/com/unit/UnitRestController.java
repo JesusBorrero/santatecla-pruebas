@@ -1,14 +1,19 @@
 package com.unit;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import com.GeneralRestController;
 import com.card.Card;
+import com.card.CardDto;
 import com.image.Image;
 import com.itinerary.module.Module;
 import com.relation.Relation;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,65 +25,77 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/units")
 public class UnitRestController extends GeneralRestController implements UnitController {
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @GetMapping(value = "/")
-    public ResponseEntity<List<Unit>> getUnits() {
-        return new ResponseEntity<>(this.unitService.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<UnitDto>> getUnits() {
+        return new ResponseEntity<>(this.unitService.findAll().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Unit> getUnit(@PathVariable int id) {
+    public ResponseEntity<UnitDto> getUnit(@PathVariable int id) {
         Optional<Unit> unit = this.unitService.findOne(id);
-        return unit.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return unit.map(value -> new ResponseEntity<>(convertToDto(value), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping(value = "/")
-    public ResponseEntity<Unit> createUnit(@RequestBody Unit unit) {
+    public ResponseEntity<UnitDto> createUnit(@RequestBody UnitDto unitDto) {
         Unit savedUnit = new Unit();
+        Unit unit = convertToEntity(unitDto);
         try {
             updateUnit(savedUnit, unit);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         this.unitService.save(savedUnit);
-        return new ResponseEntity<>(savedUnit, HttpStatus.OK);
+        return new ResponseEntity<>(convertToDto(savedUnit), HttpStatus.OK);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Unit> updateUnitCards(@PathVariable int id, @RequestBody Unit unit) {
+    public ResponseEntity<UnitDto> updateUnitCards(@PathVariable int id, @RequestBody UnitDto unitDto) {
         Optional<Unit> u = this.unitService.findOne(id);
+        Unit unit = convertToEntity(unitDto);
         if (u.isPresent()) {
             u.get().setCards((List<Card>) unit.getCards());
             this.unitService.save(u.get());
-            return new ResponseEntity<>(u.get(), HttpStatus.OK);
+            return new ResponseEntity<>(convertToDto(u.get()), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @PutMapping(value = "/")
-    public ResponseEntity<List<Unit>> updateUnits(@RequestBody List<Unit> units) {
+    public ResponseEntity<List<UnitDto>> updateUnits(@RequestBody List<UnitDto> unitDtos) {
         List<Unit> savedUnits = new ArrayList<>();
+        List<Unit> units = unitDtos.stream()
+                .map(this::convertToEntity)
+                .collect(Collectors.toList());
         for (Unit unit : units) {
             Optional<Unit> savedUnit = this.unitService.findOne(unit.getId());
             if (savedUnit.isPresent()) {
                 try {
                     updateUnit(savedUnit.get(), unit);
                 } catch (Exception e) {
-                     return new ResponseEntity<>(HttpStatus.CONFLICT);
+                    return new ResponseEntity<>(HttpStatus.CONFLICT);
                 }
                 savedUnits.add(savedUnit.get());
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         }
-        return new ResponseEntity<>(savedUnits, HttpStatus.OK);
+        return new ResponseEntity<>(savedUnits.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList()), HttpStatus.OK);
     }
 
-    private void updateUnit(Unit savedUnit, Unit unit) throws Exception {
+    private void updateUnit(Unit savedUnit, Unit unit) throws IOException {
         if (!unitService.isValidName(unit)) {
-            throw new Exception("Invalid name");
+            throw new IOException("Invalid name");
         }
-        if(!unit.getName().equals(savedUnit.getName())){
+        if (!unit.getName().equals(savedUnit.getName())) {
             this.slideService.updateAllSlidesUnitName(savedUnit.getName(), unit.getName());
         }
         savedUnit.setName(unit.getName());
@@ -116,17 +133,24 @@ public class UnitRestController extends GeneralRestController implements UnitCon
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Unit> deleteUnit(@PathVariable long id) {
+    public ResponseEntity<UnitDto> deleteUnit(@PathVariable long id) {
         Optional<Unit> unit = unitService.findOne(id);
         if (unit.isPresent()) {
             if (unitService.ableToDeleteUnit(unit.get())) {
+                Optional<Unit> optional;
                 for (Relation relation : unit.get().getOutgoingRelations()) {
-                    unitService.findOne(relation.getIncoming()).map(value -> value.getIncomingRelations().remove(relation));
-                    relationService.delete(relation.getId());
+                    optional = unitService.findOne(relation.getIncoming());
+                    if (optional.isPresent()) {
+                        optional.get().getIncomingRelations().remove(relation);
+                        relationService.delete(relation.getId());
+                    }
                 }
                 for (Relation relation : unit.get().getIncomingRelations()) {
-                    unitService.findOne(relation.getOutgoing()).map(value -> value.getOutgoingRelations().remove(relation));
-                    relationService.delete(relation.getId());
+                    optional = unitService.findOne(relation.getOutgoing());
+                    if (optional.isPresent()) {
+                        optional.get().getOutgoingRelations().remove(relation);
+                        relationService.delete(relation.getId());
+                    }
                 }
                 unitService.delete(id);
                 return new ResponseEntity<>(HttpStatus.OK);
@@ -138,35 +162,44 @@ public class UnitRestController extends GeneralRestController implements UnitCon
         }
     }
 
-    @GetMapping(value="/search")
-    public ResponseEntity<List<Unit>> searchUnits(@RequestParam String name) {
+    @GetMapping(value = "/search")
+    public ResponseEntity<List<UnitDto>> searchUnits(@RequestParam String name) {
         List<Unit> units = this.unitService.findByNameContaining(name);
-        return new ResponseEntity<>(units, HttpStatus.OK);
+        return new ResponseEntity<>(units.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}/unambiguousName")
-    public ResponseEntity<Unit> getUnitUnambiguousName(@PathVariable int id) {
+    public ResponseEntity<UnitDto> getUnitUnambiguousName(@PathVariable int id) {
         Optional<Unit> unit = this.unitService.findOne(id);
-        return unit.map(value -> new ResponseEntity<>(new Unit(unitService.getUnambiguousName(value)), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return unit.map(value -> new ResponseEntity<>(
+                convertToDto(new Unit(unitService.getUnambiguousName(value))), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping(value = "/{id}/absoluteName")
-    public ResponseEntity<Unit> getUnitAbsoluteName(@PathVariable int id) {
+    public ResponseEntity<UnitDto> getUnitAbsoluteName(@PathVariable int id) {
         Optional<Unit> unit = this.unitService.findOne(id);
-        return unit.map(value -> new ResponseEntity<>(new Unit(unitService.getAbsoluteName(value)), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return unit.map(value -> new ResponseEntity<>(
+                convertToDto(new Unit(unitService.getAbsoluteName(value))), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping(value="/{id}/parent")
-    public ResponseEntity<Unit> getUnitParent(@PathVariable int id) {
+    @GetMapping(value = "/{id}/parent")
+    public ResponseEntity<UnitDto> getUnitParent(@PathVariable int id) {
         Optional<Unit> unit = this.unitService.findOne(id);
-        return unit.map(value -> new ResponseEntity<>(unitService.getParent(value, new HashSet<>()), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return unit.map(value -> new ResponseEntity<>(
+                convertToDto(unitService.getParent(value, new HashSet<>())), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping(value="/valid")
-    public ResponseEntity<Boolean> validName(@RequestBody Unit unit) {
+    @PostMapping(value = "/valid")
+    public ResponseEntity<Boolean> validName(@RequestBody UnitDto unitDto) {
+        Unit unit = convertToEntity(unitDto);
         return new ResponseEntity<>(unitService.isValidName(unit), HttpStatus.OK);
     }
-    
+
     @GetMapping(value = "/{id}/name")
     public ResponseEntity<Object> getUnitName(@PathVariable int id) {
         Optional<Unit> unit = this.unitService.findOne(id);
@@ -188,12 +221,12 @@ public class UnitRestController extends GeneralRestController implements UnitCon
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping(value="/{unitId}/images/{imageId}")
+    @GetMapping(value = "/{unitId}/images/{imageId}")
     public ResponseEntity<Image> getImage(@PathVariable int unitId, @PathVariable int imageId) {
         Optional<Unit> optionalUnit = this.unitService.findOne(unitId);
         if (optionalUnit.isPresent()) {
             Optional<Image> image = this.imageService.findOne(imageId);
-            return (image.isPresent() && image.get().getUnitId() == unitId)?(new ResponseEntity<>(image.get(), HttpStatus.OK)):(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+            return (image.isPresent() && image.get().getUnitId() == unitId) ? (new ResponseEntity<>(image.get(), HttpStatus.OK)) : (new ResponseEntity<>(HttpStatus.NOT_FOUND));
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -212,19 +245,19 @@ public class UnitRestController extends GeneralRestController implements UnitCon
 
             optionalUnit.get().addImage(newImage);
             this.unitService.save(optionalUnit.get());
-
-            return new ResponseEntity<>(newImage, HttpStatus.OK);
+            Image imageToReturn = modelMapper.map(newImage, Image.class);
+            return new ResponseEntity<>(imageToReturn, HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping(value="/{unitId}/images/{imageId}")
+    @DeleteMapping(value = "/{unitId}/images/{imageId}")
     public ResponseEntity<Image> deleteImage(@PathVariable int unitId, @PathVariable int imageId) {
         Optional<Unit> optionalUnit = this.unitService.findOne(unitId);
         if (optionalUnit.isPresent()) {
             Optional<Image> image = this.imageService.findOne(imageId);
-            if(image.isPresent()) {
+            if (image.isPresent()) {
                 this.imageService.delete(imageId);
                 return new ResponseEntity<>(HttpStatus.OK);
             }
@@ -235,17 +268,29 @@ public class UnitRestController extends GeneralRestController implements UnitCon
 
     }
 
-    @GetMapping(value="/module/{id}")
-    public ResponseEntity<Unit> getModuleUnit(@PathVariable long id){
+    @GetMapping(value = "/module/{id}")
+    public ResponseEntity<UnitDto> getModuleUnit(@PathVariable long id) {
         Optional<Module> module = this.moduleService.findOne(id);
         if (module.isPresent()) {
             Optional<Unit> result = this.unitService.findOne(this.unitService.findModuleUnit(id));
-            if(result.isPresent()){
-                return new ResponseEntity<>(result.get(), HttpStatus.OK);
-            }
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return result.map(unit -> new ResponseEntity<>(convertToDto(unit), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    private UnitDto convertToDto(Unit unit) {
+        UnitDto dto = modelMapper.map(unit, UnitDto.class);
+        dto.setCards(StreamSupport.stream(unit.getCards().spliterator(), false)
+                .map(this::convertToCardDto)
+                .collect(Collectors.toList()));
+        return dto;
+    }
+
+    private Unit convertToEntity(UnitDto dto) {
+        return modelMapper.map(dto, Unit.class);
+    }
+
+    private CardDto convertToCardDto(Card card) {
+        return modelMapper.map(card, CardDto.class);
+    }
 }

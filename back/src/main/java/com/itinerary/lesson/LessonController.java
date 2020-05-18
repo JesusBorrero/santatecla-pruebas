@@ -34,5 +34,5 @@ public interface LessonController {
             @ApiResponse(code = 200, message = "The lesson has ben successfully updated"),
             @ApiResponse(code = 404, message = "Lesson Not Found")
     })
-    ResponseEntity<Lesson> updateLesson(long lessonId, Lesson lesson);
+    ResponseEntity<Lesson> updateLesson(long lessonId, LessonDto lessonDto);
 }

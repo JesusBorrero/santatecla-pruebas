@@ -8,7 +8,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,6 @@ public class TestQuestion extends Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @SerializedName("testQuestionId")
-    @NotNull
     @ApiModelProperty(notes = "The test question ID. It is unique",  required = true)
     private long id;
 
@@ -67,6 +65,12 @@ public class TestQuestion extends Question {
      * Getters and Setters
      */
 
+    @Override
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    @Override
     public long getId() {
         return id;
     }
@@ -83,4 +87,15 @@ public class TestQuestion extends Question {
         return testAnswers;
     }
 
+    public void setPossibleAnswers(List<String> possibleAnswers) {
+        this.possibleAnswers = possibleAnswers;
+    }
+
+    public void setCorrectAnswer(String correctAnswer) {
+        this.correctAnswer = correctAnswer;
+    }
+
+    public void setTestAnswers(List<TestAnswer> testAnswers) {
+        this.testAnswers = testAnswers;
+    }
 }

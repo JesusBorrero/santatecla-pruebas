@@ -1,7 +1,6 @@
 package com.question.list.list_answer;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 import com.question.Answer;
 import com.user.User;
@@ -15,7 +14,6 @@ public class ListAnswer implements Answer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     @ApiModelProperty(notes = "The answer ID. It is unique",  required = true)
     protected long id;
 
@@ -40,7 +38,7 @@ public class ListAnswer implements Answer {
         this.answer = new ArrayList<>();
     }
 
-    public ListAnswer(ArrayList<String> answer, boolean correct) {
+    public ListAnswer(List<String> answer, boolean correct) {
         this.answer = answer;
         this.correct = correct;
     }

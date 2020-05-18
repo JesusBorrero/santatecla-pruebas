@@ -8,12 +8,15 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class ImageService {
 
     @Autowired
     private ImageRepository imageRepository;
+
+    private static final Logger LOGGER = Logger.getLogger("com.image.ImageService");
 
     public List<Image> findAll() {
         return imageRepository.findAll();
@@ -41,7 +44,7 @@ public class ImageService {
             }
             image.setImage(byteObjects);
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            LOGGER.severe(ioe.getMessage());
         }
     }
 }

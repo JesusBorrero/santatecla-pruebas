@@ -25,7 +25,7 @@ public interface UnitLessonController {
             @ApiResponse(code = 201, message = "The lesson has been successfully created."),
             @ApiResponse(code = 404, message = "Unit Not Found")
     })
-    Lesson addLesson(Lesson lesson, long unitId);
+    ResponseEntity<Lesson> addLesson(LessonDto lessonDto, long unitId);
 
     @ApiOperation(value = "Delete the lesson with the requested lessonId that belongs to the unit with the requested unitId.")
     @ApiResponses(value = {

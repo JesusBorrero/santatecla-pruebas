@@ -2,7 +2,6 @@ package com.user;
 
 import javax.transaction.Transactional;
 
-import com.course.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

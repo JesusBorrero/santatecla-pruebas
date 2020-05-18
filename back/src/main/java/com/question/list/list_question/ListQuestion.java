@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 import com.google.gson.annotations.SerializedName;
 import com.question.Question;
@@ -19,7 +18,6 @@ public class ListQuestion extends Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @SerializedName("listQuestionId")
-    @NotNull
     @ApiModelProperty(notes = "The list question ID. It is unique",  required = true)
     private long id;
 
@@ -71,10 +69,12 @@ public class ListQuestion extends Question {
      * Getters and Setters
      */
 
+    @Override
     public long getId() {
         return id;
     }
 
+    @Override
     public void setId(long id) {
         this.id = id;
     }

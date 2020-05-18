@@ -19,28 +19,28 @@ public interface UnitController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "All units")
     })
-    ResponseEntity<List<Unit>> getUnits();
+    ResponseEntity<List<UnitDto>> getUnits();
 
     @ApiOperation(value = "Return the unit with the requested id")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Unit"),
             @ApiResponse(code = 404, message = "Unit not found")
     })
-    ResponseEntity<Unit> getUnit(@PathVariable int id);
+    ResponseEntity<UnitDto> getUnit(@PathVariable int id);
 
     @ApiOperation(value = "Create a new unit")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Created unit"),
             @ApiResponse(code = 409, message = "Conflict trying to create the unit")
     })
-    ResponseEntity<Unit> createUnit(@RequestBody Unit unit);
+    ResponseEntity<UnitDto> createUnit(@RequestBody UnitDto unitDto);
 
     @ApiOperation(value = "Update all cards of the requested unit")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Unit updated"),
             @ApiResponse(code = 404, message = "Unit not found")
     })
-    ResponseEntity<Unit> updateUnitCards(@PathVariable int id, @RequestBody Unit unit);
+    ResponseEntity<UnitDto> updateUnitCards(@PathVariable int id, @RequestBody UnitDto unitDto);
 
     @ApiOperation(value = "Update a all of the requested units and its relations")
     @ApiResponses(value = {
@@ -48,7 +48,7 @@ public interface UnitController {
             @ApiResponse(code = 404, message = "Unit not found"),
             @ApiResponse(code = 409, message = "Conflict trying to update a unit or relation")
     })
-    ResponseEntity<List<Unit>> updateUnits(@RequestBody List<Unit> units);
+    ResponseEntity<List<UnitDto>> updateUnits(@RequestBody List<UnitDto> unitDtos);
 
     @ApiOperation(value = "Delete the unit with the requested id and all its relations")
     @ApiResponses(value = {
@@ -56,40 +56,40 @@ public interface UnitController {
             @ApiResponse(code = 404, message = "Unit not found"),
             @ApiResponse(code = 409, message = "Conflict trying to delete a unit or relation")
     })
-    ResponseEntity<Unit> deleteUnit(@PathVariable long id);
+    ResponseEntity<UnitDto> deleteUnit(@PathVariable long id);
 
     @ApiOperation(value = "Search units that contains the requested name")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "List of units that matches")
     })
-    ResponseEntity<List<Unit>> searchUnits(@RequestParam String name);
+    ResponseEntity<List<UnitDto>> searchUnits(@RequestParam String name);
 
     @ApiOperation(value = "Return the unambiguous name of the unit with the requested id, that is the shortest name that makes it possible to identify that unit only by its name")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Dummy unit with unambiguous name"),
             @ApiResponse(code = 404, message = "Unit not found")
     })
-    ResponseEntity<Unit> getUnitUnambiguousName(@PathVariable int id);
+    ResponseEntity<UnitDto> getUnitUnambiguousName(@PathVariable int id);
 
     @ApiOperation(value = "Return the absolute name of the unit with the requested id")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Dummy unit with absolute name"),
             @ApiResponse(code = 404, message = "Unit not found")
     })
-    ResponseEntity<Unit> getUnitAbsoluteName(@PathVariable int id);
+    ResponseEntity<UnitDto> getUnitAbsoluteName(@PathVariable int id);
 
     @ApiOperation(value = "Return the parent of the unit with the requested id")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Parent unit"),
             @ApiResponse(code = 404, message = "Unit not found")
     })
-    ResponseEntity<Unit> getUnitParent(@PathVariable int id);
+    ResponseEntity<UnitDto> getUnitParent(@PathVariable int id);
 
     @ApiOperation(value = "Return if the name of the requested unit is valid, this means does not conflict")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Is valid name")
     })
-    ResponseEntity<Boolean> validName(@RequestBody Unit unit);
+    ResponseEntity<Boolean> validName(@RequestBody UnitDto unitDto);
 
     @ApiOperation(value = "Return the name of the unit with the requested id")
     @ApiResponses(value = {
@@ -131,6 +131,6 @@ public interface UnitController {
             @ApiResponse(code = 200, message = "Module"),
             @ApiResponse(code = 404, message = "Module not found")
     })
-    ResponseEntity<Unit> getModuleUnit(@PathVariable long id);
+    ResponseEntity<UnitDto> getModuleUnit(@PathVariable long id);
 
 }

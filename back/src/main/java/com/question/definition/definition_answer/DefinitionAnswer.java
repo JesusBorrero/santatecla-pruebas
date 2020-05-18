@@ -5,7 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
 
 import com.question.Answer;
 import com.user.User;
@@ -16,7 +15,6 @@ public class DefinitionAnswer implements Answer {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     @ApiModelProperty(notes = "The answer ID. It is unique",  required = true)
     protected long id;
 
@@ -77,6 +75,10 @@ public class DefinitionAnswer implements Answer {
 
     public String getAnswerText() {
         return answerText;
+    }
+
+    public void setAnswerText(String answerText) {
+        this.answerText = answerText;
     }
 
     public boolean isCorrect() {

@@ -43,6 +43,7 @@ public class Module extends Block {
      * GETTER AND SETTER *
      ********************/
 
+    @Override
     public long getId() {
         return id;
     }
@@ -51,6 +52,7 @@ public class Module extends Block {
         return blocks;
     }
 
+    @Override
     public void setId(long id) {
         this.id = id;
     }

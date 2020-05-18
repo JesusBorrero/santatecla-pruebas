@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,11 +16,9 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
 	private String name;
 
 	@JsonIgnore
-	@NotNull
 	private String passwordHash;
 
 	@ElementCollection(fetch = FetchType.EAGER)
@@ -87,5 +84,10 @@ public class User {
 
 		User user = (User) o;
 		return this.id.equals(user.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode();
 	}
 }

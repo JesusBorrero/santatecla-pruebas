@@ -52,4 +52,9 @@ public class StudentProgressItem {
             return false;
         }
     }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

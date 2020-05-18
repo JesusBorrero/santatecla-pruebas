@@ -53,9 +53,9 @@ public class Lesson extends Block {
         for (Slide slide: slides) {
             inSlidesId.add(slide.getId());
         }
-        for (long id: slidesId) {
-            if (!(inSlidesId.contains(id))) {
-                diferences.add(id);
+        for (long slideId: slidesId) {
+            if (!(inSlidesId.contains(slideId))) {
+                diferences.add(slideId);
             }
         }
         return diferences;
@@ -66,8 +66,10 @@ public class Lesson extends Block {
      * GETTER AND SETTER *
      ********************/
 
+    @Override
     public long getId() { return id; }
 
+    @Override
     public String getName() { return name; }
 
     public List<Long> getQuestionsIds() {
@@ -76,8 +78,10 @@ public class Lesson extends Block {
 
     public List<Slide> getSlides() { return slides; }
 
+    @Override
     public void setId(long id) { this.id = id; }
 
+    @Override
     public void setName(String name) { this.name = name; }
 
     public void setQuestionsIds(List<Long> questionsIds) {

@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
 
 import com.google.gson.annotations.SerializedName;
 import com.question.Question;
@@ -21,7 +20,6 @@ public class DefinitionQuestion extends Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @SerializedName("definitionQuestionId")
-    @NotNull
     @ApiModelProperty(notes = "The definition question ID. It is unique",  required = true)
     private long id;
 
@@ -54,10 +52,12 @@ public class DefinitionQuestion extends Question {
      * Getters and Setters
      */
 
+    @Override
     public long getId() {
         return id;
     }
 
+    @Override
     public void setId(long id) {
         this.id = id;
     }

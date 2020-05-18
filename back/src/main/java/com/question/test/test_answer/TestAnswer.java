@@ -5,14 +5,12 @@ import com.user.User;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
 public class TestAnswer implements Answer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     @ApiModelProperty(notes = "The answer ID. It is unique.",  required = true)
     protected long id;
 

@@ -6,10 +6,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,7 +17,6 @@ public class Block {
     @ApiModelProperty(notes = "The block ID. It is unique",  required = true)
     protected long id;
 
-    @NotNull
     @ApiModelProperty(notes = "The block name", required = true)
     protected String name;
 

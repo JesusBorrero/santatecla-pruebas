@@ -3,7 +3,6 @@ package com.question;
 import java.util.List;
 import java.util.Optional;
 
-import com.question.definition.definition_question.DefinitionQuestion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
